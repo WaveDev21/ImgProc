@@ -1,0 +1,13 @@
+<RadioGroup xmlns:andro="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    andro:layout_height="match_parent"
+    andro:layout_width="100dp"
+    andro:id="@+id/toolbox">
+    <RadioButton
+        andro:layout_width="match_parent"
+        andro:layout_height="wrap_content"
+        andro:id="@+id/highLight"
+        tools:visibility="visible"
+        andro:gravity="center"
+        andro:drawableTop="@android:drawable/ic_media_play"/>
+</RadioGroup>

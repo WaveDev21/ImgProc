@@ -1,7 +1,7 @@
 package com.example.wave.androidimageprocessingjava;
 
 import android.content.Context;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import com.example.wave.androidimageprocessingjava.Edit.EditActivity;
 
 
 /**
@@ -44,7 +46,8 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(MainActivity.editedImageUri != null){
-
+                    Intent intent = new Intent(context, EditActivity.class);
+                    startActivity(intent);
                 }else{
                     Toast.makeText(context, "First choose image", Toast.LENGTH_LONG).show();
                 }
