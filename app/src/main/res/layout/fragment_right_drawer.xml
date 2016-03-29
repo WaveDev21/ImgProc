@@ -9,5 +9,5 @@
         andro:id="@+id/highLight"
         tools:visibility="visible"
         andro:gravity="center"
-        andro:drawableTop="@android:drawable/ic_media_play"/>
+        andro:drawableTop="@android:drawable/ic_menu_gallery"/>
 </RadioGroup>

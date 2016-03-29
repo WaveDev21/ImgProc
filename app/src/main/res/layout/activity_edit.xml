@@ -3,11 +3,7 @@
     andro:orientation="vertical"
     andro:layout_width="match_parent"
     andro:layout_height="match_parent">
-    <android.support.v7.widget.Toolbar
-        andro:layout_width="match_parent"
-        andro:layout_height="wrap_content"
-        andro:background="@color/colorPrimary"
-        andro:id="@+id/toolbar"/>
+
     <android.support.v4.widget.DrawerLayout
         andro:layout_width="match_parent"
         andro:layout_height="match_parent"
@@ -32,7 +28,7 @@
             andro:layout_width="100dp"
             andro:layout_height="match_parent"
             andro:id="@+id/leftDrawer"
-            andro:foregroundGravity="left"
+            andro:layout_gravity="left"
             andro:choiceMode="singleChoice"
             andro:divider="#818181"
             andro:dividerHeight="1dp"
@@ -41,7 +37,7 @@
             andro:layout_width="100dp"
             andro:layout_height="match_parent"
             andro:id="@+id/rightDrawer"
-            andro:foregroundGravity="right"
+            andro:layout_gravity="right"
             andro:choiceMode="singleChoice"
             andro:divider="#818181"
             andro:dividerHeight="1dp"

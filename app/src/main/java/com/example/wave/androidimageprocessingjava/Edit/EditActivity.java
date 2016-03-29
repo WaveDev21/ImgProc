@@ -54,7 +54,6 @@ public class EditActivity extends AppCompatActivity {
 
         imageView.setImageURI(MainActivity.editedImageUri);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mLeftDrawer = (ListView) findViewById(R.id.leftDrawer);
         mRightDrawer = (FrameLayout) findViewById(R.id.rightDrawer);
@@ -66,7 +65,6 @@ public class EditActivity extends AppCompatActivity {
         mLeftDrawer.setBackgroundColor(Color.TRANSPARENT);
         mRightDrawer.setBackgroundColor(Color.TRANSPARENT);
 
-        setSupportActionBar(mToolbar);
 
         mLeftDataSet = new String[]{
                 "Left item 1",
@@ -77,12 +75,12 @@ public class EditActivity extends AppCompatActivity {
         mLeftAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mLeftDataSet);
         mLeftDrawer.setAdapter(mLeftAdapter);
 
-        RightDrawerFragment rightDrawer = new RightDrawerFragment(this);
+        RightDrawerFragment rightDrawer = RightDrawerFragment.newInstance(this);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.rightDrawer, rightDrawer);
         fragmentTransaction.commit();
-
+/*
         mDrawerToggle = new EditActionBarDrawerToggle(
                 this,
                 mDrawerLayout,
@@ -102,6 +100,8 @@ public class EditActivity extends AppCompatActivity {
         }else {
             getSupportActionBar().setTitle(R.string.closeDrawer);
         }
+*/
+
     }
 
     @Override
@@ -112,12 +112,6 @@ public class EditActivity extends AppCompatActivity {
             outState.putString("DrawerState", "Closed");
         }
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState){
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
     }
 
     @Override
