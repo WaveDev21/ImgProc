@@ -6,8 +6,12 @@ android {
 
     defaultConfig {
         applicationId "com.example.wave.androidimageprocessingjava"
-        minSdkVersion 15
-        targetSdkVersion 23
+        minSdkVersion 8
+        targetSdkVersion 17
+
+        renderscriptTargetApi 18
+        renderscriptSupportModeEnabled true
+
         versionCode 1
         versionName "1.0"
     }
