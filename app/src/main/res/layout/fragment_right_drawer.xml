@@ -1,13 +1,23 @@
 <RadioGroup xmlns:andro="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     andro:layout_height="match_parent"
     andro:layout_width="100dp"
-    andro:id="@+id/toolbox">
+    andro:id="@+id/toolbox"
+    andro:transitionGroup="false">
+    <RadioButton
+        andro:layout_width="100dip"
+        andro:layout_height="100dip"
+        andro:id="@+id/highLight"
+        andro:textAlignment="center"
+        andro:text="asdqwdq"
+        andro:background="@drawable/radaiobuttonbackground"
+        andro:button="@android:color/transparent"
+        andro:drawableTop="@android:drawable/ic_menu_gallery"/>
     <RadioButton
         andro:layout_width="match_parent"
         andro:layout_height="wrap_content"
-        andro:id="@+id/highLight"
-        tools:visibility="visible"
+        andro:id="@+id/polopppo"
         andro:gravity="center"
+        andro:background="@drawable/radaiobuttonbackground"
+        andro:button="@android:color/transparent"
         andro:drawableTop="@android:drawable/ic_menu_gallery"/>
 </RadioGroup>

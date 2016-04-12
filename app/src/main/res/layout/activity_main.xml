@@ -32,5 +32,6 @@
         andro:id="@+id/editedImageView"
         andro:layout_marginTop="5dp"
         andro:layout_marginRight="5dp"
-        andro:clickable="true"/>
+        andro:clickable="true"
+        />
 </RelativeLayout>

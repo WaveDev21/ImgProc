@@ -12,11 +12,6 @@
             andro:layout_width="match_parent"
             andro:layout_height="match_parent"
             andro:orientation="vertical">
-            <SeekBar
-                andro:layout_width="match_parent"
-                andro:layout_height="wrap_content"
-                andro:id="@+id/seekBar"
-                andro:max="25"/>
             <ImageView
                 andro:layout_width="match_parent"
                 andro:layout_height="match_parent"
@@ -24,7 +19,7 @@
                 andro:id="@+id/originalImageView"/>
         </LinearLayout>
 
-        <ListView
+        <RelativeLayout
             andro:layout_width="100dp"
             andro:layout_height="match_parent"
             andro:id="@+id/leftDrawer"
@@ -32,7 +27,10 @@
             andro:choiceMode="singleChoice"
             andro:divider="#818181"
             andro:dividerHeight="1dp"
-            andro:background="#E3F2FD"/>
+            andro:background="#E3F2FD" >
+
+            </RelativeLayout>
+
         <FrameLayout
             andro:layout_width="100dp"
             andro:layout_height="match_parent"

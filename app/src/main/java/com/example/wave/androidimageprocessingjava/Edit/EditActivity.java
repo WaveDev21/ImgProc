@@ -1,38 +1,34 @@
 package com.example.wave.androidimageprocessingjava.Edit;
 
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
-import android.view.Window;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 
 import com.example.wave.androidimageprocessingjava.MainActivity;
 import com.example.wave.androidimageprocessingjava.R;
 
-import java.util.List;
-
 public class EditActivity extends AppCompatActivity {
 
-    private Toolbar mToolbar;
-    private EditActionBarDrawerToggle mDrawerToggle;
+    //private Toolbar mToolbar;
+    private ActionBarDrawerToggle mDrawerListener;
     private DrawerLayout mDrawerLayout;
-    private ListView mLeftDrawer;
+    private RelativeLayout mLeftDrawer;
     private FrameLayout mRightDrawer;
     private ArrayAdapter mLeftAdapter;
     private ArrayAdapter mRightAdapter;
@@ -55,53 +51,75 @@ public class EditActivity extends AppCompatActivity {
         imageView.setImageURI(MainActivity.editedImageUri);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        mLeftDrawer = (ListView) findViewById(R.id.leftDrawer);
+        mLeftDrawer = (RelativeLayout) findViewById(R.id.leftDrawer);
         mRightDrawer = (FrameLayout) findViewById(R.id.rightDrawer);
 
         mLeftDrawer.setTag(0);
         mRightDrawer.setTag(1);
 
         mDrawerLayout.setScrimColor(Color.TRANSPARENT);
-        mLeftDrawer.setBackgroundColor(Color.TRANSPARENT);
-        mRightDrawer.setBackgroundColor(Color.TRANSPARENT);
+        //mLeftDrawer.setBackgroundColor(Color.TRANSPARENT);
+        //mRightDrawer.setBackgroundColor(Color.TRANSPARENT);
 
-
-        mLeftDataSet = new String[]{
-                "Left item 1",
-                "Left item 2",
-                "Left item 3"
-        };
-
-        mLeftAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mLeftDataSet);
-        mLeftDrawer.setAdapter(mLeftAdapter);
-
-        RightDrawerFragment rightDrawer = RightDrawerFragment.newInstance(this);
+        RightDrawerFragment rightDrawer = RightDrawerFragment.newInstance(this, imageView, mLeftDrawer);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.rightDrawer, rightDrawer);
         fragmentTransaction.commit();
-/*
-        mDrawerToggle = new EditActionBarDrawerToggle(
+
+        mDrawerListener = new ActionBarDrawerToggle(
                 this,
                 mDrawerLayout,
                 R.string.openDrawer,
                 R.string.closeDrawer
-        );
+        ){
+            @Override
+            public boolean onOptionsItemSelected(MenuItem item) {
 
-        mDrawerLayout.addDrawerListener(mDrawerToggle);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        mDrawerToggle.syncState();
+                if (mDrawerLayout.isDrawerOpen(mLeftDrawer)){
+                    mDrawerLayout.closeDrawer(mLeftDrawer);
+                    mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
-        if (savedInstanceState != null){
-            if(savedInstanceState.getString("DrawerState") == "Opened"){
-                getSupportActionBar().setTitle(R.string.openDrawer);
+                }else{
+                    mDrawerLayout.openDrawer(mLeftDrawer);
+
+                }
+
+                return super.onOptionsItemSelected(item);
             }
-        }else {
-            getSupportActionBar().setTitle(R.string.closeDrawer);
-        }
-*/
 
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNDEFINED);
+                super.onDrawerClosed(drawerView);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+                super.onDrawerOpened(drawerView);
+            }
+        };
+
+        mDrawerLayout.addDrawerListener(mDrawerListener);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerListener.syncState();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+       if (mDrawerListener.onOptionsItemSelected(item))
+           return true;
+
+       return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -123,6 +141,6 @@ public class EditActivity extends AppCompatActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig){
         super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
+        mDrawerListener.onConfigurationChanged(newConfig);
     }
 }
