@@ -17,7 +17,9 @@ import android.widget.RadioButton;
 
 import com.example.wave.androidimageprocessingjava.MainActivity;
 import com.example.wave.androidimageprocessingjava.OperationsOnImages.OperationButton;
+import com.example.wave.androidimageprocessingjava.Processing.RippleProcessor;
 import com.example.wave.androidimageprocessingjava.Processing.SaturationProcessor;
+import com.example.wave.androidimageprocessingjava.Processing.SharpenProcessor;
 import com.example.wave.androidimageprocessingjava.R;
 import com.example.wave.androidimageprocessingjava.ScriptC_saturation;
 
@@ -78,7 +80,8 @@ public class RightDrawerFragment extends Fragment{
     private void addButtons(RadioGroup toolbox) {
 
         toolbox.addView(new OperationButton(context, "Saturation", new SaturationProcessor(getBitmap(), this.context), this.imageView, this.leftDrawer));
-
+     //   toolbox.addView(new OperationButton(context, "Ripple", new RippleProcessor(getBitmap(), this.context), this.imageView, this.leftDrawer));
+        toolbox.addView(new OperationButton(context, "Sharpen", new SharpenProcessor(getBitmap(), this.context), this.imageView, this.leftDrawer));
     }
 
 
