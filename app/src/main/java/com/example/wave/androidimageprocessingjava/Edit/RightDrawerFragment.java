@@ -2,32 +2,27 @@ package com.example.wave.androidimageprocessingjava.Edit;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.renderscript.ScriptC;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 
+import com.example.wave.androidimageprocessingjava.Factories.IButtonFactory;
+import com.example.wave.androidimageprocessingjava.Factories.SaturationButtonFactory;
+import com.example.wave.androidimageprocessingjava.Factories.SharpenButtonFactory;
+import com.example.wave.androidimageprocessingjava.Factories.SmoothButtonFactory;
 import com.example.wave.androidimageprocessingjava.MainActivity;
-import com.example.wave.androidimageprocessingjava.OperationsOnImages.OperationButton;
-import com.example.wave.androidimageprocessingjava.Processing.RippleProcessor;
+import com.example.wave.androidimageprocessingjava.ProcessingControllers.OperationButton;
 import com.example.wave.androidimageprocessingjava.Processing.SaturationProcessor;
-import com.example.wave.androidimageprocessingjava.Processing.SharpenProcessor;
+//import com.example.wave.androidimageprocessingjava.Processing.Filter3x3Processor;
 import com.example.wave.androidimageprocessingjava.R;
 import com.example.wave.androidimageprocessingjava.ScriptC_saturation;
 
-import android.support.v8.renderscript.*;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -78,10 +73,14 @@ public class RightDrawerFragment extends Fragment{
     }
 
     private void addButtons(RadioGroup toolbox) {
-
-        toolbox.addView(new OperationButton(context, "Saturation", new SaturationProcessor(getBitmap(), this.context), this.imageView, this.leftDrawer));
+        IButtonFactory buttonFactory = new SaturationButtonFactory();
+        toolbox.addView(buttonFactory.constructButton(context, getBitmap(), this.imageView, this.leftDrawer));
+        IButtonFactory buttonFactory1 = new SharpenButtonFactory();
+        toolbox.addView(buttonFactory1.constructButton(context, getBitmap(), this.imageView, this.leftDrawer));
+        IButtonFactory buttonFactory2 = new SmoothButtonFactory();
+        toolbox.addView(buttonFactory2.constructButton(context, getBitmap(), this.imageView, this.leftDrawer));
      //   toolbox.addView(new OperationButton(context, "Ripple", new RippleProcessor(getBitmap(), this.context), this.imageView, this.leftDrawer));
-        toolbox.addView(new OperationButton(context, "Sharpen", new SharpenProcessor(getBitmap(), this.context), this.imageView, this.leftDrawer));
+        //toolbox.addView(new OperationButton(context, "Sharpen", new Filter3x3Processor(getBitmap(), this.context), this.imageView, this.leftDrawer));
     }
 
 

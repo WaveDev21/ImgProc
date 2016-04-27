@@ -16,6 +16,7 @@ import com.example.wave.androidimageprocessingjava.CustomElements.CustomSeekBar;
 /**
  * Created by Wave on 18.04.2016.
  */
+/*
 public class RippleProcessor extends Processor{
 
 
@@ -116,4 +117,6 @@ public class RippleProcessor extends Processor{
 
 
     }
+
 }
+ */

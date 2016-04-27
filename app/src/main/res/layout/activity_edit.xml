@@ -27,7 +27,8 @@
             andro:choiceMode="singleChoice"
             andro:divider="#818181"
             andro:dividerHeight="1dp"
-            andro:background="#E3F2FD" >
+            andro:background="#E3F2FD"
+            andro:gravity="center">
 
             </RelativeLayout>
 

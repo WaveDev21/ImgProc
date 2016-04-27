@@ -8,22 +8,20 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.SaturationVariables;
+import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.ScriptVariables;
+
 /**
  * Created by Wave on 30.03.2016.
  */
 public abstract class Processor {
 
-    protected final int NUM_BITMAPS = 3;
-    protected int mCurrentBitmap = 0;
-    protected Bitmap mBitmapIn;
-    protected Bitmap mBitmapOut;
-    protected Bitmap[] mBitmapsOutArray;
-    protected View mImageView = null;
-    protected RelativeLayout mLeftDrawer = null;
+    protected Bitmap mBitmapIn = null;
+    protected Bitmap mBitmapOut = null;
 
     protected RenderScript mRS;
     protected Allocation mInAllocation;
-    protected Allocation[] mOutAllocations;
+    protected Allocation mOutAllocation;
 
     protected Context context;
 
@@ -31,21 +29,23 @@ public abstract class Processor {
         this.mBitmapIn = bitmap;
         this.context = context;
 
-        mBitmapsOutArray = new Bitmap[NUM_BITMAPS];
-        for (int i = 0; i < NUM_BITMAPS; i++){
-            mBitmapsOutArray[i] = Bitmap.createBitmap(mBitmapIn.getWidth(),
-                    mBitmapIn.getHeight(), mBitmapIn.getConfig());
-        }
 
-        mCurrentBitmap += (mCurrentBitmap + 1) % NUM_BITMAPS;
+        mBitmapOut = Bitmap.createBitmap(mBitmapIn.getWidth(),
+                mBitmapIn.getHeight(), mBitmapIn.getConfig());
 
     }
 
     public abstract void startProcessing();
+    public abstract void processScript(ScriptVariables variables);
+    public abstract void destroyScript();
 
-    public void setmImageView(View view){
-        this.mImageView = view;
+    public Bitmap getmBitmapOut(){
+        return mBitmapOut;
     }
 
-    public void setmLeftDrawer(RelativeLayout leftDrawer) { this.mLeftDrawer = leftDrawer; }
+
+
+
+
+
 }

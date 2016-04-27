@@ -31,13 +31,17 @@ void root(const uchar4* v_in, uchar4* v_out, const void* usrData, uint32_t x, ui
         }
 
         float4 sum = 0;
+         float filter_sum = 0;
 
-        for(a = 0; a < 9; a=a+1 )
+        for(a = 0; a < 9; a = a + 1 )
         {
             sum = sum + (array[a] * filter[a]);
+             filter_sum = filter_sum + filter[a];
         }
 
-        *v_out = rsPackColorTo8888(sum);
+
+
+        *v_out = rsPackColorTo8888(sum / filter_sum );
 
     }
 }
