@@ -57,7 +57,7 @@ public class SmoothControlSet implements IDrawerControls{
 
         RadioButton buttonGauss = new RadioButton(this.context);
         setButton(buttonGauss, buttonFH3, "Gauss");
-        setListener(buttonGauss, FL3);
+        setListener(buttonGauss, Gauss);
 
         group.addView(buttonFH1);
         group.addView(buttonFH2);
