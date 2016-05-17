@@ -9,16 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.wave.androidimageprocessingjava.Factories.IButtonFactory;
-import com.example.wave.androidimageprocessingjava.Factories.SaturationButtonFactory;
-import com.example.wave.androidimageprocessingjava.Factories.SharpenButtonFactory;
-import com.example.wave.androidimageprocessingjava.Factories.SmoothButtonFactory;
+import com.example.wave.androidimageprocessingjava.Factories.AbstractButtonFactory;
+import com.example.wave.androidimageprocessingjava.Factories.ButtonFactory;
+import com.example.wave.androidimageprocessingjava.Factories.ButtonType;
 import com.example.wave.androidimageprocessingjava.MainActivity;
-import com.example.wave.androidimageprocessingjava.ProcessingControllers.OperationButton;
-import com.example.wave.androidimageprocessingjava.Processing.SaturationProcessor;
-//import com.example.wave.androidimageprocessingjava.Processing.Filter3x3Processor;
 import com.example.wave.androidimageprocessingjava.R;
-import com.example.wave.androidimageprocessingjava.ScriptC_saturation;
 
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -38,8 +33,6 @@ public class RightDrawerFragment extends Fragment{
     private Context context;
     private ImageView imageView;
     private RelativeLayout leftDrawer;
-
-    private ScriptC_saturation mScript;
 
 
     // TODO: Rename and change types and number of parameters
@@ -73,12 +66,14 @@ public class RightDrawerFragment extends Fragment{
     }
 
     private void addButtons(RadioGroup toolbox) {
-        IButtonFactory buttonFactory = new SaturationButtonFactory();
-        toolbox.addView(buttonFactory.constructButton(context, getBitmap(), this.imageView, this.leftDrawer));
-        IButtonFactory buttonFactory1 = new SharpenButtonFactory();
-        toolbox.addView(buttonFactory1.constructButton(context, getBitmap(), this.imageView, this.leftDrawer));
-        IButtonFactory buttonFactory2 = new SmoothButtonFactory();
-        toolbox.addView(buttonFactory2.constructButton(context, getBitmap(), this.imageView, this.leftDrawer));
+
+        AbstractButtonFactory buttonFactory = new ButtonFactory(context, getBitmap(), this.imageView, this.leftDrawer);
+
+        toolbox.addView(buttonFactory.produceButton(ButtonType.Saturation));
+        toolbox.addView(buttonFactory.produceButton(ButtonType.Sharpen));
+        toolbox.addView(buttonFactory.produceButton(ButtonType.Smooth));
+
+
      //   toolbox.addView(new OperationButton(context, "Ripple", new RippleProcessor(getBitmap(), this.context), this.imageView, this.leftDrawer));
         //toolbox.addView(new OperationButton(context, "Sharpen", new Filter3x3Processor(getBitmap(), this.context), this.imageView, this.leftDrawer));
     }
