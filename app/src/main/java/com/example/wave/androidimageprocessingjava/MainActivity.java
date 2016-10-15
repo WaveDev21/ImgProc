@@ -13,7 +13,8 @@ import android.support.v4.app.FragmentTransaction;
 
 public class MainActivity extends AppCompatActivity {
 
-    public final int PickImageId = 666;
+    public static final int PickImageId = 666;
+
     private ImageView editedImageView;
     public static android.net.Uri editedImageUri;
 
@@ -22,13 +23,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-
-        MenuFragment menuFragment = new MenuFragment(this);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        fragmentTransaction.add(R.id.menuContainer, menuFragment);
-        fragmentTransaction.commit();
 
         this.editedImageView = (ImageView) findViewById(R.id.editedImageView);
         this.editedImageView.setOnClickListener(new View.OnClickListener() {
@@ -40,6 +34,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), PickImageId);
             }
         });
+
+        MenuFragment menuFragment = new MenuFragment();
+        menuFragment.setArguments(this, this.editedImageView);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.add(R.id.menuContainer, menuFragment);
+        fragmentTransaction.commit();
+
+
     }
 
     @Override
@@ -67,10 +71,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
+
         if(requestCode == PickImageId && resultCode == RESULT_OK && data != null){
             editedImageUri = data.getData();
             editedImageView.setImageURI(editedImageUri);
         }
+
     }
+
+
+
 
 }
