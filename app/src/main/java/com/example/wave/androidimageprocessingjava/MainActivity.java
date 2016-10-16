@@ -1,14 +1,21 @@
 package com.example.wave.androidimageprocessingjava;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.Gallery;
 import android.widget.ImageView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -18,9 +25,21 @@ public class MainActivity extends AppCompatActivity {
     private ImageView editedImageView;
     public static android.net.Uri editedImageUri;
 
+    // test
+//    Integer[] imageIds = {
+//        R.drawable.birghtnes,
+//        R.drawable.ic_add_a_photo_black_24dp,
+//        R.drawable.ic_edit_black_24dp,
+//        R.drawable.ic_linked_camera_black_24dp,
+//        R.drawable.ic_settings_black_24dp
+//    };
+    // test end
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         setContentView(R.layout.activity_main);
 
@@ -78,8 +97,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
-
-
 
 }
