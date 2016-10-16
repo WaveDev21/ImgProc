@@ -1,70 +1,58 @@
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="345dp"
+    android:layout_width="260dp"
     android:layout_height="match_parent"
     android:id="@+id/menuLayout"
     android:padding="5px">
     <TableRow
         android:id="@+id/tableRow1">
         <ImageButton
-            android:src="@android:drawable/ic_menu_gallery"
+            android:src="@drawable/ic_edit_black_24dp"
             android:layout_column="0"
             android:id="@+id/goToEdit"
-            android:minHeight="160dp"
-            android:maxHeight="160dp"
-            android:minWidth="160dp"
-            android:maxWidth="160dp"
-            android:layout_margin="5dp"
+            android:minHeight="110dp"
+            android:maxHeight="110dp"
+            android:minWidth="260dp"
+            android:maxWidth="260dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
             android:clickable="true" />
-        <ImageButton
-            android:src="@android:drawable/ic_menu_gallery"
-            android:layout_column="1"
-            android:id="@+id/test1"
-            android:minHeight="160dp"
-            android:maxHeight="160dp"
-            android:minWidth="160dp"
-            android:maxWidth="160dp"
-            android:layout_margin="5dp"/>
     </TableRow>
     <TableRow
         android:id="@+id/tableRow2">
         <ImageButton
-            android:src="@android:drawable/ic_menu_gallery"
+            android:src="@drawable/ic_linked_camera_black_24dp"
             android:layout_column="0"
-            android:id="@+id/test2"
-            android:minHeight="160dp"
-            android:maxHeight="160dp"
-            android:minWidth="160dp"
-            android:maxWidth="160dp"
-            android:layout_margin="5dp"/>
-        <ImageButton
-            android:src="@android:drawable/ic_menu_gallery"
-            android:layout_column="1"
-            android:id="@+id/test3"
-            android:minHeight="160dp"
-            android:maxHeight="160dp"
-            android:minWidth="160dp"
-            android:maxWidth="160dp"
-            android:layout_margin="5dp"/>
+            android:id="@+id/goToMakePhoto"
+            android:minHeight="110dp"
+            android:maxHeight="110dp"
+            android:minWidth="260dp"
+            android:maxWidth="260dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"/>
     </TableRow>
     <TableRow
         android:id="@+id/tableRow3">
         <ImageButton
-            android:src="@android:drawable/ic_menu_gallery"
+            android:src="@drawable/ic_settings_black_24dp"
             android:layout_column="0"
-            android:id="@+id/test4"
-            android:minHeight="160dp"
-            android:maxHeight="160dp"
-            android:minWidth="160dp"
-            android:maxWidth="160dp"
-            android:layout_margin="5dp"/>
+            android:id="@+id/goToSettings"
+            android:minHeight="110dp"
+            android:maxHeight="110dp"
+            android:minWidth="260dp"
+            android:maxWidth="260dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"/>
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow5">
         <ImageButton
-            android:src="@android:drawable/ic_menu_gallery"
-            android:layout_column="1"
-            android:id="@+id/test5"
-            android:minHeight="160dp"
-            android:maxHeight="160dp"
-            android:minWidth="160dp"
-            android:maxWidth="160dp"
-            android:layout_margin="5dp"/>
+            android:layout_column="0"
+            android:id="@+id/changeMode"
+            android:minHeight="110dp"
+            android:maxHeight="110dp"
+            android:minWidth="260dp"
+            android:maxWidth="260dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"/>
     </TableRow>
 </TableLayout>
