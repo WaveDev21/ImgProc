@@ -12,8 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.wave.androidimageprocessingjava.DBConnection.DBHelper;
 import com.example.wave.androidimageprocessingjava.Edit.EditActivity;
 
 import java.io.File;
@@ -35,7 +37,7 @@ import static android.app.Activity.RESULT_OK;
  */
 public class MenuFragment extends Fragment {
 
-    private Context context;
+    private MainActivity context;
     public static final int MakeImageId = 616;
     private ImageView editedImageView;
 
@@ -44,8 +46,8 @@ public class MenuFragment extends Fragment {
         super();
     }
 
-    public void setArguments(Context context, ImageView editedImageView) {
-        this.context = context;
+    public void setArguments(MainActivity mainActivity, ImageView editedImageView) {
+        this.context = mainActivity;
         this.editedImageView = editedImageView;
     }
 
@@ -92,7 +94,14 @@ public class MenuFragment extends Fragment {
 
         if(requestCode == MakeImageId && resultCode == RESULT_OK) {
 
+            String fileName = MainActivity.editedImageUri.getLastPathSegment();
+            String fileDir = MainActivity.editedImageUri.getPath();
+
+            DBHelper dbHelper = new DBHelper(this.context);
+            dbHelper.insertImage(fileName, fileDir);
+
             this.editedImageView.setImageURI(MainActivity.editedImageUri);
+            this.context.setupGallery();
 
         }
     }
@@ -105,7 +114,7 @@ public class MenuFragment extends Fragment {
             File photoFile = null;
             try {
                 photoFile = createImageFile();
-            } catch (IOException ex) {
+            } catch (IOException ignored) {
 
             }
             // Continue only if the File was successfully created
@@ -115,6 +124,7 @@ public class MenuFragment extends Fragment {
 
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, MainActivity.editedImageUri);
                 startActivityForResult(takePictureIntent, MakeImageId);
+
             }
         }
     }

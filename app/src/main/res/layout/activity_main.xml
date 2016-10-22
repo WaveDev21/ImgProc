@@ -20,6 +20,9 @@
         andro:layout_marginRight="5dp"
         andro:layout_marginLeft="5dp"
         andro:layout_marginBottom="5dp"
+        andro:layout_marginTop="5dp"
+        andro:measureAllChildren="false"
+        andro:scrollbars="none"
         andro:fillViewport="true">
         <LinearLayout
             andro:layout_width="wrap_content"
