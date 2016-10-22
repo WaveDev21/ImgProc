@@ -116,7 +116,7 @@ public class EditActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-       if (mDrawerListener.onOptionsItemSelected(item))
+       if(mDrawerListener.onOptionsItemSelected(item))
            return true;
 
        return super.onOptionsItemSelected(item);

@@ -1,15 +1,23 @@
 package com.example.wave.androidimageprocessingjava.Gallery;
 
+import android.app.Activity;
+import android.app.usage.ConfigurationStats;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.widget.OrientationHelper;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -34,6 +42,8 @@ public class GalleryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_gallery);
 
         setupGallery();
+
+
 
     }
 
@@ -63,14 +73,27 @@ public class GalleryActivity extends AppCompatActivity {
         int counter = 0;
         LinearLayout linearLayout = this.initGalleryLine();
 
+        Display display = getWindowManager().getDefaultDisplay();
+
+
+        int width = display.getWidth();
+        int delimiter = 4;
+        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            width = (width / 4) - 13;
+        }else{
+            width = (width / 3) - 13;
+            delimiter = 3;
+        }
+        Double height = width / 1.35;
+
         for (String imageDir : arrPath) {
 
             final File file = new File(imageDir);
             Bitmap thumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(imageDir),
-                    250, 190);
+                    width, height.intValue());
 
             if (file.isFile()) {
-                if(counter % 3 == 0){
+                if(counter % delimiter == 0){
                     linearLayout = this.initGalleryLine();
                     gallery.addView(linearLayout);
                 }
@@ -79,6 +102,7 @@ public class GalleryActivity extends AppCompatActivity {
                 RelativeLayout.LayoutParams relativeParams =
                         new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
                 relativeLayout.setLayoutParams(relativeParams);
+                relativeLayout.setPadding(5, 0 , 5, 0);
 
                 ImageView iv = new ImageView(this);
                 ViewGroup.MarginLayoutParams imageParams =
@@ -89,6 +113,7 @@ public class GalleryActivity extends AppCompatActivity {
                 linearLayout.addView(relativeLayout);
                 relativeLayout.addView(iv);
             }
+            counter++;
         }
 
     }
@@ -96,7 +121,7 @@ public class GalleryActivity extends AppCompatActivity {
     private LinearLayout initGalleryLine() {
         LinearLayout linearLayout = new LinearLayout(this);
         LinearLayout.LayoutParams linearParams =
-                new LinearLayout.LayoutParams(260, LinearLayout.LayoutParams.WRAP_CONTENT);
+                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 190);
         linearLayout.setLayoutParams(linearParams);
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setGravity(Gravity.CENTER);
