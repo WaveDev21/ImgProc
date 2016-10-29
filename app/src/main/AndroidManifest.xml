@@ -20,7 +20,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".Edit.EditActivity" />
-        <activity android:name=".Gallery.GalleryActivity" />
+        <activity
+            android:name=".Gallery.GalleryActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Gallery.AllGalleryActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Edit.Histogram.HistogramActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

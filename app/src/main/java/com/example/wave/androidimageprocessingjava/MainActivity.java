@@ -19,25 +19,18 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.Gallery;
 import android.widget.ImageView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-import com.example.wave.androidimageprocessingjava.DBConnection.DBHelper;
-import com.example.wave.androidimageprocessingjava.Gallery.GalleryActivity;
+import com.example.wave.androidimageprocessingjava.DBConnection.ImageDBHelper;
+import com.example.wave.androidimageprocessingjava.Gallery.AllGalleryActivity;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -73,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
 //                intent.setAction(Intent.ACTION_GET_CONTENT);
 //                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PickImageId);
 
-                Intent intent = new Intent(v.getContext(), GalleryActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent(v.getContext(), AllGalleryActivity.class);
+                startActivityForResult(intent, PickImageId);
             }
         });
 
@@ -95,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout lastEditedImages = (LinearLayout) findViewById(R.id.lastEditedImages);
         assert lastEditedImages != null;
         lastEditedImages.removeAllViewsInLayout();
-        DBHelper dbHelper = new DBHelper(this);
+        ImageDBHelper dbHelper = new ImageDBHelper(this);
         ArrayList<String> imageDirs = dbHelper.getAllImages();
 
         for (String imageDir : imageDirs) {
@@ -148,9 +141,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -171,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
             String fileName = editedImageUri.getLastPathSegment();
             String fileDir = editedImageUri.getPath();
 
-            DBHelper dbHelper = new DBHelper(this);
+            ImageDBHelper dbHelper = new ImageDBHelper(this);
             dbHelper.insertImage(fileName, fileDir);
 
             editedImageView.setImageURI(editedImageUri);

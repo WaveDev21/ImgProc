@@ -17,7 +17,7 @@ import java.util.HashMap;
  * Created by root on 16.10.16.
  */
 
-public class DBHelper extends SQLiteOpenHelper {
+public class ImageDBHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "ImgProc.db";
     public static final String IMAGE_TABLE_NAME = "images";
@@ -26,22 +26,26 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String IMAGE_COLUMN_DIR = "dir";
     private HashMap hp;
 
-    public DBHelper(Context context){
-        super(context, DATABASE_NAME, null, 1);
+    public ImageDBHelper(Context context){
+        super(context, DATABASE_NAME, null, 3);
     }
 
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(
-                "CREATE TABLE images "+
+                "CREATE TABLE IF NOT EXISTS images "+
                         "(id integer primary key, name text, date timestamp, dir varchar(100))"
         );
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXIST images");
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i2, int i3) {
+        switch(i2) {
+            case 2:
+                sqLiteDatabase.execSQL(SettingsDBHelper.DATABASE_CREATE_SETTINGS);
+                // we want both updates, so no break statement here...
+        }
         onCreate(sqLiteDatabase);
     }
 
