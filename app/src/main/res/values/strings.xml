@@ -5,4 +5,8 @@
     <string name="closeDrawer">Drawer Close</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="shared_img">Shared images</string>
+    <string name="app_img">App images</string>
+    <string name="mode_auto">AUTO</string>
+    <string name="mode_pro">PRO</string>
 </resources>

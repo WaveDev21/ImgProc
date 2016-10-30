@@ -1,6 +1,5 @@
 package com.example.wave.androidimageprocessingjava;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,11 +9,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.wave.androidimageprocessingjava.DBConnection.ImageDBHelper;
+import com.example.wave.androidimageprocessingjava.DBConnection.SettingsDBHelper;
 import com.example.wave.androidimageprocessingjava.Edit.EditActivity;
+import com.example.wave.androidimageprocessingjava.Edit.Histogram.HistogramActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,17 +38,18 @@ import static android.app.Activity.RESULT_OK;
  */
 public class MenuFragment extends Fragment {
 
-    private Context context;
+    private MainActivity context;
     public static final int MakeImageId = 616;
     private ImageView editedImageView;
+    public static String currentMode;
 
 
     public MenuFragment() {
         super();
     }
 
-    public void setArguments(Context context, ImageView editedImageView) {
-        this.context = context;
+    public void setArguments(MainActivity mainActivity, ImageView editedImageView) {
+        this.context = mainActivity;
         this.editedImageView = editedImageView;
     }
 
@@ -81,6 +85,37 @@ public class MenuFragment extends Fragment {
             }
         });
 
+        final Button changeMode = (Button) view.findViewById(R.id.changeMode);
+        final SettingsDBHelper dbHelper = new SettingsDBHelper(context);
+        MenuFragment.currentMode = dbHelper.getSetting("mode");
+
+        if(MenuFragment.currentMode.equals("")){
+            MenuFragment.currentMode = changeMode.getText().toString();
+        }else{
+            changeMode.setText(MenuFragment.currentMode);
+        }
+
+        changeMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(changeMode.getText().equals("AUTO")){
+                    changeMode.setText(R.string.mode_pro);
+                }else{
+                    changeMode.setText(R.string.mode_auto);
+                }
+
+                MenuFragment.currentMode = changeMode.getText().toString();
+                if(!dbHelper.getSetting("mode").equals("")){
+                    dbHelper.updateSetting("mode", MenuFragment.currentMode);
+                }else{
+                    dbHelper.insertSetting("mode", MenuFragment.currentMode);
+                }
+
+//                Intent intent = new Intent(context, HistogramActivity.class);
+//                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
@@ -92,7 +127,14 @@ public class MenuFragment extends Fragment {
 
         if(requestCode == MakeImageId && resultCode == RESULT_OK) {
 
+            String fileName = MainActivity.editedImageUri.getLastPathSegment();
+            String fileDir = MainActivity.editedImageUri.getPath();
+
+            ImageDBHelper dbHelper = new ImageDBHelper(this.context);
+            dbHelper.insertImage(fileName, fileDir);
+
             this.editedImageView.setImageURI(MainActivity.editedImageUri);
+            this.context.setupGallery();
 
         }
     }
@@ -105,7 +147,7 @@ public class MenuFragment extends Fragment {
             File photoFile = null;
             try {
                 photoFile = createImageFile();
-            } catch (IOException ex) {
+            } catch (IOException ignored) {
 
             }
             // Continue only if the File was successfully created
@@ -115,6 +157,7 @@ public class MenuFragment extends Fragment {
 
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, MainActivity.editedImageUri);
                 startActivityForResult(takePictureIntent, MakeImageId);
+
             }
         }
     }

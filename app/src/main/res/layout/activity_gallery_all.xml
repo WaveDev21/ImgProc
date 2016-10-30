@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+    <RelativeLayout
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp">
+        <ImageButton
+            android:layout_width="260dp"
+            android:layout_height="260dp"
+            android:src="@drawable/ic_folder_shared_black_24dp"
+            android:id="@+id/sharedImages"
+            android:background="@android:color/transparent"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/sharedImages"
+            android:textAlignment="center"
+            android:textSize="25sp"
+            android:textColor="#000"
+            android:text="@string/shared_img"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="260dp"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:layout_width="260dp"
+            android:layout_height="260dp"
+            android:src="@drawable/ic_folder_black_24dp"
+            android:id="@+id/appImages"
+            android:background="@android:color/transparent"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/appImages"
+            android:textAlignment="center"
+            android:textSize="28sp"
+            android:textColor="#000"
+            android:text="@string/app_img"/>
+    </RelativeLayout>
+</LinearLayout>

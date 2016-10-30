@@ -3,27 +3,35 @@
     andro:orientation="vertical"
     andro:layout_width="match_parent"
     andro:layout_height="match_parent">
-
+    
     <android.support.v4.widget.DrawerLayout
         andro:layout_width="match_parent"
         andro:layout_height="match_parent"
         andro:id="@+id/drawerLayout">
-        <LinearLayout
+        <RelativeLayout
             andro:layout_width="match_parent"
             andro:layout_height="match_parent"
-            andro:orientation="vertical">
+            andro:orientation="vertical"
+            andro:id="@+id/imageRelativeLayout">
             <ImageView
                 andro:layout_width="match_parent"
                 andro:layout_height="match_parent"
                 andro:src="@android:drawable/ic_media_play"
                 andro:id="@+id/originalImageView"/>
-        </LinearLayout>
+            <ImageButton
+                andro:layout_width="wrap_content"
+                andro:layout_height="wrap_content"
+                andro:src="@drawable/show_menu"
+                andro:background="@android:color/transparent"
+                andro:layout_alignBottom="@id/originalImageView"
+                andro:layout_centerHorizontal="true"/>
+        </RelativeLayout>
 
         <RelativeLayout
             andro:layout_width="100dp"
             andro:layout_height="match_parent"
             andro:id="@+id/leftDrawer"
-            andro:layout_gravity="left"
+            andro:layout_gravity="start"
             andro:choiceMode="singleChoice"
             andro:divider="#818181"
             andro:dividerHeight="1dp"
@@ -36,10 +44,12 @@
             andro:layout_width="100dp"
             andro:layout_height="match_parent"
             andro:id="@+id/rightDrawer"
-            andro:layout_gravity="right"
+            andro:layout_gravity="end"
             andro:choiceMode="singleChoice"
             andro:divider="#818181"
             andro:dividerHeight="1dp"
             andro:background="#9E9E9E"/>
+
+
     </android.support.v4.widget.DrawerLayout>
 </LinearLayout>
