@@ -19,7 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Edit.EditActivity" />
+        <activity android:name=".Edit.EditActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".Gallery.GalleryActivity"
             android:theme="@style/AppTheme.NoActionBar" />
