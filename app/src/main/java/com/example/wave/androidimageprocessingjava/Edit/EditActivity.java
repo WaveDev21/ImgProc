@@ -2,6 +2,7 @@ package com.example.wave.androidimageprocessingjava.Edit;
 
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -21,9 +22,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.example.wave.androidimageprocessingjava.MainActivity;
+import com.example.wave.androidimageprocessingjava.MenuFragment;
 import com.example.wave.androidimageprocessingjava.R;
+import com.wunderlist.slidinglayer.LayerTransformer;
+import com.wunderlist.slidinglayer.SlidingLayer;
+import com.wunderlist.slidinglayer.transformer.SlideJoyTransformer;
 
 public class EditActivity extends AppCompatActivity {
 
@@ -42,6 +48,9 @@ public class EditActivity extends AppCompatActivity {
 
     private SeekBar seekBar;
 
+    private SlidingLayer mSlidingLayer;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,21 +62,56 @@ public class EditActivity extends AppCompatActivity {
         assert imageView != null;
         imageView.setImageURI(MainActivity.editedImageUri);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        mLeftDrawer = (RelativeLayout) findViewById(R.id.leftDrawer);
-        mRightDrawer = (FrameLayout) findViewById(R.id.rightDrawer);
 
-        mLeftDrawer.setTag(0);
-        mRightDrawer.setTag(1);
 
-        mDrawerLayout.setScrimColor(Color.TRANSPARENT);
-        mDrawerLayout.openDrawer(mRightDrawer);
-        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN, mRightDrawer);
+        mSlidingLayer = (SlidingLayer) findViewById(R.id.rightSlidingLayer);
+
+//        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) mSlidingLayer.getLayoutParams();
+
+        mSlidingLayer.setStickTo(SlidingLayer.STICK_TO_RIGHT);
+
+        LayerTransformer transformer = new SlideJoyTransformer();
+        mSlidingLayer.setLayerTransformer(transformer);
+
+        mSlidingLayer.setShadowSize(0);
+        mSlidingLayer.setShadowDrawable(null);
+
+        int offsetDistance = true ? getResources().getDimensionPixelOffset(R.dimen.offset_distance) : 0;
+        mSlidingLayer.setOffsetDistance(offsetDistance);
+
+        int previewOffset = true ? getResources().getDimensionPixelOffset(R.dimen.preview_offset_distance) : -1;
+        mSlidingLayer.setPreviewOffsetDistance(previewOffset);
+
+
+
+
+        mSlidingLayer = (SlidingLayer) findViewById(R.id.topSlidingLayer);
+
+//        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) mSlidingLayer.getLayoutParams();
+
+        mSlidingLayer.setStickTo(SlidingLayer.STICK_TO_TOP);
+//        rlp.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+//        rlp.height = getResources().getDimensionPixelSize(R.dimen.layer_size);
+//        mSlidingLayer.setLayoutParams(rlp);
+
+        transformer = new SlideJoyTransformer();
+        mSlidingLayer.setLayerTransformer(transformer);
+
+        offsetDistance = getResources().getDimensionPixelOffset(R.dimen.top_offset_distance);
+        mSlidingLayer.setOffsetDistance(offsetDistance);
+
 
         RightDrawerFragment rightDrawer = RightDrawerFragment.newInstance(this, imageView, mLeftDrawer);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.rightDrawer, rightDrawer);
+        fragmentTransaction.commit();
+
+
+        CustomToolboxFragment customToolbox = new CustomToolboxFragment();
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.topSlidingLayer, customToolbox);
         fragmentTransaction.commit();
     }
 
@@ -106,5 +150,9 @@ public class EditActivity extends AppCompatActivity {
     public void onConfigurationChanged(Configuration newConfig){
         super.onConfigurationChanged(newConfig);
 //        mDrawerListener.onConfigurationChanged(newConfig);
+    }
+
+    public void buttonClicked(View view){
+
     }
 }

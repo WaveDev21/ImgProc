@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:id="@+id/customToolBar">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#9E9E9E">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Jaiś tam texcik"
+            android:textColor="#212121"
+            android:textSize="30sp"
+            android:layout_marginLeft="30dp"/>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@android:color/transparent">
+        <RelativeLayout
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/zakladka_menu4">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:background="@android:color/transparent"
+                android:id="@+id/currentMode"
+                android:text="AUTO Mode"
+                android:textColor="#212121"
+                android:textSize="20sp"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="10dp"
+                android:src="@drawable/show_menu"
+                android:background="@android:color/transparent"
+                android:layout_below="@+id/currentMode"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+</LinearLayout>
