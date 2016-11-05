@@ -3,4 +3,10 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="shadow_size">8dp</dimen>
+    <dimen name="top_layer_size">90dp</dimen>
+    <dimen name="top_offset_distance">40dp</dimen>
+    <dimen name="offset_distance">25dp</dimen>
+    <dimen name="layer_size">100dp</dimen>
 </resources>
