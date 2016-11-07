@@ -5,11 +5,21 @@ package com.example.wave.androidimageprocessingjava.ProcessingControllers;
  */
 public abstract class DrawerControls {
 
-    public static String containerState = "sharpen";
-    public static String previousContainerState = "sharpen";
+    public static String containerState = "";
+    public static String previousContainerState = "";
 
     public abstract void setControlSet();
     public abstract void clearToolbox();
     public abstract void hideContainer();
     public abstract void openContainer();
+
+    public static void setContainerStates(String currentState){
+        if(containerState.equals("")){
+            previousContainerState = currentState;
+            containerState = currentState;
+        }else{
+            previousContainerState = containerState;
+            containerState = currentState;
+        }
+    }
 }

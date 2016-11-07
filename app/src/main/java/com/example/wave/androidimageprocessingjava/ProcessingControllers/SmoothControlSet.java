@@ -67,8 +67,7 @@ public class SmoothControlSet extends DrawerControls{
         group.addView(buttonGauss);
 
         leftToolbox.addView(group);
-        DrawerControls.previousContainerState = DrawerControls.containerState;
-        DrawerControls.containerState = "smooth";
+        DrawerControls.setContainerStates("smooth");
     }
 
     private void setListener(RadioButton button, final float[] fh) {
@@ -135,7 +134,7 @@ public class SmoothControlSet extends DrawerControls{
     @Override
     public void hideContainer() {
         SlidingLayer slider = (SlidingLayer) leftToolbox.getParent();
-        if(slider.isOpened() && !DrawerControls.previousContainerState.equals("smooth")){
+        if(slider.isOpened() && DrawerControls.containerState.equals("")){
             slider.closeLayer(true);
         }
     }

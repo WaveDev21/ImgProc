@@ -61,8 +61,7 @@ public class SharpenControlSet extends DrawerControls{
         group.addView(buttonFH3);
 
         leftToolbox.addView(group);
-        DrawerControls.previousContainerState = DrawerControls.containerState;
-        DrawerControls.containerState = "sharpen";
+        DrawerControls.setContainerStates("sharpen");
     }
 
     private void setListener(RadioButton button, final float[] fh) {
@@ -129,7 +128,7 @@ public class SharpenControlSet extends DrawerControls{
     @Override
     public void hideContainer() {
         SlidingLayer slider = (SlidingLayer) leftToolbox.getParent();
-        if(slider.isOpened() && !DrawerControls.previousContainerState.equals("sharpen")){
+        if(slider.isOpened() && DrawerControls.containerState.equals("")){
             slider.closeLayer(true);
         }
     }

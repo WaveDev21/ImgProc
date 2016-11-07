@@ -48,6 +48,4 @@ public abstract class OperationButton extends RadioButton{
     protected abstract void setListener();
 
 
-
-
 }

@@ -74,6 +74,8 @@ public class SaturationControlSet extends DrawerControls implements SeekBar.OnSe
         containerLayout.addView(seekBar);
         popupWindow.setContentView(containerLayout);
 
+        setContainerStates("");
+
     }
 
     @Override
