@@ -10,6 +10,8 @@ import com.example.wave.androidimageprocessingjava.Processing.Processor;
 import com.example.wave.androidimageprocessingjava.Processing.SaturationProcessor;
 import com.example.wave.androidimageprocessingjava.ProcessingControllers.DrawerControls;
 
+import com.example.wave.androidimageprocessingjava.ProcessingControllers.HistogramButton;
+import com.example.wave.androidimageprocessingjava.ProcessingControllers.HistogramControlSet;
 import com.example.wave.androidimageprocessingjava.ProcessingControllers.OperationButton;
 import com.example.wave.androidimageprocessingjava.ProcessingControllers.SaturationButton;
 import com.example.wave.androidimageprocessingjava.ProcessingControllers.SaturationControlSet;
@@ -52,6 +54,10 @@ public class ButtonFactory extends AbstractButtonFactory {
                 controls = new SmoothControlSet(context, processor, imageView, toolbox);
                 button = new SmoothButton(context, processor, controls);
                 break;
+            case Histogram:
+                processor = new SaturationProcessor(bitmap, context);
+                controls = new HistogramControlSet(context, processor, imageView, toolbox);
+                button = new HistogramButton(context, processor, controls);
         }
 
         return button;

@@ -75,6 +75,7 @@ public class RightDrawerFragment extends Fragment{
         toolbox.addView(buttonFactory.produceButton(ButtonType.Saturation));
         toolbox.addView(buttonFactory.produceButton(ButtonType.Sharpen));
         toolbox.addView(buttonFactory.produceButton(ButtonType.Smooth));
+        toolbox.addView(buttonFactory.produceButton(ButtonType.Histogram));
 
 
      //   toolbox.addView(new OperationButton(context, "Ripple", new RippleProcessor(getBitmap(), this.context), this.imageView, this.leftDrawer));
