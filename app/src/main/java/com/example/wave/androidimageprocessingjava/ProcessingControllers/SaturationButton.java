@@ -18,7 +18,7 @@ import com.example.wave.androidimageprocessingjava.R;
  */
 public class SaturationButton extends OperationButton implements CompoundButton.OnCheckedChangeListener {
 
-    public SaturationButton(final Context context, Processor processor, IDrawerControls controlSet) {
+    public SaturationButton(final Context context, Processor processor, DrawerControls controlSet) {
         super(context, processor, controlSet);
     }
 
@@ -30,7 +30,7 @@ public class SaturationButton extends OperationButton implements CompoundButton.
             @Override
             public void draw(Canvas canvas) {
 
-                Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.birghtnes);
+                Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.saturation);
                 canvas.drawBitmap(
                         Bitmap.createScaledBitmap(bmp , 100, (int) (100 * bmp.getHeight()) / bmp.getWidth(), false),
                         -50, 0,
@@ -63,10 +63,12 @@ public class SaturationButton extends OperationButton implements CompoundButton.
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked){
-            controlSet.clearLeftDrawer();
+            controlSet.hideContainer();
             controlSet.setControlSet();
+            controlSet.openContainer();
             processor.startProcessing();
         }else{
+            controlSet.hideContainer();
             processor.destroyScript();
         }
     }

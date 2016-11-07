@@ -33,82 +33,53 @@ import com.wunderlist.slidinglayer.transformer.SlideJoyTransformer;
 
 public class EditActivity extends AppCompatActivity {
 
-    //private Toolbar mToolbar;
-    private ActionBarDrawerToggle mDrawerListener;
-    private DrawerLayout mDrawerLayout;
-    private RelativeLayout mLeftDrawer;
-    private FrameLayout mRightDrawer;
-    private ArrayAdapter mLeftAdapter;
-    private ArrayAdapter mRightAdapter;
-    private String[] mLeftDataSet;
-    private String[] mRightDataSet;
-    private RelativeLayout CorrentImageLayout;
-
-    private ImageView imageView;
-
-    private SeekBar seekBar;
-
-    private SlidingLayer mSlidingLayer;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_edit);
 
-        imageView = (ImageView) findViewById(R.id.originalImageView);
+        ImageView imageView = (ImageView) findViewById(R.id.originalImageView);
 
         assert imageView != null;
         imageView.setImageURI(MainActivity.editedImageUri);
 
-
-
-        mSlidingLayer = (SlidingLayer) findViewById(R.id.rightSlidingLayer);
-
-//        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) mSlidingLayer.getLayoutParams();
-
-        mSlidingLayer.setStickTo(SlidingLayer.STICK_TO_RIGHT);
-
+        // Konfiguracja prawego slidera
+        SlidingLayer rightSlidingLayer = (SlidingLayer) findViewById(R.id.rightSlidingLayer);
+        assert rightSlidingLayer != null;
+        rightSlidingLayer.setStickTo(SlidingLayer.STICK_TO_RIGHT);
         LayerTransformer transformer = new SlideJoyTransformer();
-        mSlidingLayer.setLayerTransformer(transformer);
+        rightSlidingLayer.setLayerTransformer(transformer);
+        int offsetDistance = getResources().getDimensionPixelOffset(R.dimen.offset_distance);
+        rightSlidingLayer.setOffsetDistance(offsetDistance);
+        int previewOffset = getResources().getDimensionPixelOffset(R.dimen.preview_offset_distance);
+        rightSlidingLayer.setPreviewOffsetDistance(previewOffset);
 
-        mSlidingLayer.setShadowSize(0);
-        mSlidingLayer.setShadowDrawable(null);
+        // Konfiguracja lefego slidera
+        SlidingLayer leftSlidingLayer = (SlidingLayer) findViewById(R.id.leftSlidingLayer);
+        assert leftSlidingLayer != null;
+        leftSlidingLayer.setStickTo(SlidingLayer.STICK_TO_LEFT);
+//        leftSlidingLayer.setLayerTransformer(transformer);
 
-        int offsetDistance = true ? getResources().getDimensionPixelOffset(R.dimen.offset_distance) : 0;
-        mSlidingLayer.setOffsetDistance(offsetDistance);
-
-        int previewOffset = true ? getResources().getDimensionPixelOffset(R.dimen.preview_offset_distance) : -1;
-        mSlidingLayer.setPreviewOffsetDistance(previewOffset);
-
-
-
-
-        mSlidingLayer = (SlidingLayer) findViewById(R.id.topSlidingLayer);
-
-//        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) mSlidingLayer.getLayoutParams();
-
-        mSlidingLayer.setStickTo(SlidingLayer.STICK_TO_TOP);
-//        rlp.width = RelativeLayout.LayoutParams.MATCH_PARENT;
-//        rlp.height = getResources().getDimensionPixelSize(R.dimen.layer_size);
-//        mSlidingLayer.setLayoutParams(rlp);
-
-        transformer = new SlideJoyTransformer();
-        mSlidingLayer.setLayerTransformer(transformer);
-
+        // Konfiguracja gurnego slidera
+        SlidingLayer topSlidingLayer = (SlidingLayer) findViewById(R.id.topSlidingLayer);
+        assert topSlidingLayer != null;
+        topSlidingLayer.setStickTo(SlidingLayer.STICK_TO_TOP);
+        topSlidingLayer.setLayerTransformer(transformer);
         offsetDistance = getResources().getDimensionPixelOffset(R.dimen.top_offset_distance);
-        mSlidingLayer.setOffsetDistance(offsetDistance);
+        topSlidingLayer.setOffsetDistance(offsetDistance);
 
+        RelativeLayout leftToolbox = (RelativeLayout) findViewById(R.id.leftToolBox);
+        assert leftToolbox != null;
 
-        RightDrawerFragment rightDrawer = RightDrawerFragment.newInstance(this, imageView, mLeftDrawer);
+        RightDrawerFragment rightDrawer = RightDrawerFragment.newInstance(this, imageView, leftSlidingLayer, leftToolbox);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.rightDrawer, rightDrawer);
         fragmentTransaction.commit();
 
 
-        CustomToolboxFragment customToolbox = new CustomToolboxFragment();
+        CustomToolboxFragment customToolbox = CustomToolboxFragment.newInstance(this);
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.topSlidingLayer, customToolbox);

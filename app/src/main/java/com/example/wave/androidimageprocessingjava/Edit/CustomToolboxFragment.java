@@ -4,10 +4,14 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.wave.androidimageprocessingjava.MenuFragment;
@@ -22,16 +26,9 @@ import com.example.wave.androidimageprocessingjava.R;
  * create an instance of this fragment.
  */
 public class CustomToolboxFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
-//    private OnFragmentInteractionListener mListener;
+    private Context context;
 
     public CustomToolboxFragment() {
         // Required empty public constructor
@@ -41,16 +38,13 @@ public class CustomToolboxFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment CustomToolboxFragment.
      */
-    public static CustomToolboxFragment newInstance(String param1, String param2) {
+    public static CustomToolboxFragment newInstance(Context context) {
         CustomToolboxFragment fragment = new CustomToolboxFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
+        fragment.context = context;
+
         return fragment;
     }
 
@@ -66,7 +60,7 @@ public class CustomToolboxFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
 
         View view = inflater.inflate(R.layout.fragment_custom_toolbox, container, false);
 

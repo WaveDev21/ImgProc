@@ -1,35 +1,52 @@
 package com.example.wave.androidimageprocessingjava.ProcessingControllers;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Build;
+import android.view.Display;
+import android.view.DragEvent;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.example.wave.androidimageprocessingjava.CustomElements.CustomSeekBar;
 import com.example.wave.androidimageprocessingjava.Processing.Processor;
 import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.SaturationVariables;
+import com.example.wave.androidimageprocessingjava.R;
+import com.wunderlist.slidinglayer.SlidingLayer;
 
 /**
  * Created by Wave on 19.04.2016.
  */
-public class SaturationControlSet implements SeekBar.OnSeekBarChangeListener, IDrawerControls{
+public class SaturationControlSet extends DrawerControls implements SeekBar.OnSeekBarChangeListener{
 
     private Context context;
     private Processor processor;
     private ImageView imageView;
-    private RelativeLayout leftDrawer;
+    private View view;
+    private PopupWindow popupWindow;
 
-    public SaturationControlSet(Context context, Processor processor, ImageView imageView, RelativeLayout leftDrawer) {
+    private boolean isClicked = false;
+
+    public SaturationControlSet(Context context, Processor processor, ImageView imageView, View view) {
         this.context = context;
         this.processor = processor;
         this.imageView = imageView;
-        this.leftDrawer = leftDrawer;
+        this.view = view;
     }
 
     @Override
     public void setControlSet(){
-        CustomSeekBar seekBar = new CustomSeekBar(context);
+        final CustomSeekBar seekBar = new CustomSeekBar(context);
 
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 30,
@@ -38,22 +55,51 @@ public class SaturationControlSet implements SeekBar.OnSeekBarChangeListener, ID
         layoutParams.setMargins(30, 0, 0, 0);
 
         seekBar.setLayoutParams(layoutParams);
+        seekBar.setBackgroundColor(Color.BLACK);
+        seekBar.getProgressDrawable().setColorFilter(Color.TRANSPARENT, PorterDuff.Mode.SRC_IN);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            seekBar.setSplitTrack(false);
-        }
 
-        seekBar.setProgress(50);
+        seekBar.post(new Runnable() {
+            @Override
+            public void run() {
+                seekBar.setProgress(50);
+            }
+        });
 
         seekBar.setOnSeekBarChangeListener(this);
 
-        leftDrawer.addView(seekBar);
+        RelativeLayout containerLayout = new RelativeLayout(context);
+        popupWindow = new PopupWindow(context);
+
+        containerLayout.addView(seekBar);
+        popupWindow.setContentView(containerLayout);
+
     }
 
     @Override
-    public void clearLeftDrawer() {
-        leftDrawer.removeAllViews();
+    public void clearToolbox() {
     }
+
+    @Override
+    public void hideContainer() {
+        if(isClicked){
+            isClicked = false;
+            popupWindow.dismiss();
+        }
+    }
+
+    @Override
+    public void openContainer() {
+        if (!isClicked){
+            isClicked = true;
+
+            popupWindow.showAtLocation(view, Gravity.START, 0, 0);
+            Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
+            int height = display.getHeight();
+            popupWindow.update(0, 0, 100, height);
+        }
+    }
+
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {

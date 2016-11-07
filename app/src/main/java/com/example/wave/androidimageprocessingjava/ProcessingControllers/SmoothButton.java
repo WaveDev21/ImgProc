@@ -16,7 +16,7 @@ import com.example.wave.androidimageprocessingjava.R;
  */
 public class SmoothButton extends OperationButton implements CompoundButton.OnCheckedChangeListener {
 
-    public SmoothButton(final Context context, Processor processor, IDrawerControls controlSet) {
+    public SmoothButton(final Context context, Processor processor, DrawerControls controlSet) {
         super(context, processor, controlSet);
     }
 
@@ -28,7 +28,7 @@ public class SmoothButton extends OperationButton implements CompoundButton.OnCh
             @Override
             public void draw(Canvas canvas) {
 
-                Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.birghtnes);
+                Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.smooth);
                 canvas.drawBitmap(
                         Bitmap.createScaledBitmap(bmp, 100, (int) (100 * bmp.getHeight()) / bmp.getWidth(), false),
                         -50, 0,
@@ -61,10 +61,12 @@ public class SmoothButton extends OperationButton implements CompoundButton.OnCh
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
-            controlSet.clearLeftDrawer();
+            controlSet.clearToolbox();
             controlSet.setControlSet();
+            controlSet.openContainer();
             processor.startProcessing();
         } else {
+            controlSet.hideContainer();
             processor.destroyScript();
 
         }

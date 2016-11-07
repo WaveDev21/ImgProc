@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:andro="http://schemas.android.com/apk/res/android"
     andro:orientation="vertical"
     andro:layout_width="match_parent"
-    andro:layout_height="match_parent">
+    andro:layout_height="match_parent"
+    andro:id="@+id/editMainRelativeLayout">
 
 
     <RelativeLayout
@@ -15,6 +16,7 @@
             andro:layout_height="match_parent"
             andro:src="@android:drawable/ic_media_play"
             andro:id="@+id/originalImageView"/>
+
     </RelativeLayout>
 
     <com.wunderlist.slidinglayer.SlidingLayer
@@ -46,7 +48,7 @@
         <RelativeLayout
         andro:layout_width="100dp"
         andro:layout_height="match_parent"
-        andro:id="@+id/leftDrawer"
+        andro:id="@+id/leftToolBox"
         andro:layout_gravity="start"
         andro:choiceMode="singleChoice"
         andro:divider="#818181"

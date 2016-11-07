@@ -14,6 +14,7 @@ import com.example.wave.androidimageprocessingjava.Factories.ButtonFactory;
 import com.example.wave.androidimageprocessingjava.Factories.ButtonType;
 import com.example.wave.androidimageprocessingjava.MainActivity;
 import com.example.wave.androidimageprocessingjava.R;
+import com.wunderlist.slidinglayer.SlidingLayer;
 
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -32,18 +33,20 @@ public class RightDrawerFragment extends Fragment{
 
     private Context context;
     private ImageView imageView;
-    private RelativeLayout leftDrawer;
+    private SlidingLayer leftSlider;
+    private RelativeLayout leftToolbox;
 
 
     // TODO: Rename and change types and number of parameters
-    public static RightDrawerFragment newInstance(Context context, ImageView imageView, RelativeLayout leftDrawer) {
+    public static RightDrawerFragment newInstance(Context context, ImageView imageView, SlidingLayer leftDrawer, RelativeLayout leftToolbox) {
         RightDrawerFragment fragment = new RightDrawerFragment();
 
         Bundle args = new Bundle();
 
         fragment.imageView = imageView;
         fragment.context = context;
-        fragment.leftDrawer = leftDrawer;
+        fragment.leftSlider = leftDrawer;
+        fragment.leftToolbox = leftToolbox;
 
         fragment.setArguments(args);
         return fragment;
@@ -66,8 +69,8 @@ public class RightDrawerFragment extends Fragment{
     }
 
     private void addButtons(RadioGroup toolbox) {
-
-        AbstractButtonFactory buttonFactory = new ButtonFactory(context, getBitmap(), this.imageView, this.leftDrawer);
+        // Inicjalizacja fabryki
+        AbstractButtonFactory buttonFactory = new ButtonFactory(context, getBitmap(), this.imageView, this.leftToolbox);
 
         toolbox.addView(buttonFactory.produceButton(ButtonType.Saturation));
         toolbox.addView(buttonFactory.produceButton(ButtonType.Sharpen));

@@ -19,9 +19,9 @@ public abstract class OperationButton extends RadioButton{
 
     protected Context context;
     protected Processor processor;
-    protected IDrawerControls controlSet;
+    protected DrawerControls controlSet;
 
-    public OperationButton(Context context, Processor processor, IDrawerControls contolSet) {
+    public OperationButton(Context context, Processor processor, DrawerControls contolSet) {
         super(context);
 
         this.context = context;

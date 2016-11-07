@@ -65,4 +65,8 @@ public class CustomSeekBar extends SeekBar {
         }
         return true;
     }
+
+    public void postDelayed(Runnable runnable) {
+        runnable.run();
+    }
 }
