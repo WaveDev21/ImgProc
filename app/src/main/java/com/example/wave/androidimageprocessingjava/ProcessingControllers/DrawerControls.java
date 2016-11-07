@@ -5,8 +5,8 @@ package com.example.wave.androidimageprocessingjava.ProcessingControllers;
  */
 public abstract class DrawerControls {
 
-    public static String containerState = "empty";
-    public static String previousContainerState = "empty";
+    public static String containerState = "sharpen";
+    public static String previousContainerState = "sharpen";
 
     public abstract void setControlSet();
     public abstract void clearToolbox();
