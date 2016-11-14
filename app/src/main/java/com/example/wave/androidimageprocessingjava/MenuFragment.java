@@ -98,21 +98,21 @@ public class MenuFragment extends Fragment {
         changeMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(changeMode.getText().equals("AUTO")){
-                    changeMode.setText(R.string.mode_pro);
-                }else{
-                    changeMode.setText(R.string.mode_auto);
-                }
+//                if(changeMode.getText().equals("AUTO")){
+//                    changeMode.setText(R.string.mode_pro);
+//                }else{
+//                    changeMode.setText(R.string.mode_auto);
+//                }
+//
+//                MenuFragment.currentMode = changeMode.getText().toString();
+//                if(!dbHelper.getSetting("mode").equals("")){
+//                    dbHelper.updateSetting("mode", MenuFragment.currentMode);
+//                }else{
+//                    dbHelper.insertSetting("mode", MenuFragment.currentMode);
+//                }
 
-                MenuFragment.currentMode = changeMode.getText().toString();
-                if(!dbHelper.getSetting("mode").equals("")){
-                    dbHelper.updateSetting("mode", MenuFragment.currentMode);
-                }else{
-                    dbHelper.insertSetting("mode", MenuFragment.currentMode);
-                }
-
-//                Intent intent = new Intent(context, HistogramActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(context, HistogramActivity.class);
+                startActivity(intent);
             }
         });
 

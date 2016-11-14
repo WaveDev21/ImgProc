@@ -1,5 +1,7 @@
 package com.example.wave.androidimageprocessingjava.Edit;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -124,6 +126,17 @@ public class EditActivity extends AppCompatActivity {
     }
 
     public void buttonClicked(View view){
+
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        ProgressDialog dataLoadProgress = new ProgressDialog(this);
+        dataLoadProgress.setMessage("Loading...");
+        dataLoadProgress.setIndeterminate(true);
+        dataLoadProgress.setCancelable(false);
+        dataLoadProgress.setProgressStyle(android.R.attr.progressBarStyleLarge);
+        return dataLoadProgress;
 
     }
 }

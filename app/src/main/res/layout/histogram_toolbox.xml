@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/histogramToolbox">
+
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="35dp"
+        android:layout_marginStart="35dp"
+        android:gravity="center"
+        android:id="@+id/leftSideNumberPicker" />
+
+    <LinearLayout
+        android:id="@+id/histogramPlacement"
+        android:background="@color/colorAccent"
+        android:layout_width="514dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical" >
+    </LinearLayout>
+
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:layout_marginRight="35dp"
+        android:layout_marginEnd="35dp"
+        android:id="@+id/rightSideNumberPicker" />
+</RelativeLayout>
