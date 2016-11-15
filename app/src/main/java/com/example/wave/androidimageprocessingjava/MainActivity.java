@@ -80,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentTransaction.add(R.id.menuContainer, menuFragment);
         fragmentTransaction.commit();
-
     }
 
     public void setupGallery() {

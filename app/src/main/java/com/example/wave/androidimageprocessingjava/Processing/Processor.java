@@ -29,7 +29,6 @@ public abstract class Processor {
         this.mBitmapIn = bitmap;
         this.context = context;
 
-
         mBitmapOut = Bitmap.createBitmap(mBitmapIn.getWidth(),
                 mBitmapIn.getHeight(), mBitmapIn.getConfig());
 
@@ -40,15 +39,11 @@ public abstract class Processor {
     public abstract void destroyScript();
 
     public Bitmap getmBitmapOut(){
-        if(mOutAllocation != null){
-            return mBitmapOut;
-        }
-        return mBitmapIn;
+        return mBitmapOut;
     }
 
-
-
-
-
+    public Bitmap getmBitmapIn(){
+        return mBitmapIn;
+    }
 
 }

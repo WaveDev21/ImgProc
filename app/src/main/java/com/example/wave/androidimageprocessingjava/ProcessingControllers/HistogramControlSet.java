@@ -3,39 +3,30 @@ package com.example.wave.androidimageprocessingjava.ProcessingControllers;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
 import android.os.AsyncTask;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.ViewGroup;;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
+import android.widget.RelativeLayout;;
 
 import com.example.wave.androidimageprocessingjava.Edit.EditActivity;
-import com.example.wave.androidimageprocessingjava.Edit.Histogram.HistogramActivity;
 import com.example.wave.androidimageprocessingjava.Processing.Processor;
-import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.SaturationVariables;
 import com.example.wave.androidimageprocessingjava.R;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.io.IOException;
-import java.util.ArrayList;
+
 
 /**
  * Created by Wave on 19.04.2016.
@@ -59,13 +50,8 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
     // Red, Green, Blue
     private int NUMBER_OF_COLOURS = 3;
 
-    private final int RED = 0;
-    private final int GREEN = 1;
-    private final int BLUE = 2;
-
     private int[][] colourBins;
     private volatile boolean loaded = false;
-    private int maxY;
     private boolean isColored;
     private float offset = 1;
     private LinearLayout histogramPlacement;
@@ -94,14 +80,14 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
         popupWindow = new PopupWindow(context);
 
         LayoutInflater inflater = ((EditActivity) context).getLayoutInflater();
-        View layout = inflater.inflate(R.layout.histogram_toolbox, containerLayout);
+        popupWindowView = inflater.inflate(R.layout.histogram_toolbox, containerLayout);
 
-        leftSideNumberPicker = (NumberPicker) layout.findViewById(R.id.leftSideNumberPicker);
+        leftSideNumberPicker = (NumberPicker) popupWindowView.findViewById(R.id.leftSideNumberPicker);
         leftSideNumberPicker.setMinValue(0);
         leftSideNumberPicker.setMaxValue(255);
         leftSideNumberPicker.setOnValueChangedListener(this);
 
-        rightSideNumberPicker = (NumberPicker) layout.findViewById(R.id.rightSideNumberPicker);
+        rightSideNumberPicker = (NumberPicker) popupWindowView.findViewById(R.id.rightSideNumberPicker);
         rightSideNumberPicker.setMinValue(0);
         rightSideNumberPicker.setMaxValue(255);
         rightSideNumberPicker.setValue(255);
@@ -111,17 +97,9 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 
         int width = displaymetrics.widthPixels;
-//        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
-//                width/2,
-//                ViewGroup.LayoutParams.MATCH_PARENT
-//        );
 
-
-//        layoutParams.setMargins(30, 0, 0, 0);
-
-
-//        LinearLayout histogramPlacement = (LinearLayout) layout.findViewById(R.id.histogram);
-        GraphView histogramGraph = (GraphView) layout.findViewById(R.id.histogramGraph);
+        // Ustawianie graph view
+        GraphView histogramGraph = (GraphView) popupWindowView.findViewById(R.id.histogramGraph);
 
         Viewport viewport = histogramGraph.getViewport();
         viewport.setYAxisBoundsManual(true);
@@ -136,22 +114,20 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
         histogramGraph.getViewport().setScalable(true);
         histogramGraph.getViewport().setScalableY(true);
 
-        // legend
+        // ustawianie legendy
         RedColorSeries.setTitle("RED");
         GreenColorSeries.setTitle("GREEN");
         BlueColorSeries.setTitle("BLUE");
         histogramGraph.getLegendRenderer().setVisible(true);
         histogramGraph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
 
+        // ustawianie szerokości widoku histogramu
         ViewGroup.LayoutParams params = histogramGraph.getLayoutParams();
         params.width = width/2 ;
         histogramGraph.setLayoutParams(params);
-//        graph.setLayoutParams(layoutParams);
 
-        popupWindow.setContentView(layout);
+        popupWindow.setContentView(popupWindowView);
         setContainerStates("");
-
-        popupWindowView = layout;
 
 
     }
@@ -211,7 +187,7 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
     // ------------------------------------ Sekcja klas ------------------------------------------
     // ============================================================================================
 
-    class MyAsync extends AsyncTask
+    private class MyAsync extends AsyncTask
     {
         @Override
         protected void onPreExecute() {
@@ -226,7 +202,7 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
             // TODO Auto-generated method stub
 
             try {
-                load(processor.getmBitmapOut());
+                load(processor.getmBitmapIn());
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -242,19 +218,7 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
 
             ((EditActivity)context).dismissDialog(0);
 
-
-//            histogramPlacement = (LinearLayout) ((EditActivity)context).findViewById(R.id.histogram);
-
-//            histogramPlacement.addView(new MyHistogram(context));
-
             GraphView graph = (GraphView) popupWindowView.findViewById(R.id.histogramGraph);
-            BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[] {
-                    new DataPoint(0, -1),
-                    new DataPoint(1, 5),
-                    new DataPoint(2, 3),
-                    new DataPoint(3, 2),
-                    new DataPoint(4, 6)
-            });
             RedColorSeries.setColor(Color.RED);
             graph.addSeries(RedColorSeries);
             GreenColorSeries.setColor(Color.GREEN);
@@ -280,6 +244,10 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
 
     public void load(Bitmap bi) throws IOException {
 
+        int RED = 0;
+        int GREEN = 1;
+        int BLUE = 2;
+
         if (bi != null) {
             // Reset all the bins
             for (int i = 0; i < NUMBER_OF_COLOURS; i++) {
@@ -287,6 +255,7 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
                     colourBins[i][j] = 0;
                 }
             }
+
 
             for (int x = 0; x < bi.getWidth(); x++) {
                 for (int y = 0; y < bi.getHeight(); y++) {
@@ -298,7 +267,8 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
                     colourBins[BLUE][Color.blue(pixel)]++;
                 }
             }
-            maxY = 0;
+
+            int maxY = 0;
 
             for (int i = 0; i < NUMBER_OF_COLOURS; i++) {
                 for (int j = 0; j < SIZE; j++) {
@@ -307,7 +277,6 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
                     }
                 }
             }
-
 
             for (int i = 0; i < SIZE; i++) {
                 RedColorSeries.appendData(new DataPoint(i, colourBins[RED][i]), true, 300);
