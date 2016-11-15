@@ -40,7 +40,10 @@ public abstract class Processor {
     public abstract void destroyScript();
 
     public Bitmap getmBitmapOut(){
-        return mBitmapOut;
+        if(mOutAllocation != null){
+            return mBitmapOut;
+        }
+        return mBitmapIn;
     }
 
 

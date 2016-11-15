@@ -27,8 +27,15 @@ import com.example.wave.androidimageprocessingjava.Edit.Histogram.HistogramActiv
 import com.example.wave.androidimageprocessingjava.Processing.Processor;
 import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.SaturationVariables;
 import com.example.wave.androidimageprocessingjava.R;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.LegendRenderer;
+import com.jjoe64.graphview.Viewport;
+import com.jjoe64.graphview.series.BarGraphSeries;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by Wave on 19.04.2016.
@@ -43,6 +50,10 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
     private PopupWindow popupWindow;
     private NumberPicker leftSideNumberPicker;
     private NumberPicker rightSideNumberPicker;
+    private View popupWindowView;
+    private BarGraphSeries<DataPoint> RedColorSeries = new BarGraphSeries<>();
+    private BarGraphSeries<DataPoint> GreenColorSeries = new BarGraphSeries<>();
+    private BarGraphSeries<DataPoint> BlueColorSeries = new BarGraphSeries<>();
 
     private int SIZE = 256;
     // Red, Green, Blue
@@ -109,14 +120,38 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
 //        layoutParams.setMargins(30, 0, 0, 0);
 
 
-        LinearLayout histogramPlacement = (LinearLayout) layout.findViewById(R.id.histogramPlacement);
-        ViewGroup.LayoutParams params = histogramPlacement.getLayoutParams();
-        params.width = width/2;
-        histogramPlacement.setLayoutParams(params);
-//        histogramPlacement.setLayoutParams(layoutParams);
+//        LinearLayout histogramPlacement = (LinearLayout) layout.findViewById(R.id.histogram);
+        GraphView histogramGraph = (GraphView) layout.findViewById(R.id.histogramGraph);
+
+        Viewport viewport = histogramGraph.getViewport();
+        viewport.setYAxisBoundsManual(true);
+        viewport.setMinY(0);
+        viewport.setMaxY(15000);
+
+        viewport.setXAxisBoundsManual(true);
+        viewport.setMinX(0);
+        viewport.setMaxX(255);
+        viewport.setScrollable(true);
+
+        histogramGraph.getViewport().setScalable(true);
+        histogramGraph.getViewport().setScalableY(true);
+
+        // legend
+        RedColorSeries.setTitle("RED");
+        GreenColorSeries.setTitle("GREEN");
+        BlueColorSeries.setTitle("BLUE");
+        histogramGraph.getLegendRenderer().setVisible(true);
+        histogramGraph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+
+        ViewGroup.LayoutParams params = histogramGraph.getLayoutParams();
+        params.width = width/2 ;
+        histogramGraph.setLayoutParams(params);
+//        graph.setLayoutParams(layoutParams);
 
         popupWindow.setContentView(layout);
         setContainerStates("");
+
+        popupWindowView = layout;
 
 
     }
@@ -206,23 +241,39 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
             super.onPostExecute(result);
 
             ((EditActivity)context).dismissDialog(0);
-            Log.wtf("wtf", "asdw");
-            histogramPlacement = (LinearLayout) ((EditActivity)context).findViewById(R.id.histogramPlacement);
-            Log.wtf("wtf", "asdw2");
-            histogramPlacement.addView(new MyHistogram(context));
-            Log.wtf("wtf", "asdw3");
+
+
+//            histogramPlacement = (LinearLayout) ((EditActivity)context).findViewById(R.id.histogram);
+
+//            histogramPlacement.addView(new MyHistogram(context));
+
+            GraphView graph = (GraphView) popupWindowView.findViewById(R.id.histogramGraph);
+            BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[] {
+                    new DataPoint(0, -1),
+                    new DataPoint(1, 5),
+                    new DataPoint(2, 3),
+                    new DataPoint(3, 2),
+                    new DataPoint(4, 6)
+            });
+            RedColorSeries.setColor(Color.RED);
+            graph.addSeries(RedColorSeries);
+            GreenColorSeries.setColor(Color.GREEN);
+            graph.addSeries(GreenColorSeries);
+            BlueColorSeries.setColor(Color.BLUE);
+            graph.addSeries(BlueColorSeries);
+
             popupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
-            Log.wtf("wtf", "asd4");
+
             DisplayMetrics displaymetrics = new DisplayMetrics();
             ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-            Log.wtf("wtf", "asdw5");
+
             int width = displaymetrics.widthPixels;
             int height = displaymetrics.heightPixels;
 
             int layer_size = (int) context.getResources().getDimension(R.dimen.layer_size);
-            Log.wtf("wtf", "asd6");
+
             popupWindow.update(0, 0, width - (2 *  layer_size), height/2);
-            Log.wtf("wtf", "asdw7");
+
         }
 
     }
@@ -257,69 +308,23 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
                 }
             }
 
+
+            for (int i = 0; i < SIZE; i++) {
+                RedColorSeries.appendData(new DataPoint(i, colourBins[RED][i]), true, 300);
+            }
+
+            for (int i = 0; i < SIZE; i++) {
+                GreenColorSeries.appendData(new DataPoint(i, colourBins[GREEN][i]), true, 300);
+            }
+
+            for (int i = 0; i < SIZE; i++) {
+                BlueColorSeries.appendData(new DataPoint(i, colourBins[BLUE][i]), true, 300);
+            }
+
+
             loaded = true;
         } else {
             loaded = false;
-        }
-    }
-
-    class MyHistogram extends View {
-
-        public MyHistogram(Context context) {
-            super(context);
-        }
-
-        @Override
-        protected void onDraw(Canvas canvas) {
-            // TODO Auto-generated method stub
-            super.onDraw(canvas);
-            if (loaded) {
-                canvas.drawColor(Color.GRAY);
-
-                Log.e("NIRAV", "Height : " + getHeight() + ", Width : "
-                        + getWidth());
-
-                int xInterval = (int) ((double) getWidth() / ((double) SIZE + 1));
-
-                for (int i = 0; i < NUMBER_OF_COLOURS; i++) {
-
-                    Paint wallpaint;
-
-                    wallpaint = new Paint();
-                    if (isColored) {
-                        if (i == RED) {
-                            wallpaint.setColor(Color.RED);
-                        } else if (i == GREEN) {
-                            wallpaint.setColor(Color.GREEN);
-                        } else if (i == BLUE) {
-                            wallpaint.setColor(Color.BLUE);
-                        }
-                    } else {
-                        wallpaint.setColor(Color.WHITE);
-                    }
-
-                    wallpaint.setStyle(Paint.Style.FILL);
-
-                    Path wallpath = new Path();
-                    wallpath.reset();
-                    wallpath.moveTo(0, getHeight());
-                    for (int j = 0; j < SIZE - 1; j++) {
-                        int value = (int) (((double) colourBins[i][j] / (double) maxY) * (getHeight()+100));
-
-
-                        //if(j==0) {
-                        //   wallpath.moveTo(j * xInterval* offset, getHeight() - value);
-                        //}
-                        // else {
-                        wallpath.lineTo(j * xInterval * offset, getHeight() - value);
-                        // }
-                    }
-                    wallpath.lineTo(SIZE * offset, getHeight());
-                    canvas.drawPath(wallpath, wallpaint);
-                }
-
-            }
-
         }
     }
 

@@ -15,16 +15,13 @@
         android:gravity="center"
         android:id="@+id/leftSideNumberPicker" />
 
-    <LinearLayout
-        android:id="@+id/histogramPlacement"
-        android:background="@color/colorAccent"
+    <com.jjoe64.graphview.GraphView
         android:layout_width="514dp"
         android:layout_height="match_parent"
         android:gravity="center"
         android:layout_centerInParent="true"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical" >
-    </LinearLayout>
+        android:id="@+id/histogramGraph" />
 
 
     <NumberPicker
