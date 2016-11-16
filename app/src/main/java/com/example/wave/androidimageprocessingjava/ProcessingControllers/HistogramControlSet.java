@@ -10,11 +10,13 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;;
+import android.widget.RelativeLayout;
+import android.widget.Switch;;
 
 import com.example.wave.androidimageprocessingjava.Edit.EditActivity;
 import com.example.wave.androidimageprocessingjava.Processing.Processor;
@@ -24,14 +26,16 @@ import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.PointsGraphSeries;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 /**
  * Created by Wave on 19.04.2016.
  */
-public class HistogramControlSet extends DrawerControls implements NumberPicker.OnValueChangeListener{
+public class HistogramControlSet extends DrawerControls implements NumberPicker.OnValueChangeListener, Switch.OnCheckedChangeListener{
 
     private Context context;
     private Processor processor;
@@ -41,10 +45,18 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
     private PopupWindow popupWindow;
     private NumberPicker leftSideNumberPicker;
     private NumberPicker rightSideNumberPicker;
+
+    private Switch redColorOn;
+    private Switch greenColorOn;
+    private Switch blueColorOn;
+
     private View popupWindowView;
     private BarGraphSeries<DataPoint> RedColorSeries = new BarGraphSeries<>();
     private BarGraphSeries<DataPoint> GreenColorSeries = new BarGraphSeries<>();
     private BarGraphSeries<DataPoint> BlueColorSeries = new BarGraphSeries<>();
+
+    private PointsGraphSeries<DataPoint> PointerSeries;
+
 
     private int SIZE = 256;
     // Red, Green, Blue
@@ -93,6 +105,13 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
         rightSideNumberPicker.setValue(255);
         rightSideNumberPicker.setOnValueChangedListener(this);
 
+        redColorOn = (Switch) popupWindowView.findViewById(R.id.redColorOn);
+        redColorOn.setOnCheckedChangeListener(this);
+        greenColorOn = (Switch) popupWindowView.findViewById(R.id.greenColorOn);
+        greenColorOn.setOnCheckedChangeListener(this);
+        blueColorOn = (Switch) popupWindowView.findViewById(R.id.blueColorOn);
+        blueColorOn.setOnCheckedChangeListener(this);
+
         DisplayMetrics displaymetrics = new DisplayMetrics();
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 
@@ -118,6 +137,11 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
         RedColorSeries.setTitle("RED");
         GreenColorSeries.setTitle("GREEN");
         BlueColorSeries.setTitle("BLUE");
+
+        RedColorSeries.setColor(Color.RED);
+        GreenColorSeries.setColor(Color.GREEN);
+        BlueColorSeries.setColor(Color.BLUE);
+
         histogramGraph.getLegendRenderer().setVisible(true);
         histogramGraph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
 
@@ -128,7 +152,6 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
 
         popupWindow.setContentView(popupWindowView);
         setContainerStates("");
-
 
     }
 
@@ -155,7 +178,6 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
 
     @Override
     public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-
         // Lewy NumberPicker
         if(picker.getId() == leftSideNumberPicker.getId()){
             if(rightSideNumberPicker.getValue() <= leftSideNumberPicker.getValue()){
@@ -169,6 +191,19 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
                 picker.setValue(leftSideNumberPicker.getValue() + 1);
             }
         }
+
+        PointsGraphSeries<DataPoint> series = new PointsGraphSeries<>();
+        series.setTitle("POINTER");
+        series.setColor(Color.YELLOW);
+        series.setShape(PointsGraphSeries.Shape.TRIANGLE);
+        series.setSize((float) 4);
+
+        series.appendData(new DataPoint(leftSideNumberPicker.getValue(), 0), true, 256);
+        series.appendData(new DataPoint(rightSideNumberPicker.getValue(), 0), true, 256);
+
+
+        setupPointerSeries(series);
+
     }
 
     public void startComputingHistogram(){
@@ -180,6 +215,22 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+        if (buttonView.getId() == redColorOn.getId()){
+
+        }
+
+        if (buttonView.getId() == greenColorOn.getId()){
+
+        }
+
+        if (buttonView.getId() == blueColorOn.getId()){
+
         }
     }
 
@@ -218,13 +269,11 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
 
             ((EditActivity)context).dismissDialog(0);
 
-            GraphView graph = (GraphView) popupWindowView.findViewById(R.id.histogramGraph);
-            RedColorSeries.setColor(Color.RED);
-            graph.addSeries(RedColorSeries);
-            GreenColorSeries.setColor(Color.GREEN);
-            graph.addSeries(GreenColorSeries);
-            BlueColorSeries.setColor(Color.BLUE);
-            graph.addSeries(BlueColorSeries);
+            setupSeries( new ArrayList<BarGraphSeries>(){{
+                add(RedColorSeries);
+                add(GreenColorSeries);
+                add(BlueColorSeries);
+            }});
 
             popupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
 
@@ -237,9 +286,24 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
             int layer_size = (int) context.getResources().getDimension(R.dimen.layer_size);
 
             popupWindow.update(0, 0, width - (2 *  layer_size), height/2);
-
         }
+    }
 
+    public void setupSeries(ArrayList<BarGraphSeries> seriesList){ // TODO pasuje zrobić coś z tą listą tak aby automatycznie usówało z widoku
+        // gdy ju z nie ma elementu na liście
+
+        GraphView graph = (GraphView) popupWindowView.findViewById(R.id.histogramGraph);
+        for (BarGraphSeries<DataPoint> series: seriesList) {
+            graph.addSeries(series);
+        }
+    }
+
+    public void setupPointerSeries(PointsGraphSeries<DataPoint> series){
+
+        GraphView graph = (GraphView) popupWindowView.findViewById(R.id.histogramGraph);
+        graph.removeSeries(PointerSeries);
+        graph.addSeries(series);
+        PointerSeries = series;
     }
 
     public void load(Bitmap bi) throws IOException {
@@ -279,15 +343,15 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
             }
 
             for (int i = 0; i < SIZE; i++) {
-                RedColorSeries.appendData(new DataPoint(i, colourBins[RED][i]), true, 300);
+                RedColorSeries.appendData(new DataPoint(i, colourBins[RED][i]), true, 256);
             }
 
             for (int i = 0; i < SIZE; i++) {
-                GreenColorSeries.appendData(new DataPoint(i, colourBins[GREEN][i]), true, 300);
+                GreenColorSeries.appendData(new DataPoint(i, colourBins[GREEN][i]), true, 256);
             }
 
             for (int i = 0; i < SIZE; i++) {
-                BlueColorSeries.appendData(new DataPoint(i, colourBins[BLUE][i]), true, 300);
+                BlueColorSeries.appendData(new DataPoint(i, colourBins[BLUE][i]), true, 256);
             }
 
 
