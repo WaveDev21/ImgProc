@@ -5,9 +5,13 @@ import android.graphics.Bitmap;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.example.wave.androidimageprocessingjava.Processing.ContrastProcesor;
+import com.example.wave.androidimageprocessingjava.Processing.ExtHistogramProcessor;
 import com.example.wave.androidimageprocessingjava.Processing.Filter3x3Processor;
 import com.example.wave.androidimageprocessingjava.Processing.Processor;
 import com.example.wave.androidimageprocessingjava.Processing.SaturationProcessor;
+import com.example.wave.androidimageprocessingjava.ProcessingControllers.ContastButton;
+import com.example.wave.androidimageprocessingjava.ProcessingControllers.ContrastControlSet;
 import com.example.wave.androidimageprocessingjava.ProcessingControllers.DrawerControls;
 
 import com.example.wave.androidimageprocessingjava.ProcessingControllers.HistogramButton;
@@ -55,9 +59,14 @@ public class ButtonFactory extends AbstractButtonFactory {
                 button = new SmoothButton(context, processor, controls);
                 break;
             case Histogram:
-                processor = new SaturationProcessor(bitmap, context);
+                processor = new ExtHistogramProcessor(bitmap, context);
                 controls = new HistogramControlSet(context, processor, imageView, toolbox);
                 button = new HistogramButton(context, processor, controls);
+                break;
+            case Contrast:
+                processor = new ContrastProcesor(bitmap, context);
+                controls = new ContrastControlSet(context, processor, imageView, toolbox);
+                button = new ContastButton(context, processor, controls);
         }
 
         return button;

@@ -40,7 +40,6 @@ public class CustomSeekBar extends SeekBar {
     protected void onDraw(Canvas c){
         c.rotate(90);
         c.translate(0, -getWidth());
-
         super.onDraw(c);
     }
 
@@ -56,7 +55,6 @@ public class CustomSeekBar extends SeekBar {
                 int i = 0;
                 i = getMax() - (int) (getMax() * event.getY() / getHeight());
                 setProgress(100-i);
-                Log.i("Progress", getProgress() + "");
                 onSizeChanged(getWidth(), getHeight(), 0 , 0);
                 break;
 
@@ -66,7 +64,4 @@ public class CustomSeekBar extends SeekBar {
         return true;
     }
 
-    public void postDelayed(Runnable runnable) {
-        runnable.run();
-    }
 }

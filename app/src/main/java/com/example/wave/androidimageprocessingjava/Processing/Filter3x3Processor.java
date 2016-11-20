@@ -25,10 +25,7 @@ public class Filter3x3Processor extends Processor {
 
     @Override
     public void startProcessing() {
-
         createScript();
-        //processScript(new SharpenVariables(FH1));
-
     }
 
     @Override

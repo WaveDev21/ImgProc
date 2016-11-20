@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +20,10 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;;
 
 import com.example.wave.androidimageprocessingjava.Edit.EditActivity;
+import com.example.wave.androidimageprocessingjava.MenuFragment;
 import com.example.wave.androidimageprocessingjava.Processing.Processor;
+import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.HistogramVariables;
+import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.SaturationVariables;
 import com.example.wave.androidimageprocessingjava.R;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.LegendRenderer;
@@ -51,12 +55,22 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
     private Switch blueColorOn;
 
     private View popupWindowView;
-    private BarGraphSeries<DataPoint> RedColorSeries = new BarGraphSeries<>();
-    private BarGraphSeries<DataPoint> GreenColorSeries = new BarGraphSeries<>();
-    private BarGraphSeries<DataPoint> BlueColorSeries = new BarGraphSeries<>();
+    private BarGraphSeries<DataPoint> RedColorSeries;
+    private BarGraphSeries<DataPoint> GreenColorSeries;
+    private BarGraphSeries<DataPoint> BlueColorSeries;
 
     private PointsGraphSeries<DataPoint> PointerSeries;
 
+    private float[] RedLutTable = new float[256];
+    private float[] GreenLutTable = new float[256];
+    private float[] BlueLutTable = new float[256];
+
+    public float minRedVal = 255;
+    public float maxRedVal = 0;
+    public float minGreenVal = 255;
+    public float maxGreenVal = 0;
+    public float minBlueVal = 255;
+    public float maxBlueVal = 0;
 
     private int SIZE = 256;
     // Red, Green, Blue
@@ -87,6 +101,9 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
 
     @Override
     public void setControlSet(){
+        RedColorSeries = new BarGraphSeries<>();
+        GreenColorSeries = new BarGraphSeries<>();
+        BlueColorSeries = new BarGraphSeries<>();
 
         RelativeLayout containerLayout = new RelativeLayout(context);
         popupWindow = new PopupWindow(context);
@@ -180,20 +197,27 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
     public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
         // Lewy NumberPicker
         if(picker.getId() == leftSideNumberPicker.getId()){
-            if(rightSideNumberPicker.getValue() <= leftSideNumberPicker.getValue()){
+
+            if(oldVal == 0 && newVal == 255){
+                picker.setValue(0);
+            }else if(rightSideNumberPicker.getValue() <= leftSideNumberPicker.getValue()){
                 picker.setValue(rightSideNumberPicker.getValue() - 1);
             }
         }
 
         // Prawy NumberPicker
         if(picker.getId() == rightSideNumberPicker.getId()){
-            if(leftSideNumberPicker.getValue() >= rightSideNumberPicker.getValue()){
+
+            if(oldVal == 255 && newVal == 0){
+                picker.setValue(255);
+            }else if(leftSideNumberPicker.getValue() >= rightSideNumberPicker.getValue()){
                 picker.setValue(leftSideNumberPicker.getValue() + 1);
             }
         }
+        computeLut();
 
         PointsGraphSeries<DataPoint> series = new PointsGraphSeries<>();
-        series.setTitle("POINTER");
+        series.setTitle("PT");
         series.setColor(Color.YELLOW);
         series.setShape(PointsGraphSeries.Shape.TRIANGLE);
         series.setSize((float) 4);
@@ -201,8 +225,11 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
         series.appendData(new DataPoint(leftSideNumberPicker.getValue(), 0), true, 256);
         series.appendData(new DataPoint(rightSideNumberPicker.getValue(), 0), true, 256);
 
-
         setupPointerSeries(series);
+
+        processor.processScript(new HistogramVariables(RedLutTable, GreenLutTable, BlueLutTable));
+        imageView.setImageBitmap(processor.getmBitmapOut());
+        imageView.invalidate();
 
     }
 
@@ -218,20 +245,73 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
         }
     }
 
+    public void computeLut(){
+        if(redColorOn.isChecked()){
+            for (int i = 0; i < 256; i++){
+                RedLutTable[i] = (float) ((255.0/rightSideNumberPicker.getValue() - leftSideNumberPicker.getValue()) * (i - leftSideNumberPicker.getValue()));
+            }
+        }else{
+            for (int i = 0; i < 256; i++){
+                RedLutTable[i] = (float) ((255.0/255.0 - 0) * (i));
+            }
+        }
+        if(greenColorOn.isChecked()){
+            for (int i = 0; i < 256; i++){
+                GreenLutTable[i] = (float) ((255.0/rightSideNumberPicker.getValue() - leftSideNumberPicker.getValue()) * (i - leftSideNumberPicker.getValue()));
+            }
+        }else{
+            for (int i = 0; i < 256; i++){
+                GreenLutTable[i] = (float) ((255.0/255.0 - 0) * (i));
+            }
+        }
+        if(blueColorOn.isChecked()){
+            for (int i = 0; i < 256; i++){
+                BlueLutTable[i] = (float) ((255.0/rightSideNumberPicker.getValue() - leftSideNumberPicker.getValue()) * (i - leftSideNumberPicker.getValue()));
+            }
+        }else{
+            for (int i = 0; i < 256; i++){
+                BlueLutTable[i] = (float) ((255.0/255.0 - 0) * (i));
+            }
+        }
+    }
+
+    public void computeLutOnAuto(){
+        for (int i = 0; i < 256; i++){
+            RedLutTable[i] = (float) ((255.0/maxRedVal - minRedVal) * (i - minRedVal));
+            GreenLutTable[i] = (float) ((255.0/maxGreenVal - minGreenVal) * (i - minGreenVal));
+            BlueLutTable[i] = (float) ((255.0/maxBlueVal - minBlueVal) * (i - minBlueVal));
+        }
+
+    }
+
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
         if (buttonView.getId() == redColorOn.getId()){
-
+            if(isChecked){
+                addSeriesToGraph(RedColorSeries);
+            }else{
+                removeSeriesFromGraph(RedColorSeries);
+            }
         }
 
         if (buttonView.getId() == greenColorOn.getId()){
-
+            if(isChecked){
+                addSeriesToGraph(GreenColorSeries);
+            }else{
+                removeSeriesFromGraph(GreenColorSeries);
+            }
         }
 
         if (buttonView.getId() == blueColorOn.getId()){
-
+            if(isChecked){
+                addSeriesToGraph(BlueColorSeries);
+            }else{
+                removeSeriesFromGraph(BlueColorSeries);
+            }
         }
+        computeLut();
+
     }
 
     // ============================================================================================
@@ -268,35 +348,53 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
             super.onPostExecute(result);
 
             ((EditActivity)context).dismissDialog(0);
+            if(MenuFragment.currentMode.equals("AUTO")){
 
-            setupSeries( new ArrayList<BarGraphSeries>(){{
-                add(RedColorSeries);
-                add(GreenColorSeries);
-                add(BlueColorSeries);
-            }});
+                computeLutOnAuto();
 
-            popupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
+                processor.processScript(new HistogramVariables(RedLutTable, GreenLutTable, BlueLutTable));
+                imageView.setImageBitmap(processor.getmBitmapOut());
+                imageView.invalidate();
+            }else{
+                setupSeries(new ArrayList<BarGraphSeries>(){{
+                    add(RedColorSeries);
+                    add(GreenColorSeries);
+                    add(BlueColorSeries);
+                }});
+                computeLut();
 
-            DisplayMetrics displaymetrics = new DisplayMetrics();
-            ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+                popupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
 
-            int width = displaymetrics.widthPixels;
-            int height = displaymetrics.heightPixels;
+                DisplayMetrics displaymetrics = new DisplayMetrics();
+                ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 
-            int layer_size = (int) context.getResources().getDimension(R.dimen.layer_size);
+                int width = displaymetrics.widthPixels;
+                int height = displaymetrics.heightPixels;
 
-            popupWindow.update(0, 0, width - (2 *  layer_size), height/2);
+                int layer_size = (int) context.getResources().getDimension(R.dimen.layer_size);
+
+                popupWindow.update(0, 0, width - (2 *  layer_size), height/2);
+            }
         }
     }
 
-    public void setupSeries(ArrayList<BarGraphSeries> seriesList){ // TODO pasuje zrobić coś z tą listą tak aby automatycznie usówało z widoku
-        // gdy ju z nie ma elementu na liście
-
+    public void setupSeries(ArrayList<BarGraphSeries> seriesList){
         GraphView graph = (GraphView) popupWindowView.findViewById(R.id.histogramGraph);
-        for (BarGraphSeries<DataPoint> series: seriesList) {
+        for (BarGraphSeries series: seriesList) {
             graph.addSeries(series);
         }
     }
+
+    public void addSeriesToGraph(BarGraphSeries series){
+        GraphView graph = (GraphView) popupWindowView.findViewById(R.id.histogramGraph);
+        graph.addSeries(series);
+    }
+
+    public void removeSeriesFromGraph(BarGraphSeries series){
+        GraphView graph = (GraphView) popupWindowView.findViewById(R.id.histogramGraph);
+        graph.removeSeries(series);
+    }
+
 
     public void setupPointerSeries(PointsGraphSeries<DataPoint> series){
 
@@ -329,18 +427,16 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
                     colourBins[RED][Color.red(pixel)]++;
                     colourBins[GREEN][Color.green(pixel)]++;
                     colourBins[BLUE][Color.blue(pixel)]++;
+
+                    minRedVal = Color.red(pixel) < minRedVal ? Color.red(pixel) : minRedVal;
+                    maxRedVal = Color.red(pixel) > maxRedVal ? Color.red(pixel) : maxRedVal;
+                    minGreenVal = Color.green(pixel) < minGreenVal ? Color.green(pixel) : minGreenVal;
+                    maxGreenVal = Color.green(pixel) > maxGreenVal ? Color.green(pixel) : maxGreenVal;
+                    minBlueVal = Color.blue(pixel) < minBlueVal ? Color.blue(pixel) : minBlueVal;
+                    maxBlueVal = Color.blue(pixel) > maxBlueVal ? Color.blue(pixel) : maxBlueVal;
                 }
             }
 
-            int maxY = 0;
-
-            for (int i = 0; i < NUMBER_OF_COLOURS; i++) {
-                for (int j = 0; j < SIZE; j++) {
-                    if (maxY < colourBins[i][j]) {
-                        maxY = colourBins[i][j];
-                    }
-                }
-            }
 
             for (int i = 0; i < SIZE; i++) {
                 RedColorSeries.appendData(new DataPoint(i, colourBins[RED][i]), true, 256);

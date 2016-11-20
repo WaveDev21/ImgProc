@@ -2,51 +2,70 @@ package com.example.wave.androidimageprocessingjava.ProcessingControllers;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.util.DisplayMetrics;
 import android.view.Display;
-import android.view.DragEvent;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.TextView;
+import android.widget.Switch;
 
 import com.example.wave.androidimageprocessingjava.CustomElements.CustomSeekBar;
+import com.example.wave.androidimageprocessingjava.Edit.EditActivity;
+import com.example.wave.androidimageprocessingjava.MenuFragment;
 import com.example.wave.androidimageprocessingjava.Processing.Processor;
-import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.SaturationVariables;
+import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.ContrastVariables;
+import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.HistogramVariables;
 import com.example.wave.androidimageprocessingjava.R;
-import com.wunderlist.slidinglayer.SlidingLayer;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.LegendRenderer;
+import com.jjoe64.graphview.Viewport;
+import com.jjoe64.graphview.series.BarGraphSeries;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.PointsGraphSeries;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
 
 /**
  * Created by Wave on 19.04.2016.
  */
-public class SaturationControlSet extends DrawerControls implements SeekBar.OnSeekBarChangeListener{
+public class ContrastControlSet extends DrawerControls implements SeekBar.OnSeekBarChangeListener{
 
     private Context context;
     private Processor processor;
     private ImageView imageView;
     private View view;
+
     private PopupWindow popupWindow;
 
     private boolean isClicked = false;
 
-    public SaturationControlSet(Context context, Processor processor, ImageView imageView, View view) {
+    public ContrastControlSet(Context context, Processor processor, ImageView imageView, View view) {
         this.context = context;
         this.processor = processor;
         this.imageView = imageView;
         this.view = view;
+
     }
 
     @Override
     public void setControlSet(){
-        final CustomSeekBar seekBar = new CustomSeekBar(context);
+
+        CustomSeekBar seekBar = new CustomSeekBar(context);
 
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 30,
@@ -61,6 +80,7 @@ public class SaturationControlSet extends DrawerControls implements SeekBar.OnSe
         seekBar.setMax(100);
         seekBar.setProgress(50);
         seekBar.refreshDrawableState();
+
         seekBar.setOnSeekBarChangeListener(this);
 
         RelativeLayout containerLayout = new RelativeLayout(context);
@@ -70,6 +90,7 @@ public class SaturationControlSet extends DrawerControls implements SeekBar.OnSe
         popupWindow.setContentView(containerLayout);
 
         setContainerStates("");
+
     }
 
     @Override
@@ -96,14 +117,30 @@ public class SaturationControlSet extends DrawerControls implements SeekBar.OnSe
         }
     }
 
+    public float[] computeLut(int progress){
+        float[] lutTable = new float[256];
+        float var;
+        float max = 2.0f;
+        float a = (float) (max * (progress / 100.0));
+        for (int i = 0; i < 256; i++){
+            var = (float) (a*(i - (255.0/2.0)) + (255.0/2.0));
+
+            if(var < 0) lutTable[i] = 0;
+            else if (var > 255) lutTable[i] = 255;
+            else lutTable[i] = var;
+        }
+
+        return lutTable;
+    }
+
+    public void computeLutOnAuto(){ // na razie zbędne
+
+    }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        float max = 2.0f;
-        float min = 0.0f;
-        float f = (float) ((max-min) * (progress / 100.0) + min);
 
-        processor.processScript(new SaturationVariables(f));
+        processor.processScript(new ContrastVariables(computeLut(progress)));
         imageView.setImageBitmap(processor.getmBitmapOut());
         imageView.invalidate();
     }
@@ -117,4 +154,6 @@ public class SaturationControlSet extends DrawerControls implements SeekBar.OnSe
     public void onStopTrackingTouch(SeekBar seekBar) {
 
     }
+
+
 }

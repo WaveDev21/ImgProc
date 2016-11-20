@@ -2,28 +2,22 @@ package com.example.wave.androidimageprocessingjava.Processing;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.RenderScript;
-import android.util.Log;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 
-import com.example.wave.androidimageprocessingjava.CustomElements.CustomSeekBar;
-import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.SaturationVariables;
+import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.HistogramVariables;
 import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.ScriptVariables;
-import com.example.wave.androidimageprocessingjava.ScriptC_saturation;
+import com.example.wave.androidimageprocessingjava.ScriptC_useLutTable;
 
 /**
  * Created by Wave on 02.04.2016.
  */
-public class SaturationProcessor extends Processor {
+public class ExtHistogramProcessor extends Processor {
 
 
-    private ScriptC_saturation mScript;
+    private ScriptC_useLutTable mScript;
 
-    public SaturationProcessor(Bitmap bitmap, Context context) {
+    public ExtHistogramProcessor(Bitmap bitmap, Context context) {
         super(bitmap, context);
     }
 
@@ -40,16 +34,18 @@ public class SaturationProcessor extends Processor {
         mInAllocation = Allocation.createFromBitmap(mRS, mBitmapIn);
         mOutAllocation = Allocation.createFromBitmap(mRS, mBitmapOut);
 
-        mScript = new ScriptC_saturation(mRS);
+        mScript = new ScriptC_useLutTable(mRS);
     }
 
     @Override
     public void processScript(ScriptVariables variables) {
-        SaturationVariables vars = (SaturationVariables)variables;
+        HistogramVariables vars = (HistogramVariables)variables;
 
-        mScript.set_saturationValue(vars.getSaturationValue());
+        mScript.set_redLut(vars.getRedLut());
+        mScript.set_greenLut(vars.getGreenLut());
+        mScript.set_blueLut(vars.getBlueLut());
 
-        mScript.forEach_saturation(mInAllocation, mOutAllocation);
+        mScript.forEach_useLutTable(mInAllocation, mOutAllocation);
 
         mOutAllocation.copyTo(mBitmapOut);
     }
