@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.support.v7.widget.SwitchCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -50,9 +51,9 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
     private NumberPicker leftSideNumberPicker;
     private NumberPicker rightSideNumberPicker;
 
-    private Switch redColorOn;
-    private Switch greenColorOn;
-    private Switch blueColorOn;
+    private SwitchCompat redColorOn;
+    private SwitchCompat greenColorOn;
+    private SwitchCompat blueColorOn;
 
     private View popupWindowView;
     private BarGraphSeries<DataPoint> RedColorSeries;
@@ -122,17 +123,12 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
         rightSideNumberPicker.setValue(255);
         rightSideNumberPicker.setOnValueChangedListener(this);
 
-        redColorOn = (Switch) popupWindowView.findViewById(R.id.redColorOn);
+        redColorOn = (SwitchCompat) popupWindowView.findViewById(R.id.redColorOn);
         redColorOn.setOnCheckedChangeListener(this);
-        greenColorOn = (Switch) popupWindowView.findViewById(R.id.greenColorOn);
+        greenColorOn = (SwitchCompat) popupWindowView.findViewById(R.id.greenColorOn);
         greenColorOn.setOnCheckedChangeListener(this);
-        blueColorOn = (Switch) popupWindowView.findViewById(R.id.blueColorOn);
+        blueColorOn = (SwitchCompat) popupWindowView.findViewById(R.id.blueColorOn);
         blueColorOn.setOnCheckedChangeListener(this);
-
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-
-        int width = displaymetrics.widthPixels;
 
         // Ustawianie graph view
         GraphView histogramGraph = (GraphView) popupWindowView.findViewById(R.id.histogramGraph);
@@ -163,6 +159,11 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
         histogramGraph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
 
         // ustawianie szerokości widoku histogramu
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+
+        int width = displaymetrics.widthPixels;
+
         ViewGroup.LayoutParams params = histogramGraph.getLayoutParams();
         params.width = width/2 ;
         histogramGraph.setLayoutParams(params);

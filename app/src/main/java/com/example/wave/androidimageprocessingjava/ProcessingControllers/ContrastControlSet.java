@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.v7.widget.AppCompatSeekBar;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
@@ -43,7 +44,7 @@ import java.util.ArrayList;
 /**
  * Created by Wave on 19.04.2016.
  */
-public class ContrastControlSet extends DrawerControls implements SeekBar.OnSeekBarChangeListener{
+public class ContrastControlSet extends DrawerControls implements AppCompatSeekBar.OnSeekBarChangeListener{
 
     private Context context;
     private Processor processor;
@@ -51,6 +52,8 @@ public class ContrastControlSet extends DrawerControls implements SeekBar.OnSeek
     private View view;
 
     private PopupWindow popupWindow;
+
+    private View popupWindowView;
 
     private boolean isClicked = false;
 
@@ -65,31 +68,48 @@ public class ContrastControlSet extends DrawerControls implements SeekBar.OnSeek
     @Override
     public void setControlSet(){
 
-        CustomSeekBar seekBar = new CustomSeekBar(context);
+//        CustomSeekBar seekBar = new CustomSeekBar(context);
+//
+//        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+//                30,
+//                RelativeLayout.LayoutParams.MATCH_PARENT
+//        );
+//        layoutParams.setMargins(30, 0, 0, 0);
+//
+//        seekBar.setLayoutParams(layoutParams);
+//        seekBar.setBackgroundColor(Color.LTGRAY);
+//        seekBar.getProgressDrawable().setColorFilter(Color.TRANSPARENT, PorterDuff.Mode.SRC_IN);
+//        seekBar.setMax(0);
+//        seekBar.setMax(100);
+//        seekBar.setProgress(50);
+//        seekBar.refreshDrawableState();
+//
+//        seekBar.setOnSeekBarChangeListener(this);
+//
+//        RelativeLayout containerLayout = new RelativeLayout(context);
+//        popupWindow = new PopupWindow(context);
+//
+//        containerLayout.addView(seekBar);
+//        popupWindow.setContentView(containerLayout);
+//
+//        setContainerStates("");
 
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                30,
-                RelativeLayout.LayoutParams.MATCH_PARENT
-        );
-        layoutParams.setMargins(30, 0, 0, 0);
 
-        seekBar.setLayoutParams(layoutParams);
-        seekBar.setBackgroundColor(Color.LTGRAY);
-        seekBar.getProgressDrawable().setColorFilter(Color.TRANSPARENT, PorterDuff.Mode.SRC_IN);
-        seekBar.setMax(0);
-        seekBar.setMax(100);
-        seekBar.setProgress(50);
-        seekBar.refreshDrawableState();
-
-        seekBar.setOnSeekBarChangeListener(this);
-
-        RelativeLayout containerLayout = new RelativeLayout(context);
+        LinearLayout containerLayout = new LinearLayout(context);
         popupWindow = new PopupWindow(context);
 
-        containerLayout.addView(seekBar);
-        popupWindow.setContentView(containerLayout);
+        LayoutInflater inflater = ((EditActivity) context).getLayoutInflater();
+        popupWindowView = inflater.inflate(R.layout.seekbar_toolbox, containerLayout);
+
+        AppCompatSeekBar seekBar = (AppCompatSeekBar) popupWindowView.findViewById(R.id.leftSeekBar);
+        seekBar.setOnSeekBarChangeListener(this);
+
+        popupWindow.setContentView(popupWindowView);
+
 
         setContainerStates("");
+
+
 
     }
 
@@ -110,10 +130,22 @@ public class ContrastControlSet extends DrawerControls implements SeekBar.OnSeek
         if (!isClicked){
             isClicked = true;
 
-            popupWindow.showAtLocation(view, Gravity.START, 0, 0);
-            Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
-            int height = display.getHeight();
-            popupWindow.update(0, 0, 100, height);
+//            popupWindow.showAtLocation(view, Gravity.START, 0, 0);
+//            Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
+//            int height = display.getHeight();
+//            popupWindow.update(0, 0, 100, height);
+
+            popupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
+
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+
+            int width = displaymetrics.widthPixels;
+            int height = displaymetrics.heightPixels;
+
+            int layer_size = (int) context.getResources().getDimension(R.dimen.layer_size);
+
+            popupWindow.update(0, 0, width - (2 *  layer_size), 200);
         }
     }
 
