@@ -2,74 +2,59 @@ package com.example.wave.androidimageprocessingjava.ProcessingControllers;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.os.Build;
-import android.view.Display;
-import android.view.DragEvent;
+import android.support.v7.widget.AppCompatSeekBar;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
-import com.example.wave.androidimageprocessingjava.CustomElements.CustomSeekBar;
+import com.example.wave.androidimageprocessingjava.Edit.EditActivity;
+import com.example.wave.androidimageprocessingjava.MenuFragment;
 import com.example.wave.androidimageprocessingjava.Processing.Processor;
 import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.SaturationVariables;
 import com.example.wave.androidimageprocessingjava.R;
-import com.wunderlist.slidinglayer.SlidingLayer;
+
+import java.util.Random;
 
 /**
  * Created by Wave on 19.04.2016.
  */
 public class SaturationControlSet extends DrawerControls implements SeekBar.OnSeekBarChangeListener{
 
-    private Context context;
-    private Processor processor;
-    private ImageView imageView;
-    private View view;
     private PopupWindow popupWindow;
 
     private boolean isClicked = false;
 
     public SaturationControlSet(Context context, Processor processor, ImageView imageView, View view) {
-        this.context = context;
-        this.processor = processor;
-        this.imageView = imageView;
-        this.view = view;
+        super(context, processor, imageView, view);
     }
 
     @Override
     public void setControlSet(){
-        final CustomSeekBar seekBar = new CustomSeekBar(context);
+        if(MenuFragment.currentMode.equals("AUTO")){
+            setLeftToolboxListeners();
+        }else{
+            LinearLayout containerLayout = new LinearLayout(context);
+            popupWindow = new PopupWindow(context);
 
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                30,
-                RelativeLayout.LayoutParams.MATCH_PARENT
-        );
-        layoutParams.setMargins(30, 0, 0, 0);
+            LayoutInflater inflater = ((EditActivity) context).getLayoutInflater();
+            View popupWindowView = inflater.inflate(R.layout.seekbar_toolbox, containerLayout);
 
-        seekBar.setLayoutParams(layoutParams);
-        seekBar.setBackgroundColor(Color.LTGRAY);
-        seekBar.getProgressDrawable().setColorFilter(Color.TRANSPARENT, PorterDuff.Mode.SRC_IN);
-        seekBar.setMax(0);
-        seekBar.setMax(100);
-        seekBar.setProgress(50);
-        seekBar.refreshDrawableState();
-        seekBar.setOnSeekBarChangeListener(this);
+            AppCompatSeekBar seekBar = (AppCompatSeekBar) popupWindowView.findViewById(R.id.leftSeekBar);
+            seekBar.setOnSeekBarChangeListener(this);
 
-        RelativeLayout containerLayout = new RelativeLayout(context);
-        popupWindow = new PopupWindow(context);
+            popupWindow.setContentView(popupWindowView);
 
-        containerLayout.addView(seekBar);
-        popupWindow.setContentView(containerLayout);
+            setContainerStates("");
+        }
 
-        setContainerStates("");
+        imageView.setImageBitmap(processor.getmBitmapIn());
+        imageView.invalidate();
+
     }
 
     @Override
@@ -87,12 +72,30 @@ public class SaturationControlSet extends DrawerControls implements SeekBar.OnSe
     @Override
     public void openContainer() {
         if (!isClicked){
-            isClicked = true;
 
-            popupWindow.showAtLocation(view, Gravity.START, 0, 0);
-            Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
-            int height = display.getHeight();
-            popupWindow.update(0, 0, 100, height);
+            if(MenuFragment.currentMode.equals("AUTO")){
+                float minX = 0.5f;
+                float maxX = 1.5f;
+                Random rand = new Random();
+                float f = rand.nextFloat() * (maxX - minX) + minX;
+
+                processor.processScript(new SaturationVariables(f));
+                imageView.setImageBitmap(processor.getmBitmapOut());
+                imageView.invalidate();
+            }else{
+                isClicked = true;
+
+                popupWindow.showAtLocation(toolbox, Gravity.BOTTOM, 0, 0);
+
+                DisplayMetrics displaymetrics = new DisplayMetrics();
+                ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+
+                int width = displaymetrics.widthPixels;
+
+                int layer_size = (int) context.getResources().getDimension(R.dimen.layer_size);
+
+                popupWindow.update(0, 0, width - (2 *  layer_size), 100);
+            }
         }
     }
 

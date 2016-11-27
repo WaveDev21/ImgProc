@@ -29,8 +29,8 @@ public class SaturationProcessor extends Processor {
 
     @Override
     public void startProcessing(){
-
         createScript();
+        this.ready = true;
     }
 
 
@@ -57,6 +57,11 @@ public class SaturationProcessor extends Processor {
     @Override
     public void destroyScript() {
         mScript.destroy();
+    }
+
+    @Override
+    public boolean isScriptReady() {
+        return ready;
     }
 
 

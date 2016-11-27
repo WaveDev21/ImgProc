@@ -59,13 +59,13 @@ public class SharpenButton extends OperationButton implements CompoundButton.OnC
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked){
+            processor.startProcessing();
             controlSet.clearToolbox();
             controlSet.setControlSet();
             controlSet.openContainer();
-            processor.startProcessing();
         }else{
-            controlSet.hideContainer();
             processor.destroyScript();
+            controlSet.hideContainer();
 
         }
     }

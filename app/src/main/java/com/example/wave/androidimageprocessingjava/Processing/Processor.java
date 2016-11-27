@@ -16,7 +16,7 @@ import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.S
  */
 public abstract class Processor {
 
-    protected Bitmap mBitmapIn = null;
+    public static Bitmap mBitmapIn = null;
     protected Bitmap mBitmapOut = null;
 
     protected RenderScript mRS;
@@ -25,8 +25,10 @@ public abstract class Processor {
 
     protected Context context;
 
+    protected boolean ready = false;
+
     protected Processor(Bitmap bitmap, Context context){
-        this.mBitmapIn = bitmap;
+        mBitmapIn = bitmap;
         this.context = context;
 
         mBitmapOut = Bitmap.createBitmap(mBitmapIn.getWidth(),
@@ -37,6 +39,7 @@ public abstract class Processor {
     public abstract void startProcessing();
     public abstract void processScript(ScriptVariables variables);
     public abstract void destroyScript();
+    public abstract boolean isScriptReady();
 
     public Bitmap getmBitmapOut(){
         return mBitmapOut;
@@ -46,4 +49,7 @@ public abstract class Processor {
         return mBitmapIn;
     }
 
+    public void overwriteBitmapIn(){
+        mBitmapIn = Bitmap.createBitmap(mBitmapOut);
+    }
 }

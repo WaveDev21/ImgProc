@@ -13,9 +13,11 @@ import com.example.wave.androidimageprocessingjava.Factories.AbstractButtonFacto
 import com.example.wave.androidimageprocessingjava.Factories.ButtonFactory;
 import com.example.wave.androidimageprocessingjava.Factories.ButtonType;
 import com.example.wave.androidimageprocessingjava.MainActivity;
+import com.example.wave.androidimageprocessingjava.MenuFragment;
 import com.example.wave.androidimageprocessingjava.R;
 import com.wunderlist.slidinglayer.SlidingLayer;
 
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
@@ -73,13 +75,12 @@ public class RightDrawerFragment extends Fragment{
         AbstractButtonFactory buttonFactory = new ButtonFactory(context, getBitmap(), this.imageView, this.leftToolbox);
 
         toolbox.addView(buttonFactory.produceButton(ButtonType.Saturation));
+        toolbox.addView(buttonFactory.produceButton(ButtonType.Contrast));
         toolbox.addView(buttonFactory.produceButton(ButtonType.Sharpen));
         toolbox.addView(buttonFactory.produceButton(ButtonType.Smooth));
         toolbox.addView(buttonFactory.produceButton(ButtonType.Histogram));
-        toolbox.addView(buttonFactory.produceButton(ButtonType.Contrast));
 
-
-     //   toolbox.addView(new OperationButton(context, "Ripple", new RippleProcessor(getBitmap(), this.context), this.imageView, this.leftDrawer));
+        //toolbox.addView(new OperationButton(context, "Ripple", new RippleProcessor(getBitmap(), this.context), this.imageView, this.leftDrawer));
         //toolbox.addView(new OperationButton(context, "Sharpen", new Filter3x3Processor(getBitmap(), this.context), this.imageView, this.leftDrawer));
     }
 

@@ -24,7 +24,8 @@
         andro:layout_width="@dimen/layer_size"
         andro:layout_height="match_parent"
         andro:layout_alignParentRight="true"
-        andro:layout_alignParentEnd="true">
+        andro:layout_alignParentEnd="true"
+        andro:layout_alignParentBottom="true">
 
         <FrameLayout
             andro:layout_width="100dp"
@@ -43,18 +44,44 @@
         andro:layout_width="@dimen/layer_size"
         andro:layout_height="match_parent"
         andro:layout_alignParentLeft="true"
-        andro:layout_alignParentStart="true">
+        andro:layout_alignParentStart="true"
+        andro:layout_alignParentBottom="true">
 
         <RelativeLayout
         andro:layout_width="100dp"
         andro:layout_height="match_parent"
-        andro:id="@+id/leftToolBox"
-        andro:layout_gravity="start"
-        andro:choiceMode="singleChoice"
         andro:divider="#818181"
         andro:dividerHeight="1dp"
-        andro:background="#9E9E9E"
-        andro:gravity="center">
+        andro:background="#9E9E9E">
+
+            <ImageButton
+                andro:layout_width="wrap_content"
+                andro:layout_height="wrap_content"
+                andro:src="@drawable/ok_circle"
+                andro:background="@android:color/transparent"
+                andro:id="@+id/okButton"
+                andro:layout_alignParentTop="true"/>
+            
+            <RelativeLayout
+                andro:layout_width="100dp"
+                andro:layout_height="match_parent"
+                andro:id="@+id/leftToolBox"
+                andro:layout_gravity="start"
+                andro:choiceMode="singleChoice"
+                andro:layout_below="@+id/okButton"
+                andro:layout_above="@+id/exitButton"
+                andro:gravity="center">
+
+            </RelativeLayout>
+            
+            <ImageButton
+                andro:layout_width="wrap_content"
+                andro:layout_height="wrap_content"
+                andro:src="@drawable/exit_circle"
+                andro:background="@android:color/transparent"
+                andro:id="@+id/exitButton"
+                andro:layout_alignParentBottom="true"/>
+
 
         </RelativeLayout>
 

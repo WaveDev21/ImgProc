@@ -10,13 +10,14 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 
+import com.example.wave.androidimageprocessingjava.MenuFragment;
 import com.example.wave.androidimageprocessingjava.Processing.Processor;
 import com.example.wave.androidimageprocessingjava.R;
 
 /**
  * Created by Wave on 21.04.2016.
  */
-public class SaturationButton extends OperationButton implements CompoundButton.OnCheckedChangeListener {
+public class SaturationButton extends OperationButton implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
     public SaturationButton(final Context context, Processor processor, DrawerControls controlSet) {
         super(context, processor, controlSet);
@@ -57,19 +58,28 @@ public class SaturationButton extends OperationButton implements CompoundButton.
     @Override
     protected void setListener() {
         this.setOnCheckedChangeListener(this);
+        this.setOnClickListener(this);
     }
 
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked){
+            processor.startProcessing();
             controlSet.hideContainer();
             controlSet.setControlSet();
             controlSet.openContainer();
-            processor.startProcessing();
         }else{
-            controlSet.hideContainer();
             processor.destroyScript();
+            controlSet.hideContainer();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(MenuFragment.currentMode.equals("AUTO")){
+//            processor.startProcessing();
+            controlSet.openContainer();
         }
     }
 }

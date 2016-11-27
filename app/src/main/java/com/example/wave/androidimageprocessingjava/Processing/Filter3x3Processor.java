@@ -26,6 +26,7 @@ public class Filter3x3Processor extends Processor {
     @Override
     public void startProcessing() {
         createScript();
+        this.ready = true;
     }
 
     @Override
@@ -46,6 +47,11 @@ public class Filter3x3Processor extends Processor {
     @Override
     public void destroyScript() {
         mScript.destroy();
+    }
+
+    @Override
+    public boolean isScriptReady() {
+        return ready;
     }
 
 

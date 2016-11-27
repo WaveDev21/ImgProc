@@ -12,6 +12,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
+import com.example.wave.androidimageprocessingjava.Edit.EditActivity;
+import com.example.wave.androidimageprocessingjava.MenuFragment;
 import com.example.wave.androidimageprocessingjava.Processing.Processor;
 import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.SharpenVariables;
 import com.example.wave.androidimageprocessingjava.R;
@@ -27,47 +29,48 @@ public class SmoothControlSet extends DrawerControls{
     public final float[] FL3 = {1f, 1f, 1f, 1f , 4f, 1f, 1f, 1f, 1f};
     public final float[] Gauss = {1f, 2f, 1f, 2f , 4f, 2f, 1f, 2f, 1f};
 
-    private Context context;
-    private Processor processor;
-    private ImageView imageView;
-    private RelativeLayout leftToolbox;
-
     public SmoothControlSet(Context context, Processor processor, ImageView imageView, RelativeLayout leftToolbox) {
-        this.context = context;
-        this.processor = processor;
-        this.imageView = imageView;
-        this.leftToolbox = leftToolbox;
+        super(context, processor, imageView, leftToolbox);
     }
 
     @Override
     public void setControlSet(){
 
-        RadioGroup group = new RadioGroup(this.context);
-        setRadioGroupLayout(group);
+        if(MenuFragment.currentMode.equals("PRO")){
 
-        RadioButton buttonFH1 = new RadioButton(this.context);
-        setButton(buttonFH1, "FL1");
-        setListener(buttonFH1, FL1);
+            RadioGroup group = new RadioGroup(this.context);
+            setRadioGroupLayout(group);
 
-        RadioButton buttonFH2 = new RadioButton(this.context);
-        setButton(buttonFH2, buttonFH1, "FL2");
-        setListener(buttonFH2, FL2);
+            RadioButton buttonFH1 = new RadioButton(this.context);
+            setButton(buttonFH1, "FL1");
+            setListener(buttonFH1, FL1);
 
-        RadioButton buttonFH3 = new RadioButton(this.context);
-        setButton(buttonFH3, buttonFH2, "FL3");
-        setListener(buttonFH3, FL3);
+            RadioButton buttonFH2 = new RadioButton(this.context);
+            setButton(buttonFH2, buttonFH1, "FL2");
+            setListener(buttonFH2, FL2);
 
-        RadioButton buttonGauss = new RadioButton(this.context);
-        setButton(buttonGauss, buttonFH3, "Gauss");
-        setListener(buttonGauss, Gauss);
+            RadioButton buttonFH3 = new RadioButton(this.context);
+            setButton(buttonFH3, buttonFH2, "FL3");
+            setListener(buttonFH3, FL3);
 
-        group.addView(buttonFH1);
-        group.addView(buttonFH2);
-        group.addView(buttonFH3);
-        group.addView(buttonGauss);
+            RadioButton buttonGauss = new RadioButton(this.context);
+            setButton(buttonGauss, buttonFH3, "Gauss");
+            setListener(buttonGauss, Gauss);
 
-        leftToolbox.addView(group);
-        DrawerControls.setContainerStates("smooth");
+            group.addView(buttonFH1);
+            group.addView(buttonFH2);
+            group.addView(buttonFH3);
+            group.addView(buttonGauss);
+
+            ((RelativeLayout)toolbox).addView(group);
+            DrawerControls.setContainerStates("smooth");
+        }
+
+        setLeftToolboxListeners();
+
+        imageView.setImageBitmap(processor.getmBitmapIn());
+        imageView.invalidate();
+
     }
 
     private void setListener(RadioButton button, final float[] fh) {
@@ -128,21 +131,28 @@ public class SmoothControlSet extends DrawerControls{
 
     @Override
     public void clearToolbox() {
-        leftToolbox.removeAllViews();
+        ((RelativeLayout)toolbox).removeAllViews();
     }
 
     @Override
     public void hideContainer() {
-        SlidingLayer slider = (SlidingLayer) leftToolbox.getParent();
+        SlidingLayer slider = (SlidingLayer) ((EditActivity)context).findViewById(R.id.leftSlidingLayer);
+
         if(slider.isOpened() && DrawerControls.containerState.equals("")){
             slider.closeLayer(true);
+            ((RelativeLayout)toolbox).removeAllViews();
         }
     }
 
     @Override
     public void openContainer() {
-        SlidingLayer slider = (SlidingLayer) leftToolbox.getParent();
-        if(slider.isClosed() && DrawerControls.containerState.equals("smooth")){
+        SlidingLayer slider = (SlidingLayer) ((EditActivity)context).findViewById(R.id.leftSlidingLayer);
+
+        if(MenuFragment.currentMode.equals("AUTO")){
+            processor.processScript(new SharpenVariables(FL1));
+            imageView.setImageBitmap(processor.getmBitmapOut());
+            imageView.invalidate();
+        }else if (slider.isClosed() && DrawerControls.containerState.equals("smooth")){
             slider.openLayer(true);
         }
     }

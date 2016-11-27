@@ -7,15 +7,18 @@ import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.util.Log;
+import android.view.View;
 import android.widget.CompoundButton;
 
+import com.example.wave.androidimageprocessingjava.MenuFragment;
 import com.example.wave.androidimageprocessingjava.Processing.Processor;
 import com.example.wave.androidimageprocessingjava.R;
 
 /**
  * Created by Wave on 21.04.2016.
  */
-public class ContastButton extends OperationButton implements CompoundButton.OnCheckedChangeListener {
+public class ContastButton extends OperationButton implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
     public ContastButton(final Context context, Processor processor, DrawerControls controlSet) {
         super(context, processor, controlSet);
@@ -55,19 +58,28 @@ public class ContastButton extends OperationButton implements CompoundButton.OnC
     @Override
     protected void setListener() {
         this.setOnCheckedChangeListener(this);
+        this.setOnClickListener(this);
     }
 
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked){
+            processor.startProcessing();
             controlSet.hideContainer();
             controlSet.setControlSet();
             controlSet.openContainer();
-            processor.startProcessing();
         }else{
-            controlSet.hideContainer();
             processor.destroyScript();
+            controlSet.hideContainer();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(MenuFragment.currentMode.equals("AUTO")){
+//            processor.startProcessing();
+            controlSet.openContainer();
         }
     }
 }

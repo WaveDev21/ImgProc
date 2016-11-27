@@ -1,5 +1,6 @@
 package com.example.wave.androidimageprocessingjava.Edit;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.res.Configuration;
@@ -13,11 +14,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
@@ -31,6 +34,7 @@ import com.example.wave.androidimageprocessingjava.MenuFragment;
 import com.example.wave.androidimageprocessingjava.R;
 import com.wunderlist.slidinglayer.LayerTransformer;
 import com.wunderlist.slidinglayer.SlidingLayer;
+import com.wunderlist.slidinglayer.transformer.AlphaTransformer;
 import com.wunderlist.slidinglayer.transformer.SlideJoyTransformer;
 
 public class EditActivity extends AppCompatActivity {
@@ -46,27 +50,40 @@ public class EditActivity extends AppCompatActivity {
         assert imageView != null;
         imageView.setImageURI(MainActivity.editedImageUri);
 
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+
+        int heightForSliders = displaymetrics.heightPixels - 40;
+
         // Konfiguracja prawego slidera
         SlidingLayer rightSlidingLayer = (SlidingLayer) findViewById(R.id.rightSlidingLayer);
         assert rightSlidingLayer != null;
         rightSlidingLayer.setStickTo(SlidingLayer.STICK_TO_RIGHT);
-        LayerTransformer transformer = new SlideJoyTransformer();
+        LayerTransformer transformer = new AlphaTransformer();
         rightSlidingLayer.setLayerTransformer(transformer);
         int offsetDistance = getResources().getDimensionPixelOffset(R.dimen.offset_distance);
         rightSlidingLayer.setOffsetDistance(offsetDistance);
-        int previewOffset = getResources().getDimensionPixelOffset(R.dimen.preview_offset_distance);
-        rightSlidingLayer.setPreviewOffsetDistance(previewOffset);
+//        int previewOffset = getResources().getDimensionPixelOffset(R.dimen.preview_offset_distance);
+//        rightSlidingLayer.setPreviewOffsetDistance(previewOffset);
+        ViewGroup.LayoutParams params = rightSlidingLayer.getLayoutParams();
+        params.height = heightForSliders ;
+        rightSlidingLayer.setLayoutParams(params);
+
 
         // Konfiguracja lefego slidera
         SlidingLayer leftSlidingLayer = (SlidingLayer) findViewById(R.id.leftSlidingLayer);
         assert leftSlidingLayer != null;
         leftSlidingLayer.setStickTo(SlidingLayer.STICK_TO_LEFT);
+        params = leftSlidingLayer.getLayoutParams();
+        params.height = heightForSliders ;
+        leftSlidingLayer.setLayoutParams(params);
 //        leftSlidingLayer.setLayerTransformer(transformer);
 
         // Konfiguracja gurnego slidera
         SlidingLayer topSlidingLayer = (SlidingLayer) findViewById(R.id.topSlidingLayer);
         assert topSlidingLayer != null;
         topSlidingLayer.setStickTo(SlidingLayer.STICK_TO_TOP);
+        transformer = new SlideJoyTransformer();
         topSlidingLayer.setLayerTransformer(transformer);
         offsetDistance = getResources().getDimensionPixelOffset(R.dimen.top_offset_distance);
         topSlidingLayer.setOffsetDistance(offsetDistance);

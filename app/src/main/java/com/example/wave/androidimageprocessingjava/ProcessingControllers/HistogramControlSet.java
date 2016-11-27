@@ -42,11 +42,6 @@ import java.util.ArrayList;
  */
 public class HistogramControlSet extends DrawerControls implements NumberPicker.OnValueChangeListener, Switch.OnCheckedChangeListener{
 
-    private Context context;
-    private Processor processor;
-    private ImageView imageView;
-    private View view;
-
     private PopupWindow popupWindow;
     private NumberPicker leftSideNumberPicker;
     private NumberPicker rightSideNumberPicker;
@@ -86,10 +81,7 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
     private boolean isClicked = false;
 
     public HistogramControlSet(Context context, Processor processor, ImageView imageView, View view) {
-        this.context = context;
-        this.processor = processor;
-        this.imageView = imageView;
-        this.view = view;
+        super(context, processor, imageView, view);
 
         colourBins = new int[NUMBER_OF_COLOURS][];
 
@@ -102,6 +94,7 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
 
     @Override
     public void setControlSet(){
+
         RedColorSeries = new BarGraphSeries<>();
         GreenColorSeries = new BarGraphSeries<>();
         BlueColorSeries = new BarGraphSeries<>();
@@ -109,67 +102,76 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
         RelativeLayout containerLayout = new RelativeLayout(context);
         popupWindow = new PopupWindow(context);
 
-        LayoutInflater inflater = ((EditActivity) context).getLayoutInflater();
-        popupWindowView = inflater.inflate(R.layout.histogram_toolbox, containerLayout);
+        if(MenuFragment.currentMode.equals("AUTO")){
+            setLeftToolboxListeners();
+        }else{
 
-        leftSideNumberPicker = (NumberPicker) popupWindowView.findViewById(R.id.leftSideNumberPicker);
-        leftSideNumberPicker.setMinValue(0);
-        leftSideNumberPicker.setMaxValue(255);
-        leftSideNumberPicker.setOnValueChangedListener(this);
+            LayoutInflater inflater = ((EditActivity) context).getLayoutInflater();
+            popupWindowView = inflater.inflate(R.layout.histogram_toolbox, containerLayout);
 
-        rightSideNumberPicker = (NumberPicker) popupWindowView.findViewById(R.id.rightSideNumberPicker);
-        rightSideNumberPicker.setMinValue(0);
-        rightSideNumberPicker.setMaxValue(255);
-        rightSideNumberPicker.setValue(255);
-        rightSideNumberPicker.setOnValueChangedListener(this);
+            leftSideNumberPicker = (NumberPicker) popupWindowView.findViewById(R.id.leftSideNumberPicker);
+            leftSideNumberPicker.setMinValue(0);
+            leftSideNumberPicker.setMaxValue(255);
+            leftSideNumberPicker.setOnValueChangedListener(this);
 
-        redColorOn = (SwitchCompat) popupWindowView.findViewById(R.id.redColorOn);
-        redColorOn.setOnCheckedChangeListener(this);
-        greenColorOn = (SwitchCompat) popupWindowView.findViewById(R.id.greenColorOn);
-        greenColorOn.setOnCheckedChangeListener(this);
-        blueColorOn = (SwitchCompat) popupWindowView.findViewById(R.id.blueColorOn);
-        blueColorOn.setOnCheckedChangeListener(this);
+            rightSideNumberPicker = (NumberPicker) popupWindowView.findViewById(R.id.rightSideNumberPicker);
+            rightSideNumberPicker.setMinValue(0);
+            rightSideNumberPicker.setMaxValue(255);
+            rightSideNumberPicker.setValue(255);
+            rightSideNumberPicker.setOnValueChangedListener(this);
 
-        // Ustawianie graph view
-        GraphView histogramGraph = (GraphView) popupWindowView.findViewById(R.id.histogramGraph);
+            redColorOn = (SwitchCompat) popupWindowView.findViewById(R.id.redColorOn);
+            redColorOn.setOnCheckedChangeListener(this);
+            greenColorOn = (SwitchCompat) popupWindowView.findViewById(R.id.greenColorOn);
+            greenColorOn.setOnCheckedChangeListener(this);
+            blueColorOn = (SwitchCompat) popupWindowView.findViewById(R.id.blueColorOn);
+            blueColorOn.setOnCheckedChangeListener(this);
 
-        Viewport viewport = histogramGraph.getViewport();
-        viewport.setYAxisBoundsManual(true);
-        viewport.setMinY(0);
-        viewport.setMaxY(15000);
+            // Ustawianie graph view
+            GraphView histogramGraph = (GraphView) popupWindowView.findViewById(R.id.histogramGraph);
 
-        viewport.setXAxisBoundsManual(true);
-        viewport.setMinX(0);
-        viewport.setMaxX(255);
-        viewport.setScrollable(true);
+            Viewport viewport = histogramGraph.getViewport();
+            viewport.setYAxisBoundsManual(true);
+            viewport.setMinY(0);
+            viewport.setMaxY(15000);
 
-        histogramGraph.getViewport().setScalable(true);
-        histogramGraph.getViewport().setScalableY(true);
+            viewport.setXAxisBoundsManual(true);
+            viewport.setMinX(0);
+            viewport.setMaxX(255);
+            viewport.setScrollable(true);
 
-        // ustawianie legendy
-        RedColorSeries.setTitle("RED");
-        GreenColorSeries.setTitle("GREEN");
-        BlueColorSeries.setTitle("BLUE");
+            histogramGraph.getViewport().setScalable(true);
+            histogramGraph.getViewport().setScalableY(true);
 
-        RedColorSeries.setColor(Color.RED);
-        GreenColorSeries.setColor(Color.GREEN);
-        BlueColorSeries.setColor(Color.BLUE);
+            // ustawianie legendy
+            RedColorSeries.setTitle("RED");
+            GreenColorSeries.setTitle("GREEN");
+            BlueColorSeries.setTitle("BLUE");
 
-        histogramGraph.getLegendRenderer().setVisible(true);
-        histogramGraph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+            RedColorSeries.setColor(Color.RED);
+            GreenColorSeries.setColor(Color.GREEN);
+            BlueColorSeries.setColor(Color.BLUE);
 
-        // ustawianie szerokości widoku histogramu
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+            histogramGraph.getLegendRenderer().setVisible(true);
+            histogramGraph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
 
-        int width = displaymetrics.widthPixels;
+            // ustawianie szerokości widoku histogramu
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 
-        ViewGroup.LayoutParams params = histogramGraph.getLayoutParams();
-        params.width = width/2 ;
-        histogramGraph.setLayoutParams(params);
+            int width = displaymetrics.widthPixels;
 
-        popupWindow.setContentView(popupWindowView);
-        setContainerStates("");
+            ViewGroup.LayoutParams params = histogramGraph.getLayoutParams();
+            params.width = width/2 ;
+            histogramGraph.setLayoutParams(params);
+
+            popupWindow.setContentView(popupWindowView);
+            setContainerStates("");
+
+        }
+
+        imageView.setImageBitmap(processor.getmBitmapIn());
+        imageView.invalidate();
 
     }
 
@@ -364,7 +366,7 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
                 }});
                 computeLut();
 
-                popupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
+                popupWindow.showAtLocation(toolbox, Gravity.BOTTOM, 0, 0);
 
                 DisplayMetrics displaymetrics = new DisplayMetrics();
                 ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
