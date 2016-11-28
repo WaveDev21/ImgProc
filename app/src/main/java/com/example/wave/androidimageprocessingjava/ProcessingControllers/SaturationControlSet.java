@@ -7,6 +7,9 @@ import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -35,9 +38,8 @@ public class SaturationControlSet extends DrawerControls implements SeekBar.OnSe
 
     @Override
     public void setControlSet(){
-        if(MenuFragment.currentMode.equals("AUTO")){
-            setLeftToolboxListeners();
-        }else{
+        if(MenuFragment.currentMode.equals("PRO")){
+
             LinearLayout containerLayout = new LinearLayout(context);
             popupWindow = new PopupWindow(context);
 
@@ -47,10 +49,35 @@ public class SaturationControlSet extends DrawerControls implements SeekBar.OnSe
             AppCompatSeekBar seekBar = (AppCompatSeekBar) popupWindowView.findViewById(R.id.leftSeekBar);
             seekBar.setOnSeekBarChangeListener(this);
 
+            final Animation alpha = AnimationUtils.loadAnimation(context, R.anim.anim_alpha);
+            ImageButton okButton = (ImageButton) popupWindowView.findViewById(R.id.okButton);
+            okButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.startAnimation(alpha);
+                    processor.overwriteBitmapIn();
+                }
+            });
+
+
+            ImageButton exitButton = (ImageButton) popupWindowView.findViewById(R.id.exitButton);
+            exitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    hideContainer();
+                    imageView.setImageBitmap(processor.getmBitmapIn());
+                    imageView.invalidate();
+                }
+            });
+
             popupWindow.setContentView(popupWindowView);
 
             setContainerStates("");
+        }else{
+            setOkExitListeners();
         }
+
+
 
         imageView.setImageBitmap(processor.getmBitmapIn());
         imageView.invalidate();
@@ -120,4 +147,5 @@ public class SaturationControlSet extends DrawerControls implements SeekBar.OnSe
     public void onStopTrackingTouch(SeekBar seekBar) {
 
     }
+
 }

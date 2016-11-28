@@ -6,7 +6,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.example.wave.androidimageprocessingjava.Edit.EditActivity;
 import com.example.wave.androidimageprocessingjava.Processing.Processor;
@@ -50,7 +49,7 @@ public abstract class DrawerControls{
         this.toolbox = view;
     }
 
-    public void setLeftToolboxListeners(){
+    public void setOkExitListeners(){
 
         final Animation alpha = AnimationUtils.loadAnimation(context, R.anim.anim_alpha);
         final SlidingLayer slider = (SlidingLayer) ((EditActivity)context).findViewById(R.id.leftSlidingLayer);
@@ -64,8 +63,8 @@ public abstract class DrawerControls{
                 v.startAnimation(alpha);
                 processor.overwriteBitmapIn();
 
-                assert slider != null;
-                slider.closeLayer(true);
+//                assert slider != null;
+//                slider.closeLayer(true);
             }
         });
 
@@ -76,6 +75,8 @@ public abstract class DrawerControls{
             public void onClick(View v) {
                 assert slider != null;
                 slider.closeLayer(true);
+                imageView.setImageBitmap(processor.getmBitmapIn());
+                imageView.invalidate();
             }
         });
     }

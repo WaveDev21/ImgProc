@@ -50,6 +50,7 @@ public abstract class Processor {
     }
 
     public void overwriteBitmapIn(){
+        mBitmapIn.recycle();
         mBitmapIn = Bitmap.createBitmap(mBitmapOut);
     }
 }

@@ -61,7 +61,7 @@ public class SharpenControlSet extends DrawerControls{
             DrawerControls.setContainerStates("sharpen");
         }
 
-        setLeftToolboxListeners();
+        setOkExitListeners();
 
         imageView.setImageBitmap(processor.getmBitmapIn());
         imageView.invalidate();
@@ -132,7 +132,7 @@ public class SharpenControlSet extends DrawerControls{
     public void hideContainer() {
         SlidingLayer slider = (SlidingLayer) ((EditActivity)context).findViewById(R.id.leftSlidingLayer);
 
-        if(slider.isOpened() && DrawerControls.containerState.equals("")){
+        if(slider.isOpened() && DrawerControls.containerState.equals("") && !MenuFragment.currentMode.equals("AUTO")){
             slider.closeLayer(true);
             ((RelativeLayout)toolbox).removeAllViews();
         }

@@ -66,7 +66,7 @@ public class SmoothControlSet extends DrawerControls{
             DrawerControls.setContainerStates("smooth");
         }
 
-        setLeftToolboxListeners();
+        setOkExitListeners();
 
         imageView.setImageBitmap(processor.getmBitmapIn());
         imageView.invalidate();
@@ -138,7 +138,7 @@ public class SmoothControlSet extends DrawerControls{
     public void hideContainer() {
         SlidingLayer slider = (SlidingLayer) ((EditActivity)context).findViewById(R.id.leftSlidingLayer);
 
-        if(slider.isOpened() && DrawerControls.containerState.equals("")){
+        if(slider.isOpened() && DrawerControls.containerState.equals("") && !MenuFragment.currentMode.equals("AUTO")){
             slider.closeLayer(true);
             ((RelativeLayout)toolbox).removeAllViews();
         }

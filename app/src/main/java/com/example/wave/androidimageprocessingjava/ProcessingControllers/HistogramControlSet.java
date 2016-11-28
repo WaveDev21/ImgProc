@@ -12,7 +12,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -103,7 +106,7 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
         popupWindow = new PopupWindow(context);
 
         if(MenuFragment.currentMode.equals("AUTO")){
-            setLeftToolboxListeners();
+            setOkExitListeners();
         }else{
 
             LayoutInflater inflater = ((EditActivity) context).getLayoutInflater();
@@ -164,6 +167,28 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
             ViewGroup.LayoutParams params = histogramGraph.getLayoutParams();
             params.width = width/2 ;
             histogramGraph.setLayoutParams(params);
+
+            final Animation alpha = AnimationUtils.loadAnimation(context, R.anim.anim_alpha);
+            ImageButton okButton = (ImageButton) popupWindowView.findViewById(R.id.okButton);
+            okButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.startAnimation(alpha);
+                    processor.overwriteBitmapIn();
+                }
+            });
+
+
+            ImageButton exitButton = (ImageButton) popupWindowView.findViewById(R.id.exitButton);
+            exitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    hideContainer();
+                    imageView.setImageBitmap(processor.getmBitmapIn());
+                    imageView.invalidate();
+                }
+            });
+
 
             popupWindow.setContentView(popupWindowView);
             setContainerStates("");
