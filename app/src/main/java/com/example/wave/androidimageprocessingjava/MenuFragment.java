@@ -85,6 +85,14 @@ public class MenuFragment extends Fragment {
             }
         });
 
+        ImageButton refresh = (ImageButton) view.findViewById(R.id.refresh);
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.setupGallery();
+            }
+        });
+
         final Button changeMode = (Button) view.findViewById(R.id.changeMode);
         final SettingsDBHelper dbHelper = new SettingsDBHelper(context);
         MenuFragment.currentMode = dbHelper.getSetting("mode");

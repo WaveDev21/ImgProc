@@ -9,4 +9,13 @@
     <string name="app_img">App images</string>
     <string name="mode_auto">AUTO</string>
     <string name="mode_pro">PRO</string>
+
+
+    <string name="ok">Ok</string>
+    <string name="cancel">Anuluj</string>
+
+    <string name="facebook_app_id">1497691070259214</string>
+    <string name="facebook_dev_hash_key">MFtDVETfuBi8k9F4MrELmxP33vU=</string>
+    <string name="share">Share</string>
+
 </resources>

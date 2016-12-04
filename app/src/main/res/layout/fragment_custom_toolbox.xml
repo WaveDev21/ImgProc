@@ -11,18 +11,37 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Jaiś tam texcik"
+            android:text="Image Processing"
             android:textColor="#212121"
             android:textSize="30sp"
-            android:layout_marginLeft="30dp"/>
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"/>
+
         <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_edit_black_24dp"
+            android:src="@drawable/save"
             android:background="@android:color/transparent"
-            android:id="@+id/popupTest"/>
+            android:id="@+id/saveButton"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_toLeftOf="@id/saveButton"
+            android:layout_toStartOf="@id/saveButton"
+            android:id="@+id/shareButton"
+            android:clickable="true"
+            android:src="@drawable/share"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/share"/>
 
     </RelativeLayout>
     <RelativeLayout

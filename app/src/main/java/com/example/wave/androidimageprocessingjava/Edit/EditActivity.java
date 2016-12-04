@@ -3,6 +3,8 @@ package com.example.wave.androidimageprocessingjava.Edit;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -32,6 +34,13 @@ import android.widget.TextView;
 import com.example.wave.androidimageprocessingjava.MainActivity;
 import com.example.wave.androidimageprocessingjava.MenuFragment;
 import com.example.wave.androidimageprocessingjava.R;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.share.Sharer;
+import com.facebook.share.widget.ShareDialog;
 import com.wunderlist.slidinglayer.LayerTransformer;
 import com.wunderlist.slidinglayer.SlidingLayer;
 import com.wunderlist.slidinglayer.transformer.AlphaTransformer;
@@ -39,9 +48,39 @@ import com.wunderlist.slidinglayer.transformer.SlideJoyTransformer;
 
 public class EditActivity extends AppCompatActivity {
 
+    private CallbackManager callback;
+    private ShareDialog shareDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
+
+        callback = CallbackManager.Factory.create();
+        shareDialog = new ShareDialog(this);
+        shareDialog.registerCallback(callback, new FacebookCallback<Sharer.Result>() {
+            @Override
+            public void onSuccess(Sharer.Result result) {
+                Log.wtf("test", "success");
+            }
+
+            @Override
+            public void onCancel() {
+                Log.wtf("test", "cancel");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.wtf("test", "error");
+                Log.wtf("test", error.toString());
+
+            }
+        });
+        
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_edit);
 
@@ -98,11 +137,18 @@ public class EditActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
 
-        CustomToolboxFragment customToolbox = CustomToolboxFragment.newInstance(this);
+        CustomToolboxFragment customToolbox = CustomToolboxFragment.newInstance(this, shareDialog);
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.topSlidingLayer, customToolbox);
         fragmentTransaction.commit();
+
+    }
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callback.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -140,10 +186,6 @@ public class EditActivity extends AppCompatActivity {
     public void onConfigurationChanged(Configuration newConfig){
         super.onConfigurationChanged(newConfig);
 //        mDrawerListener.onConfigurationChanged(newConfig);
-    }
-
-    public void buttonClicked(View view){
-
     }
 
     @Override

@@ -1,21 +1,33 @@
 package com.example.wave.androidimageprocessingjava.Edit;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.Display;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.example.wave.androidimageprocessingjava.Processing.Processor;
+
 import com.example.wave.androidimageprocessingjava.MenuFragment;
 import com.example.wave.androidimageprocessingjava.R;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareContent;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.ShareMediaContent;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareButton;
+import com.facebook.share.widget.ShareDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,10 +37,15 @@ import com.example.wave.androidimageprocessingjava.R;
  * Use the {@link CustomToolboxFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CustomToolboxFragment extends Fragment {
+public class CustomToolboxFragment extends Fragment{
 
 
     private Context context;
+
+    private ShareDialog shareDialog;
+
+
+    View view;
 
     public CustomToolboxFragment() {
         // Required empty public constructor
@@ -40,10 +57,11 @@ public class CustomToolboxFragment extends Fragment {
      *
      * @return A new instance of fragment CustomToolboxFragment.
      */
-    public static CustomToolboxFragment newInstance(Context context) {
+    public static CustomToolboxFragment newInstance(Context context, ShareDialog shareDialog) {
         CustomToolboxFragment fragment = new CustomToolboxFragment();
 
         fragment.context = context;
+        fragment.shareDialog = shareDialog;
 
         return fragment;
     }
@@ -61,13 +79,65 @@ public class CustomToolboxFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-        View view = inflater.inflate(R.layout.fragment_custom_toolbox, container, false);
+        view = inflater.inflate(R.layout.fragment_custom_toolbox, container, false);
 
         TextView currentMode = (TextView) view.findViewById(R.id.currentMode);
         currentMode.setText(MenuFragment.currentMode + " Mode");
 
+        ImageButton saveButton = (ImageButton) view.findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                SaveImageDialogFragment dialog = new SaveImageDialogFragment();
+                dialog.setContext(context);
+                dialog.show(((EditActivity)context).getSupportFragmentManager(), "SaveImageDialogFragmet");
+
+
+            }
+        });
+
+//        shareButton = (ShareButton) view.findViewById(R.id.shareButton);
+        ImageButton shareButton = (ImageButton) view.findViewById(R.id.shareButton);
+
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                postPicture();
+            }
+        });
+
+
+
         return view;
+
+    }
+
+    private void postPicture() {
+
+        if (ShareDialog.canShow(ShareLinkContent.class)) {
+//            ShareLinkContent linkContent = new ShareLinkContent.Builder()
+//                    .setContentTitle("Hello Facebook")
+//                    .setContentDescription(
+//                            "The 'Hello Facebook' sample  showcases simple Facebook integration")
+//                    .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
+//                    .build();
+//
+//            shareDialog.show(linkContent);
+
+
+
+            Bitmap image = Processor.mBitmapIn;
+            SharePhoto photo = new SharePhoto.Builder()
+                    .setBitmap(image)
+                    .build();
+            SharePhotoContent sharedContent = new SharePhotoContent.Builder()
+                    .addPhoto(photo)
+                    .build();
+
+            shareDialog.show(sharedContent, ShareDialog.Mode.AUTOMATIC);
+
+        }
 
     }
 

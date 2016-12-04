@@ -4,11 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.RenderScript;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
-import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.SaturationVariables;
 import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.ScriptVariables;
 
 /**

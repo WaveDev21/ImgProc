@@ -35,9 +35,9 @@
     <TableRow
         android:id="@+id/tableRow3">
         <ImageButton
-            android:src="@drawable/ic_settings_black_24dp"
+            android:src="@drawable/refresh"
             android:layout_column="0"
-            android:id="@+id/goToSettings"
+            android:id="@+id/refresh"
             android:minHeight="110dp"
             android:maxHeight="110dp"
             android:minWidth="260dp"

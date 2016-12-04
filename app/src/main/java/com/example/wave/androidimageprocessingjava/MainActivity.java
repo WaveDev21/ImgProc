@@ -165,9 +165,8 @@ public class MainActivity extends AppCompatActivity {
 
             editedImageView.setImageURI(editedImageUri);
 
-            this.setupGallery();
-
         }
+        this.setupGallery();
 
     }
 
