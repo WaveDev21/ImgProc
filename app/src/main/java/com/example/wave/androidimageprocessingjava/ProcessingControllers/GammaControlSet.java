@@ -27,13 +27,13 @@ import java.util.Random;
 /**
  * Created by Wave on 19.04.2016.
  */
-public class ContrastControlSet extends DrawerControls implements AppCompatSeekBar.OnSeekBarChangeListener{
+public class GammaControlSet extends DrawerControls implements AppCompatSeekBar.OnSeekBarChangeListener{
 
     private PopupWindow popupWindow;
 
     private boolean isClicked = false;
 
-    public ContrastControlSet(Context context, Processor processor, ImageView imageView, View view) {
+    public GammaControlSet(Context context, Processor processor, ImageView imageView, View view) {
         super(context, processor, imageView, view);
     }
 
@@ -128,15 +128,13 @@ public class ContrastControlSet extends DrawerControls implements AppCompatSeekB
 
     public float[] computeLut(int progress){
         float[] lutTable = new float[256];
-        float var;
-        float max = 2.0f;
-        float a = (float) (max * (progress / 100.0));
-        for (int i = 0; i < 256; i++){
-            var = (float) (a*(i - (255.0/2.0)) + (255.0/2.0));
 
-            if(var < 0) lutTable[i] = 0;
-            else if (var > 255) lutTable[i] = 255;
-            else lutTable[i] = var;
+        double max = 2.0;
+        double a = (max * (progress / 100.0));
+
+        for (int i = 0; i < 256; i++){
+            lutTable[i] = (float) (255.0 * Math.pow((double) i/255.0, 1.0/a));
+
         }
 
         return lutTable;

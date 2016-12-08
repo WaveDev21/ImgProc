@@ -3,12 +3,12 @@ package com.example.wave.androidimageprocessingjava.Processing.VariablesPackage;
 /**
  * Created by Wave on 25.04.2016.
  */
-public final class ContrastVariables extends ScriptVariables {
+public final class SingleLutVariables extends ScriptVariables {
 
     private float[] lut;
 
 
-    public ContrastVariables(float[] lut) {
+    public SingleLutVariables(float[] lut) {
         this.lut = lut;
 
     }

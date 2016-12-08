@@ -33,6 +33,7 @@ import java.io.IOException;
 public class SaveImageDialogFragment extends DialogFragment {
 
     Context context;
+    public static Uri savedImageUri = null;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -91,8 +92,10 @@ public class SaveImageDialogFragment extends DialogFragment {
             }
         }
 
+        savedImageUri = Uri.fromFile(image);
+
         ImageDBHelper dbHelper = new ImageDBHelper(this.context);
-        dbHelper.insertImage(name, Uri.fromFile(image).getPath());
+        dbHelper.insertImage(name, savedImageUri.getPath());
 
     }
 }

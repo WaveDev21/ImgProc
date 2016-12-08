@@ -24,9 +24,11 @@ import com.wunderlist.slidinglayer.SlidingLayer;
  */
 public class SharpenControlSet extends DrawerControls{
 
-    public final float[] FH1 = {0f, -1f, 0f, -1f , 5f, -1f, 0f, -1f, 0f};
-    public final float[] FH2 = {1f, -2f, 1f, -2f , 5f, -2f, 1f, -2f, 1f};
-    public final float[] FH3 = {-1f, -1f, -1f, -1f , 9f, -1f, -1f, -1f, -1f};
+
+    public final float[] HP0 = {-1f, -1f, -1f, -1f , 9f, -1f, -1f, -1f, -1f};
+    public final float[] HP1 = {0f, -1f, 0f, -1f , 5f, -1f, 0f, -1f, 0f};
+    public final float[] HP2 = {1f, -2f, 1f, -2f , 5f, -2f, 1f, -2f, 1f};
+    public final float[] HP3 = {0f, -1f, 0f, -1f , 20f, -1f, 0f, -1f, 0f};
 
     public SharpenControlSet(Context context, Processor processor, ImageView imageView, RelativeLayout leftToolbox) {
         super(context, processor, imageView, leftToolbox);
@@ -40,21 +42,26 @@ public class SharpenControlSet extends DrawerControls{
             RadioGroup group = new RadioGroup(this.context);
             setRadioGroupLayout(group);
 
-            RadioButton buttonFH1 = new RadioButton(this.context);
-            setButton(buttonFH1, "FH1");
-            setListener(buttonFH1, FH1);
+            RadioButton buttonHP0 = new RadioButton(this.context);
+            setButton(buttonHP0, "HP0");
+            setListener(buttonHP0, HP0);
 
-            RadioButton buttonFH2 = new RadioButton(this.context);
-            setButton(buttonFH2, buttonFH1, "FH2");
-            setListener(buttonFH2, FH2);
+            RadioButton buttonHP1 = new RadioButton(this.context);
+            setButton(buttonHP1, buttonHP0, "HP1");
+            setListener(buttonHP1, HP1);
 
-            RadioButton buttonFH3 = new RadioButton(this.context);
-            setButton(buttonFH3, buttonFH2, "FH3");
-            setListener(buttonFH3, FH3);
+            RadioButton buttonHP2 = new RadioButton(this.context);
+            setButton(buttonHP2, buttonHP1, "HP2");
+            setListener(buttonHP2, HP2);
 
-            group.addView(buttonFH1);
-            group.addView(buttonFH2);
-            group.addView(buttonFH3);
+            RadioButton buttonHP3 = new RadioButton(this.context);
+            setButton(buttonHP3, buttonHP2, "HP3");
+            setListener(buttonHP3, HP2);
+
+            group.addView(buttonHP0);
+            group.addView(buttonHP1);
+            group.addView(buttonHP2);
+            group.addView(buttonHP3);
 
             ((RelativeLayout)toolbox).addView(group);
 
@@ -143,7 +150,7 @@ public class SharpenControlSet extends DrawerControls{
         SlidingLayer slider = (SlidingLayer) ((EditActivity)context).findViewById(R.id.leftSlidingLayer);
 
         if(MenuFragment.currentMode.equals("AUTO")){
-            processor.processScript(new SharpenVariables(FH2));
+            processor.processScript(new SharpenVariables(HP0));
             imageView.setImageBitmap(processor.getmBitmapOut());
             imageView.invalidate();
         } else if (slider.isClosed() && DrawerControls.containerState.equals("sharpen")){

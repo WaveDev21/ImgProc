@@ -49,7 +49,6 @@ import com.wunderlist.slidinglayer.transformer.SlideJoyTransformer;
 public class EditActivity extends AppCompatActivity {
 
     private CallbackManager callback;
-    private ShareDialog shareDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,26 +59,6 @@ public class EditActivity extends AppCompatActivity {
         AppEventsLogger.activateApp(this);
 
         callback = CallbackManager.Factory.create();
-        shareDialog = new ShareDialog(this);
-        shareDialog.registerCallback(callback, new FacebookCallback<Sharer.Result>() {
-            @Override
-            public void onSuccess(Sharer.Result result) {
-                Log.wtf("test", "success");
-            }
-
-            @Override
-            public void onCancel() {
-                Log.wtf("test", "cancel");
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Log.wtf("test", "error");
-                Log.wtf("test", error.toString());
-
-            }
-        });
-        
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_edit);
@@ -137,7 +116,7 @@ public class EditActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
 
-        CustomToolboxFragment customToolbox = CustomToolboxFragment.newInstance(this, shareDialog);
+        CustomToolboxFragment customToolbox = CustomToolboxFragment.newInstance(this, callback);
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.topSlidingLayer, customToolbox);
@@ -148,7 +127,9 @@ public class EditActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         callback.onActivityResult(requestCode, resultCode, data);
+
     }
 
     @Override

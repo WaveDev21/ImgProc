@@ -12,12 +12,12 @@ import com.example.wave.androidimageprocessingjava.ScriptC_useLutTable;
 /**
  * Created by Wave on 02.04.2016.
  */
-public class ExtHistogramProcessor extends Processor {
+public class LutProcessor extends Processor {
 
 
     private ScriptC_useLutTable mScript;
 
-    public ExtHistogramProcessor(Bitmap bitmap, Context context) {
+    public LutProcessor(Bitmap bitmap, Context context) {
         super(bitmap, context);
     }
 

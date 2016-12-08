@@ -15,15 +15,15 @@ import com.example.wave.androidimageprocessingjava.R;
 /**
  * Created by Wave on 21.04.2016.
  */
-public class HistogramButton extends OperationButton implements CompoundButton.OnCheckedChangeListener {
+public class HistogramExtButton extends OperationButton implements CompoundButton.OnCheckedChangeListener {
 
-    public HistogramButton(final Context context, Processor processor, DrawerControls controlSet) {
+    public HistogramExtButton(final Context context, Processor processor, DrawerControls controlSet) {
         super(context, processor, controlSet);
     }
 
     @Override
     protected void setNameAndImage() {
-        this.setText("Histogram");
+        this.setText("Histogram Ext");
 
         this.setCompoundDrawables(null, new Drawable() {
             @Override

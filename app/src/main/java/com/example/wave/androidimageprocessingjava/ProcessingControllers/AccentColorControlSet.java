@@ -18,31 +18,28 @@ import android.widget.SeekBar;
 import com.example.wave.androidimageprocessingjava.Edit.EditActivity;
 import com.example.wave.androidimageprocessingjava.MenuFragment;
 import com.example.wave.androidimageprocessingjava.Processing.Processor;
-import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.SingleLutVariables;
+import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.SaturationVariables;
 import com.example.wave.androidimageprocessingjava.R;
 
 import java.util.Random;
 
-
 /**
  * Created by Wave on 19.04.2016.
  */
-public class ContrastControlSet extends DrawerControls implements AppCompatSeekBar.OnSeekBarChangeListener{
+public class AccentColorControlSet extends DrawerControls implements SeekBar.OnSeekBarChangeListener{
 
     private PopupWindow popupWindow;
 
     private boolean isClicked = false;
 
-    public ContrastControlSet(Context context, Processor processor, ImageView imageView, View view) {
+    public AccentColorControlSet(Context context, Processor processor, ImageView imageView, View view) {
         super(context, processor, imageView, view);
     }
 
     @Override
     public void setControlSet(){
+        if(MenuFragment.currentMode.equals("PRO")){
 
-        if(MenuFragment.currentMode.equals("AUTO")){
-            setOkExitListeners();
-        }else{
             LinearLayout containerLayout = new LinearLayout(context);
             popupWindow = new PopupWindow(context);
 
@@ -73,11 +70,14 @@ public class ContrastControlSet extends DrawerControls implements AppCompatSeekB
                 }
             });
 
-
             popupWindow.setContentView(popupWindowView);
 
             setContainerStates("");
+        }else{
+            setOkExitListeners();
         }
+
+
 
         imageView.setImageBitmap(processor.getmBitmapIn());
         imageView.invalidate();
@@ -101,15 +101,15 @@ public class ContrastControlSet extends DrawerControls implements AppCompatSeekB
         if (!isClicked){
 
             if(MenuFragment.currentMode.equals("AUTO")){
-
+                float minX = 0.5f;
+                float maxX = 1.5f;
                 Random rand = new Random();
-                int i = rand.nextInt(60) + 20;
+                float f = rand.nextFloat() * (maxX - minX) + minX;
 
-                processor.processScript(new SingleLutVariables(computeLut(i)));
-
+                processor.processScript(new SaturationVariables(f));
                 imageView.setImageBitmap(processor.getmBitmapOut());
                 imageView.invalidate();
-            }else {
+            }else{
                 isClicked = true;
 
                 popupWindow.showAtLocation(toolbox, Gravity.BOTTOM, 0, 0);
@@ -121,31 +121,19 @@ public class ContrastControlSet extends DrawerControls implements AppCompatSeekB
 
                 int layer_size = (int) context.getResources().getDimension(R.dimen.layer_size);
 
-                popupWindow.update(0, 0, width - (2 * layer_size), 100);
+                popupWindow.update(0, 0, width - (2 *  layer_size), 100);
             }
         }
     }
 
-    public float[] computeLut(int progress){
-        float[] lutTable = new float[256];
-        float var;
-        float max = 2.0f;
-        float a = (float) (max * (progress / 100.0));
-        for (int i = 0; i < 256; i++){
-            var = (float) (a*(i - (255.0/2.0)) + (255.0/2.0));
-
-            if(var < 0) lutTable[i] = 0;
-            else if (var > 255) lutTable[i] = 255;
-            else lutTable[i] = var;
-        }
-
-        return lutTable;
-    }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        float max = 2.0f;
+        float min = 0.0f;
+        float f = (float) ((max-min) * (progress / 100.0) + min);
 
-        processor.processScript(new SingleLutVariables(computeLut(progress)));
+        processor.processScript(new SaturationVariables(f));
         imageView.setImageBitmap(processor.getmBitmapOut());
         imageView.invalidate();
     }
@@ -159,6 +147,5 @@ public class ContrastControlSet extends DrawerControls implements AppCompatSeekB
     public void onStopTrackingTouch(SeekBar seekBar) {
 
     }
-
 
 }

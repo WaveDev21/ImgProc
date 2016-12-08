@@ -13,7 +13,7 @@ import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.S
 public abstract class Processor {
 
     public static Bitmap mBitmapIn = null;
-    protected Bitmap mBitmapOut = null;
+    static Bitmap mBitmapOut = null;
 
     protected RenderScript mRS;
     protected Allocation mInAllocation;
@@ -27,6 +27,9 @@ public abstract class Processor {
         mBitmapIn = bitmap;
         this.context = context;
 
+        if(mBitmapOut != null){
+            mBitmapOut.recycle();
+        }
         mBitmapOut = Bitmap.createBitmap(mBitmapIn.getWidth(),
                 mBitmapIn.getHeight(), mBitmapIn.getConfig());
 

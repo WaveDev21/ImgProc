@@ -5,20 +5,20 @@ import android.graphics.Bitmap;
 import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.RenderScript;
 
-import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.ContrastVariables;
-import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.HistogramVariables;
+import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.SaturationVariables;
 import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.ScriptVariables;
-import com.example.wave.androidimageprocessingjava.ScriptC_useLutTable;
+import com.example.wave.androidimageprocessingjava.ScriptC_colorAccent;
+import com.example.wave.androidimageprocessingjava.ScriptC_saturation;
 
 /**
  * Created by Wave on 02.04.2016.
  */
-public class ContrastProcesor extends Processor {
+public class AccentColorProcessor extends Processor {
 
 
-    private ScriptC_useLutTable mScript;
+    private ScriptC_colorAccent mScript;
 
-    public ContrastProcesor(Bitmap bitmap, Context context) {
+    public AccentColorProcessor(Bitmap bitmap, Context context) {
         super(bitmap, context);
     }
 
@@ -35,18 +35,16 @@ public class ContrastProcesor extends Processor {
         mInAllocation = Allocation.createFromBitmap(mRS, mBitmapIn);
         mOutAllocation = Allocation.createFromBitmap(mRS, mBitmapOut);
 
-        mScript = new ScriptC_useLutTable(mRS);
+        mScript = new ScriptC_colorAccent(mRS);
     }
 
     @Override
     public void processScript(ScriptVariables variables) {
-        ContrastVariables vars = (ContrastVariables)variables;
+        SaturationVariables vars = (SaturationVariables)variables;
 
-        mScript.set_redLut(vars.getLut());
-        mScript.set_greenLut(vars.getLut());
-        mScript.set_blueLut(vars.getLut());
+//        mScript.set_saturationValue(vars.getSaturationValue());
 
-        mScript.forEach_useLutTable(mInAllocation, mOutAllocation);
+        mScript.forEach_colorAccent(mInAllocation, mOutAllocation);
 
         mOutAllocation.copyTo(mBitmapOut);
     }

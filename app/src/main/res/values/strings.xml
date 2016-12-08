@@ -17,5 +17,6 @@
     <string name="facebook_app_id">1497691070259214</string>
     <string name="facebook_dev_hash_key">MFtDVETfuBi8k9F4MrELmxP33vU=</string>
     <string name="share">Share</string>
+    <string name="select_app">Select app</string>
 
 </resources>

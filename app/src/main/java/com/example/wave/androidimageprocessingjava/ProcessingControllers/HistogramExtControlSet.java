@@ -43,7 +43,7 @@ import java.util.ArrayList;
 /**
  * Created by Wave on 19.04.2016.
  */
-public class HistogramControlSet extends DrawerControls implements NumberPicker.OnValueChangeListener, Switch.OnCheckedChangeListener{
+public class HistogramExtControlSet extends DrawerControls implements NumberPicker.OnValueChangeListener, Switch.OnCheckedChangeListener{
 
     private PopupWindow popupWindow;
     private NumberPicker leftSideNumberPicker;
@@ -83,7 +83,7 @@ public class HistogramControlSet extends DrawerControls implements NumberPicker.
 
     private boolean isClicked = false;
 
-    public HistogramControlSet(Context context, Processor processor, ImageView imageView, View view) {
+    public HistogramExtControlSet(Context context, Processor processor, ImageView imageView, View view) {
         super(context, processor, imageView, view);
 
         colourBins = new int[NUMBER_OF_COLOURS][];
