@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.wave.androidimageprocessingjava"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 17
 
         renderscriptTargetApi 18
@@ -40,6 +40,7 @@ dependencies {
     compile('com.twitter.sdk.android:twitter:2.2.0@aar') {
         transitive = true;
     }
+    compile 'com.pes.materialcolorpicker:library:1.0.2'
     testCompile 'junit:junit:4.12'
 }
 

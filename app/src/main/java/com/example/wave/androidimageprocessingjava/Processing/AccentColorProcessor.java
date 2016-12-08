@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.RenderScript;
 
+import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.AccentColorVariables;
 import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.SaturationVariables;
 import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.ScriptVariables;
 import com.example.wave.androidimageprocessingjava.ScriptC_colorAccent;
@@ -40,9 +41,12 @@ public class AccentColorProcessor extends Processor {
 
     @Override
     public void processScript(ScriptVariables variables) {
-        SaturationVariables vars = (SaturationVariables)variables;
+        AccentColorVariables vars = (AccentColorVariables) variables;
 
-//        mScript.set_saturationValue(vars.getSaturationValue());
+        mScript.set_range(vars.getRangeValue());
+        mScript.set_startRed(vars.getRed());
+        mScript.set_startGreen(vars.getGreen());
+        mScript.set_startBlue(vars.getBlue());
 
         mScript.forEach_colorAccent(mInAllocation, mOutAllocation);
 

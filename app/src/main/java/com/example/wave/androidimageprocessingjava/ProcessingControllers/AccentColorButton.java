@@ -77,7 +77,6 @@ public class AccentColorButton extends OperationButton implements CompoundButton
     @Override
     public void onClick(View v) {
         if(MenuFragment.currentMode.equals("AUTO")){
-//            processor.startProcessing();
             controlSet.openContainer();
         }
     }

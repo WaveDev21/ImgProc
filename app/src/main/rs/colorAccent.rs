@@ -2,19 +2,22 @@
 #pragma rs java_package_name(com.example.wave.androidimageprocessingjava)
 #pragma rs_fp_relaxed
 
+int range;
+float startRed;
+float startGreen;
+float startBlue;
 
 uchar4 RS_KERNEL colorAccent(uchar4 in)
 {
     float hsrc, ssrc, vsrc, hdst, sdst, vdst, hfrom, hto;
     float x, f, i;
-    int range = 250;
 
     uchar4 out = in;
     float red, grn, blu, val, hue, sat;
 
-    red = 190.0/255.0;
-    grn = 20.0/255.0;
-    blu = 0.0/255.0;
+    red = startRed/255.0;
+    grn = startGreen/255.0;
+    blu = startBlue/255.0;
 
     x = fmin(fmin(red, grn), blu);
     vsrc = fmax(fmax(red, grn), blu);
