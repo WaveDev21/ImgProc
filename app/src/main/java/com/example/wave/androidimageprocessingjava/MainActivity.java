@@ -157,11 +157,11 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == PickImageId && resultCode == RESULT_OK && data != null){
             editedImageUri = data.getData();
 
-            String fileName = editedImageUri.getLastPathSegment();
-            String fileDir = editedImageUri.getPath();
-
-            ImageDBHelper dbHelper = new ImageDBHelper(this);
-            dbHelper.insertImage(fileName, fileDir);
+//            String fileName = editedImageUri.getLastPathSegment();
+//            String fileDir = editedImageUri.getPath();
+//
+//            ImageDBHelper dbHelper = new ImageDBHelper(this);
+//            dbHelper.insertImage(fileName, fileDir);
 
             editedImageView.setImageURI(editedImageUri);
 

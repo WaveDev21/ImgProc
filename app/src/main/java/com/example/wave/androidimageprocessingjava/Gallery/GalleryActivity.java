@@ -39,7 +39,6 @@ public class GalleryActivity extends AppCompatActivity {
 
         setupGallery(type);
 
-
     }
 
     public void setupGallery(String type) {

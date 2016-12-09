@@ -1,8 +1,14 @@
-<RadioGroup xmlns:andro="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:andro="http://schemas.android.com/apk/res/android"
     andro:layout_height="match_parent"
     andro:layout_width="100dp"
-    andro:id="@+id/toolbox"
-    andro:transitionGroup="false"
-    andro:paddingTop="5dp"
-    andro:paddingBottom="5dp">
-</RadioGroup>
+    andro:measureAllChildren="false"
+    andro:scrollbars="none"
+    andro:fillViewport="true">
+    <RadioGroup
+        andro:layout_height="wrap_content"
+        andro:layout_width="match_parent"
+        andro:id="@+id/toolbox"
+        andro:paddingTop="5dp"
+        andro:paddingBottom="5dp">
+    </RadioGroup>
+</ScrollView>

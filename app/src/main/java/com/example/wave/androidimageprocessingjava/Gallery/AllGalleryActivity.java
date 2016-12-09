@@ -43,10 +43,6 @@ public class AllGalleryActivity extends AppCompatActivity {
             }
         });
 
-//        Intent intent = new Intent();
-//        intent.putExtra("position", "test");
-//        setResult(RESULT_OK, intent);
-//        finish();
     }
 
     @Override
