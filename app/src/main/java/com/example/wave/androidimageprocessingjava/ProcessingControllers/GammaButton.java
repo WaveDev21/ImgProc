@@ -13,6 +13,7 @@ import android.widget.CompoundButton;
 import com.example.wave.androidimageprocessingjava.MenuFragment;
 import com.example.wave.androidimageprocessingjava.Processing.Processor;
 import com.example.wave.androidimageprocessingjava.R;
+import com.example.wave.androidimageprocessingjava.SettingsActivity;
 
 /**
  * Created by Wave on 21.04.2016.
@@ -76,7 +77,7 @@ public class GammaButton extends OperationButton implements CompoundButton.OnChe
 
     @Override
     public void onClick(View v) {
-        if(MenuFragment.currentMode.equals("AUTO")){
+        if(SettingsActivity.currentMode.equals("AUTO")){
 //            processor.startProcessing();
             controlSet.openContainer();
         }

@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 
 import com.example.wave.androidimageprocessingjava.Edit.EditActivity;
@@ -20,6 +21,7 @@ import com.example.wave.androidimageprocessingjava.MenuFragment;
 import com.example.wave.androidimageprocessingjava.Processing.Processor;
 import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.SaturationVariables;
 import com.example.wave.androidimageprocessingjava.R;
+import com.example.wave.androidimageprocessingjava.SettingsActivity;
 
 import java.util.Random;
 
@@ -38,7 +40,7 @@ public class SaturationControlSet extends DrawerControls implements SeekBar.OnSe
 
     @Override
     public void setControlSet(){
-        if(MenuFragment.currentMode.equals("PRO")){
+        if(SettingsActivity.currentMode.equals("PRO")){
 
             LinearLayout containerLayout = new LinearLayout(context);
             popupWindow = new PopupWindow(context);
@@ -86,6 +88,7 @@ public class SaturationControlSet extends DrawerControls implements SeekBar.OnSe
 
     @Override
     public void clearToolbox() {
+        ((RelativeLayout)toolbox).removeAllViews();
     }
 
     @Override
@@ -100,7 +103,7 @@ public class SaturationControlSet extends DrawerControls implements SeekBar.OnSe
     public void openContainer() {
         if (!isClicked){
 
-            if(MenuFragment.currentMode.equals("AUTO")){
+            if(SettingsActivity.currentMode.equals("AUTO")){
                 float minX = 0.5f;
                 float maxX = 1.5f;
                 Random rand = new Random();

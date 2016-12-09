@@ -27,6 +27,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.example.wave.androidimageprocessingjava.DBConnection.ImageDBHelper;
+import com.example.wave.androidimageprocessingjava.DBConnection.SettingsDBHelper;
 import com.example.wave.androidimageprocessingjava.Gallery.AllGalleryActivity;
 
 import java.io.File;
@@ -80,6 +81,13 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentTransaction.add(R.id.menuContainer, menuFragment);
         fragmentTransaction.commit();
+
+        final SettingsDBHelper dbHelper = new SettingsDBHelper(this);
+        SettingsActivity.currentMode = dbHelper.getSetting("mode");
+
+        if(SettingsActivity.currentMode.equals("")){
+            SettingsActivity.currentMode = getResources().getString(R.string.mode_auto);
+        }
     }
 
     public void setupGallery() {

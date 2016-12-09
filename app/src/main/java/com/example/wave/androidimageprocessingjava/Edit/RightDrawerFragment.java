@@ -15,6 +15,7 @@ import com.example.wave.androidimageprocessingjava.Factories.ButtonType;
 import com.example.wave.androidimageprocessingjava.MainActivity;
 import com.example.wave.androidimageprocessingjava.MenuFragment;
 import com.example.wave.androidimageprocessingjava.R;
+import com.example.wave.androidimageprocessingjava.SettingsActivity;
 import com.wunderlist.slidinglayer.SlidingLayer;
 
 import android.widget.RadioButton;
@@ -76,7 +77,7 @@ public class RightDrawerFragment extends Fragment{
 
         toolbox.addView(buttonFactory.produceButton(ButtonType.Saturation));
         toolbox.addView(buttonFactory.produceButton(ButtonType.Contrast));
-        if(MenuFragment.currentMode.equals("PRO")){
+        if(SettingsActivity.currentMode.equals("PRO")){
             toolbox.addView(buttonFactory.produceButton(ButtonType.AccentColor));
         }
         toolbox.addView(buttonFactory.produceButton(ButtonType.Exposure));

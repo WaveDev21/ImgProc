@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 
 import com.example.wave.androidimageprocessingjava.Edit.EditActivity;
@@ -23,6 +24,7 @@ import com.example.wave.androidimageprocessingjava.Processing.Processor;
 import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.AccentColorVariables;
 import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.SaturationVariables;
 import com.example.wave.androidimageprocessingjava.R;
+import com.example.wave.androidimageprocessingjava.SettingsActivity;
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 
 import java.util.Random;
@@ -45,7 +47,8 @@ public class AccentColorControlSet extends DrawerControls implements SeekBar.OnS
 
     @Override
     public void setControlSet(){
-        if(MenuFragment.currentMode.equals("PRO")){
+
+        if(SettingsActivity.currentMode.equals("PRO")){
 
             final ColorPicker colorPicker = new ColorPicker((EditActivity)context, 150, 150, 150);
 
@@ -117,6 +120,7 @@ public class AccentColorControlSet extends DrawerControls implements SeekBar.OnS
 
     @Override
     public void clearToolbox() {
+        ((RelativeLayout)toolbox).removeAllViews();
     }
 
     @Override
@@ -131,7 +135,7 @@ public class AccentColorControlSet extends DrawerControls implements SeekBar.OnS
     public void openContainer() {
         if (!isClicked){
 
-            if(MenuFragment.currentMode.equals("AUTO")){
+            if(SettingsActivity.currentMode.equals("AUTO")){
                 float minX = 0.5f;
                 float maxX = 1.5f;
                 Random rand = new Random();

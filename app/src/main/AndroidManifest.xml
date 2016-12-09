@@ -32,8 +32,10 @@
         <activity android:name=".Gallery.AllGalleryActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="landscape"/>
-        <activity android:name=".Edit.Histogram.HistogramActivity" />
 
+        <activity android:name=".SettingsActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="landscape"/>
 
 
         <provider

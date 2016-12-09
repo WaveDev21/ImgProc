@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 
 import com.example.wave.androidimageprocessingjava.Edit.EditActivity;
@@ -20,6 +21,7 @@ import com.example.wave.androidimageprocessingjava.MenuFragment;
 import com.example.wave.androidimageprocessingjava.Processing.Processor;
 import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.SingleLutVariables;
 import com.example.wave.androidimageprocessingjava.R;
+import com.example.wave.androidimageprocessingjava.SettingsActivity;
 
 import java.util.Random;
 
@@ -40,7 +42,7 @@ public class GammaControlSet extends DrawerControls implements AppCompatSeekBar.
     @Override
     public void setControlSet(){
 
-        if(MenuFragment.currentMode.equals("AUTO")){
+        if(SettingsActivity.currentMode.equals("AUTO")){
             setOkExitListeners();
         }else{
             LinearLayout containerLayout = new LinearLayout(context);
@@ -86,6 +88,7 @@ public class GammaControlSet extends DrawerControls implements AppCompatSeekBar.
 
     @Override
     public void clearToolbox() {
+        ((RelativeLayout)toolbox).removeAllViews();
     }
 
     @Override
@@ -100,7 +103,7 @@ public class GammaControlSet extends DrawerControls implements AppCompatSeekBar.
     public void openContainer() {
         if (!isClicked){
 
-            if(MenuFragment.currentMode.equals("AUTO")){
+            if(SettingsActivity.currentMode.equals("AUTO")){
 
                 Random rand = new Random();
                 int i = rand.nextInt(60) + 20;

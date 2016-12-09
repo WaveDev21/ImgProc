@@ -11,7 +11,7 @@
     <string name="mode_pro">PRO</string>
 
 
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Anuluj</string>
 
     <string name="facebook_app_id">1497691070259214</string>
@@ -27,8 +27,8 @@
         <item>@string/mode_auto</item>
     </string-array>
     <string-array name="pref_mode_values">
-        <item>@string/mode_pro</item>
-        <item>@string/mode_auto</item>
+        <item>PRO</item>
+        <item>AUTO</item>
     </string-array>
 
 </resources>

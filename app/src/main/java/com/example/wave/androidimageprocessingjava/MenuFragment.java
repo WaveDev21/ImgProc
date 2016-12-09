@@ -41,7 +41,6 @@ public class MenuFragment extends Fragment {
     private MainActivity context;
     public static final int MakeImageId = 616;
     private ImageView editedImageView;
-    public static String currentMode;
 
 
     public MenuFragment() {
@@ -93,34 +92,13 @@ public class MenuFragment extends Fragment {
             }
         });
 
-        final Button changeMode = (Button) view.findViewById(R.id.changeMode);
-        final SettingsDBHelper dbHelper = new SettingsDBHelper(context);
-        MenuFragment.currentMode = dbHelper.getSetting("mode");
-
-        if(MenuFragment.currentMode.equals("")){
-            MenuFragment.currentMode = changeMode.getText().toString();
-        }else{
-            changeMode.setText(MenuFragment.currentMode);
-        }
+        final ImageButton changeMode = (ImageButton) view.findViewById(R.id.showSettings);
 
         changeMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            if(changeMode.getText().equals("AUTO")){
-                changeMode.setText(R.string.mode_pro);
-            }else{
-                changeMode.setText(R.string.mode_auto);
-            }
-
-            MenuFragment.currentMode = changeMode.getText().toString();
-            if(!dbHelper.getSetting("mode").equals("")){
-                dbHelper.updateSetting("mode", MenuFragment.currentMode);
-            }else{
-                dbHelper.insertSetting("mode", MenuFragment.currentMode);
-            }
-
-//                Intent intent = new Intent(context, HistogramActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(context, SettingsActivity.class);
+                startActivity(intent);
             }
         });
 

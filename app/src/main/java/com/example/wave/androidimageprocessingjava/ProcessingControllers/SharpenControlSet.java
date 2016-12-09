@@ -17,6 +17,7 @@ import com.example.wave.androidimageprocessingjava.MenuFragment;
 import com.example.wave.androidimageprocessingjava.Processing.Processor;
 import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.SharpenVariables;
 import com.example.wave.androidimageprocessingjava.R;
+import com.example.wave.androidimageprocessingjava.SettingsActivity;
 import com.wunderlist.slidinglayer.SlidingLayer;
 
 /**
@@ -37,7 +38,7 @@ public class SharpenControlSet extends DrawerControls{
     @Override
     public void setControlSet(){
 
-        if(MenuFragment.currentMode.equals("PRO")){
+        if(SettingsActivity.currentMode.equals("PRO")){
 
             RadioGroup group = new RadioGroup(this.context);
             setRadioGroupLayout(group);
@@ -139,7 +140,7 @@ public class SharpenControlSet extends DrawerControls{
     public void hideContainer() {
         SlidingLayer slider = (SlidingLayer) ((EditActivity)context).findViewById(R.id.leftSlidingLayer);
 
-        if(slider.isOpened() && DrawerControls.containerState.equals("") && !MenuFragment.currentMode.equals("AUTO")){
+        if(slider.isOpened() && DrawerControls.containerState.equals("") && !SettingsActivity.currentMode.equals("AUTO")){
             slider.closeLayer(true);
             ((RelativeLayout)toolbox).removeAllViews();
         }
@@ -149,7 +150,7 @@ public class SharpenControlSet extends DrawerControls{
     public void openContainer() {
         SlidingLayer slider = (SlidingLayer) ((EditActivity)context).findViewById(R.id.leftSlidingLayer);
 
-        if(MenuFragment.currentMode.equals("AUTO")){
+        if(SettingsActivity.currentMode.equals("AUTO")){
             processor.processScript(new SharpenVariables(HP0));
             imageView.setImageBitmap(processor.getmBitmapOut());
             imageView.invalidate();

@@ -29,6 +29,7 @@ import com.example.wave.androidimageprocessingjava.Processing.Processor;
 import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.HistogramVariables;
 import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.SaturationVariables;
 import com.example.wave.androidimageprocessingjava.R;
+import com.example.wave.androidimageprocessingjava.SettingsActivity;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.Viewport;
@@ -105,7 +106,7 @@ public class HistogramExtControlSet extends DrawerControls implements NumberPick
         RelativeLayout containerLayout = new RelativeLayout(context);
         popupWindow = new PopupWindow(context);
 
-        if(MenuFragment.currentMode.equals("AUTO")){
+        if(SettingsActivity.currentMode.equals("AUTO")){
             setOkExitListeners();
         }else{
 
@@ -202,6 +203,7 @@ public class HistogramExtControlSet extends DrawerControls implements NumberPick
 
     @Override
     public void clearToolbox() {
+        ((RelativeLayout)toolbox).removeAllViews();
     }
 
     @Override
@@ -376,7 +378,7 @@ public class HistogramExtControlSet extends DrawerControls implements NumberPick
             super.onPostExecute(result);
 
             ((EditActivity)context).dismissDialog(0);
-            if(MenuFragment.currentMode.equals("AUTO")){
+            if(SettingsActivity.currentMode.equals("AUTO")){
 
                 computeLutOnAuto();
 

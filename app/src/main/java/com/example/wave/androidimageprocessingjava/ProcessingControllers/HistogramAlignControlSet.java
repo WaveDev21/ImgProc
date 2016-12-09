@@ -102,6 +102,7 @@ public class HistogramAlignControlSet extends DrawerControls{
 
     @Override
     public void clearToolbox() {
+        ((RelativeLayout)toolbox).removeAllViews();
     }
 
     @Override

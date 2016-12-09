@@ -34,6 +34,7 @@ import android.widget.TextView;
 import com.example.wave.androidimageprocessingjava.MainActivity;
 import com.example.wave.androidimageprocessingjava.MenuFragment;
 import com.example.wave.androidimageprocessingjava.R;
+import com.example.wave.androidimageprocessingjava.SettingsActivity;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -109,7 +110,7 @@ public class EditActivity extends AppCompatActivity {
         });
 
         TextView currentMode = (TextView) findViewById(R.id.currentMode);
-        currentMode.setText(MenuFragment.currentMode + " Mode");
+        currentMode.setText(SettingsActivity.currentMode + " Mode");
 
         RelativeLayout leftToolbox = (RelativeLayout) findViewById(R.id.leftToolBox);
         assert leftToolbox != null;
