@@ -7,6 +7,7 @@
     <RadioGroup
         andro:layout_height="wrap_content"
         andro:layout_width="match_parent"
+        andro:background="#9E9E9E"
         andro:id="@+id/toolbox"
         andro:paddingTop="5dp"
         andro:paddingBottom="5dp">

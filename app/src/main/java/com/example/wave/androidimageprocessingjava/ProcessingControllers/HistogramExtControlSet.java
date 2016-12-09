@@ -106,7 +106,7 @@ public class HistogramExtControlSet extends DrawerControls implements NumberPick
         RelativeLayout containerLayout = new RelativeLayout(context);
         popupWindow = new PopupWindow(context);
 
-        if(SettingsActivity.currentMode.equals("AUTO")){
+        if(SettingsActivity.currentMode.equals(this.autoModeString)){
             setOkExitListeners();
         }else{
 

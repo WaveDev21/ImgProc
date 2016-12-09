@@ -57,7 +57,7 @@ public class SharpenControlSet extends DrawerControls{
 
             RadioButton buttonHP3 = new RadioButton(this.context);
             setButton(buttonHP3, buttonHP2, "HP3");
-            setListener(buttonHP3, HP2);
+            setListener(buttonHP3, HP3);
 
             group.addView(buttonHP0);
             group.addView(buttonHP1);

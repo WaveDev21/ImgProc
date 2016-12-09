@@ -8,6 +8,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -47,14 +48,22 @@ import com.wunderlist.slidinglayer.SlidingLayer;
 import com.wunderlist.slidinglayer.transformer.AlphaTransformer;
 import com.wunderlist.slidinglayer.transformer.SlideJoyTransformer;
 
+import java.io.File;
+
 public class EditActivity extends AppCompatActivity {
 
     private CallbackManager callback;
+    static boolean stateChange = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        if(savedInstanceState != null){
+            setupState(savedInstanceState);
+            stateChange = true;
+        }
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
@@ -155,12 +164,23 @@ public class EditActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState){
-//        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)){
-//            outState.putString("DrawerState", "Opened");
-//        }else{
-//            outState.putString("DrawerState", "Closed");
-//        }
+
+        if(SaveImageDialogFragment.savedImageUri != null){
+            outState.putString("IMAGE_URI", SaveImageDialogFragment.savedImageUri.getPath());
+        }else{
+            outState.putString("IMAGE_URI", MainActivity.editedImageUri.getPath());
+        }
+
+        outState.putString("CURRENT_MODE", SettingsActivity.currentMode);
+
         super.onSaveInstanceState(outState);
+    }
+
+    private void setupState(Bundle savedInstanceState) {
+
+        MainActivity.editedImageUri = Uri.fromFile(new File(savedInstanceState.getString("IMAGE_URI")));
+        SettingsActivity.currentMode = savedInstanceState.getString("CURRENT_MODE");
+
     }
 
     @Override

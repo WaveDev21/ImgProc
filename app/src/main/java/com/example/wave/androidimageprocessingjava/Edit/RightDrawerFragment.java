@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ import java.io.IOException;
  */
 public class RightDrawerFragment extends Fragment{
 
-    private Context context;
+    public static Context context;
     private ImageView imageView;
     private SlidingLayer leftSlider;
     private RelativeLayout leftToolbox;
@@ -44,14 +45,11 @@ public class RightDrawerFragment extends Fragment{
     public static RightDrawerFragment newInstance(Context context, ImageView imageView, SlidingLayer leftDrawer, RelativeLayout leftToolbox) {
         RightDrawerFragment fragment = new RightDrawerFragment();
 
-        Bundle args = new Bundle();
-
         fragment.imageView = imageView;
-        fragment.context = context;
+        RightDrawerFragment.context = context;
         fragment.leftSlider = leftDrawer;
         fragment.leftToolbox = leftToolbox;
 
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -72,6 +70,8 @@ public class RightDrawerFragment extends Fragment{
     }
 
     private void addButtons(RadioGroup toolbox) {
+
+        toolbox.removeAllViews();
         // Inicjalizacja fabryki
         AbstractButtonFactory buttonFactory = new ButtonFactory(context, getBitmap(), this.imageView, this.leftToolbox);
 
@@ -95,7 +95,7 @@ public class RightDrawerFragment extends Fragment{
     private Bitmap getBitmap() {
         Bitmap btm = null;
         try {
-            btm = android.provider.MediaStore.Images.Media.getBitmap(context.getContentResolver(), MainActivity.editedImageUri);
+            btm = android.provider.MediaStore.Images.Media.getBitmap(context.getApplicationContext().getContentResolver(), MainActivity.editedImageUri);
         } catch (IOException e) {
             e.printStackTrace();
         }

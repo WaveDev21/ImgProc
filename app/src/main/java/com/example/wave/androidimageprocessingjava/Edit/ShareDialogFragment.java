@@ -46,7 +46,7 @@ import java.util.List;
 
 public class ShareDialogFragment extends DialogFragment {
 
-    Context context;
+    static Context context;
     ShareDialog shareFacebookDialog;
 
     @Override
@@ -97,7 +97,19 @@ public class ShareDialogFragment extends DialogFragment {
                 });
                 chooseContainer.addView(share);
                 alreadyDisplayed.add("twitter");
+            }
 
+            if (app.activityInfo.name.contains("instagram") && !alreadyDisplayed.contains("instagram")) {
+
+                ImageButton share = createImageButton(R.drawable.instagram);
+                share.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        postPictureOnInstagram(shareIntent, app);
+                    }
+                });
+                chooseContainer.addView(share);
+                alreadyDisplayed.add("instagram");
             }
         }
 
@@ -106,7 +118,7 @@ public class ShareDialogFragment extends DialogFragment {
 
 
     public void setContext(Context context){
-        this.context = context;
+        ShareDialogFragment.context = context;
     }
 
     public void setupDialogs(ShareDialog facebookDialog){
@@ -157,6 +169,34 @@ public class ShareDialogFragment extends DialogFragment {
 
         startActivity(shareIntent);
     }
+
+    private void postPictureOnInstagram(Intent shareIntent, ResolveInfo app){
+
+        final ActivityInfo activity = app.activityInfo;
+        final ComponentName name = new ComponentName(
+                activity.applicationInfo.packageName,
+                activity.name);
+        shareIntent.setClassName("com.instagram.android",
+                "com.instagram.android.PostActivity");
+
+        shareIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        shareIntent.setComponent(name);
+
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "");
+
+        if(SaveImageDialogFragment.savedImageUri != null){
+            shareIntent.putExtra(Intent.EXTRA_STREAM,
+                    SaveImageDialogFragment.savedImageUri);
+        }else{
+            shareIntent.putExtra(Intent.EXTRA_STREAM,
+                    MainActivity.editedImageUri);
+        }
+
+        startActivity(shareIntent);
+    }
+
 
     private ImageButton createImageButton(int resource){
         ImageButton button = new ImageButton(context);

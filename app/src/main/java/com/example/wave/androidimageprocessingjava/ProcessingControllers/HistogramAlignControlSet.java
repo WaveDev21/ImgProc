@@ -97,6 +97,7 @@ public class HistogramAlignControlSet extends DrawerControls{
 
         imageView.setImageBitmap(processor.getmBitmapIn());
         imageView.invalidate();
+        setContainerStates("");
 
     }
 
