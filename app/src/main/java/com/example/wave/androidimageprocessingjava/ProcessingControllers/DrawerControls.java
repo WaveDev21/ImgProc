@@ -20,6 +20,8 @@ public abstract class DrawerControls{
     public static String containerState = "";
     public static String previousContainerState = "";
 
+    protected String proModeString;
+    protected String autoModeString;
 
     protected Context context;
     protected Processor processor;
@@ -47,6 +49,10 @@ public abstract class DrawerControls{
         this.processor = processor;
         this.imageView = imageView;
         this.toolbox = view;
+
+        proModeString = context.getResources().getString(R.string.mode_pro);
+        autoModeString = context.getResources().getString(R.string.mode_auto);
+
     }
 
     public void setOkExitListeners(){

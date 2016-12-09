@@ -42,7 +42,7 @@ public class ContrastControlSet extends DrawerControls implements AppCompatSeekB
     @Override
     public void setControlSet(){
 
-        if(SettingsActivity.currentMode.equals("AUTO")){
+        if(SettingsActivity.currentMode.equals(this.autoModeString)){
             setOkExitListeners();
         }else{
             LinearLayout containerLayout = new LinearLayout(context);
@@ -103,7 +103,7 @@ public class ContrastControlSet extends DrawerControls implements AppCompatSeekB
     public void openContainer() {
         if (!isClicked){
 
-            if(SettingsActivity.currentMode.equals("AUTO")){
+            if(SettingsActivity.currentMode.equals(this.autoModeString)){
 
                 Random rand = new Random();
                 int i = rand.nextInt(60) + 20;

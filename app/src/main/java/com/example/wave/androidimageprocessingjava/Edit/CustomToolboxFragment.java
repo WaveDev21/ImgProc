@@ -93,18 +93,18 @@ public class CustomToolboxFragment extends Fragment{
         shareFacebookDialog.registerCallback(callback, new FacebookCallback<Sharer.Result>() {
             @Override
             public void onSuccess(Sharer.Result result) {
-                Log.wtf("test", "success");
+//                Log.wtf("test", "success");
             }
 
             @Override
             public void onCancel() {
-                Log.wtf("test", "cancel");
+//                Log.wtf("test", "cancel");
             }
 
             @Override
             public void onError(FacebookException error) {
-                Log.wtf("test", "error");
-                Log.wtf("test", error.toString());
+//                Log.wtf("test", "error");
+//                Log.wtf("test", error.toString());
 
             }
         });

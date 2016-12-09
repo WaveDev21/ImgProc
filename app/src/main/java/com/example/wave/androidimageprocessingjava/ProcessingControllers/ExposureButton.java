@@ -77,7 +77,7 @@ public class ExposureButton extends OperationButton implements CompoundButton.On
 
     @Override
     public void onClick(View v) {
-        if(SettingsActivity.currentMode.equals("AUTO")){
+        if(SettingsActivity.currentMode.equals(this.autoModeString)){
 //            processor.startProcessing();
             controlSet.openContainer();
         }

@@ -78,7 +78,7 @@ public class ContastButton extends OperationButton implements CompoundButton.OnC
 
     @Override
     public void onClick(View v) {
-        if(SettingsActivity.currentMode.equals("AUTO")){
+        if(SettingsActivity.currentMode.equals(this.autoModeString)){
 //            processor.startProcessing();
             controlSet.openContainer();
         }

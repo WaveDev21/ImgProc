@@ -38,7 +38,7 @@ public class SharpenControlSet extends DrawerControls{
     @Override
     public void setControlSet(){
 
-        if(SettingsActivity.currentMode.equals("PRO")){
+        if(SettingsActivity.currentMode.equals(this.proModeString)){
 
             RadioGroup group = new RadioGroup(this.context);
             setRadioGroupLayout(group);
@@ -140,7 +140,7 @@ public class SharpenControlSet extends DrawerControls{
     public void hideContainer() {
         SlidingLayer slider = (SlidingLayer) ((EditActivity)context).findViewById(R.id.leftSlidingLayer);
 
-        if(slider.isOpened() && DrawerControls.containerState.equals("") && !SettingsActivity.currentMode.equals("AUTO")){
+        if(slider.isOpened() && DrawerControls.containerState.equals("") && !SettingsActivity.currentMode.equals(this.autoModeString)){
             slider.closeLayer(true);
             ((RelativeLayout)toolbox).removeAllViews();
         }
@@ -150,7 +150,7 @@ public class SharpenControlSet extends DrawerControls{
     public void openContainer() {
         SlidingLayer slider = (SlidingLayer) ((EditActivity)context).findViewById(R.id.leftSlidingLayer);
 
-        if(SettingsActivity.currentMode.equals("AUTO")){
+        if(SettingsActivity.currentMode.equals(this.autoModeString)){
             processor.processScript(new SharpenVariables(HP0));
             imageView.setImageBitmap(processor.getmBitmapOut());
             imageView.invalidate();

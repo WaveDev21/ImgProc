@@ -77,7 +77,7 @@ public class GammaButton extends OperationButton implements CompoundButton.OnChe
 
     @Override
     public void onClick(View v) {
-        if(SettingsActivity.currentMode.equals("AUTO")){
+        if(SettingsActivity.currentMode.equals(this.autoModeString)){
 //            processor.startProcessing();
             controlSet.openContainer();
         }

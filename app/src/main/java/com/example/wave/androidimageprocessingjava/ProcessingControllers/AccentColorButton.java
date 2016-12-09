@@ -77,7 +77,7 @@ public class AccentColorButton extends OperationButton implements CompoundButton
 
     @Override
     public void onClick(View v) {
-        if(SettingsActivity.currentMode.equals("AUTO")){
+        if(SettingsActivity.currentMode.equals(this.autoModeString)){
             controlSet.openContainer();
         }
     }

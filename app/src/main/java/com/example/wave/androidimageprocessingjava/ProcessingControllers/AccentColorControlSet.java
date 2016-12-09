@@ -48,7 +48,7 @@ public class AccentColorControlSet extends DrawerControls implements SeekBar.OnS
     @Override
     public void setControlSet(){
 
-        if(SettingsActivity.currentMode.equals("PRO")){
+        if(SettingsActivity.currentMode.equals(this.proModeString)){
 
             final ColorPicker colorPicker = new ColorPicker((EditActivity)context, 150, 150, 150);
 
@@ -135,7 +135,7 @@ public class AccentColorControlSet extends DrawerControls implements SeekBar.OnS
     public void openContainer() {
         if (!isClicked){
 
-            if(SettingsActivity.currentMode.equals("AUTO")){
+            if(SettingsActivity.currentMode.equals(this.autoModeString)){
                 float minX = 0.5f;
                 float maxX = 1.5f;
                 Random rand = new Random();

@@ -344,9 +344,6 @@ public class HistogramExtControlSet extends DrawerControls implements NumberPick
 
     }
 
-    // ============================================================================================
-    // ------------------------------------ Sekcja klas ------------------------------------------
-    // ============================================================================================
 
     private class MyAsync extends AsyncTask
     {
@@ -378,7 +375,7 @@ public class HistogramExtControlSet extends DrawerControls implements NumberPick
             super.onPostExecute(result);
 
             ((EditActivity)context).dismissDialog(0);
-            if(SettingsActivity.currentMode.equals("AUTO")){
+            if(SettingsActivity.currentMode.equals(autoModeString)){
 
                 computeLutOnAuto();
 

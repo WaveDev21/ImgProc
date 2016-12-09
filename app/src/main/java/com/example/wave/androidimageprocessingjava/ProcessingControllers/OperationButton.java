@@ -21,6 +21,9 @@ public abstract class OperationButton extends RadioButton{
     protected Processor processor;
     protected DrawerControls controlSet;
 
+    protected String proModeString;
+    protected String autoModeString;
+
     public OperationButton(Context context, Processor processor, DrawerControls contolSet) {
         super(context);
 
@@ -31,6 +34,9 @@ public abstract class OperationButton extends RadioButton{
         this.setStandardButtonLayout();
         this.setNameAndImage();
         this.setListener();
+
+        proModeString = context.getResources().getString(R.string.mode_pro);
+        autoModeString = context.getResources().getString(R.string.mode_auto);
     }
 
     private void setStandardButtonLayout() {

@@ -40,7 +40,7 @@ public class SaturationControlSet extends DrawerControls implements SeekBar.OnSe
 
     @Override
     public void setControlSet(){
-        if(SettingsActivity.currentMode.equals("PRO")){
+        if(SettingsActivity.currentMode.equals(this.proModeString)){
 
             LinearLayout containerLayout = new LinearLayout(context);
             popupWindow = new PopupWindow(context);
@@ -103,7 +103,7 @@ public class SaturationControlSet extends DrawerControls implements SeekBar.OnSe
     public void openContainer() {
         if (!isClicked){
 
-            if(SettingsActivity.currentMode.equals("AUTO")){
+            if(SettingsActivity.currentMode.equals(this.autoModeString)){
                 float minX = 0.5f;
                 float maxX = 1.5f;
                 Random rand = new Random();

@@ -77,7 +77,7 @@ public class RightDrawerFragment extends Fragment{
 
         toolbox.addView(buttonFactory.produceButton(ButtonType.Saturation));
         toolbox.addView(buttonFactory.produceButton(ButtonType.Contrast));
-        if(SettingsActivity.currentMode.equals("PRO")){
+        if(SettingsActivity.currentMode.equals(context.getResources().getString(R.string.mode_pro))){
             toolbox.addView(buttonFactory.produceButton(ButtonType.AccentColor));
         }
         toolbox.addView(buttonFactory.produceButton(ButtonType.Exposure));
@@ -85,7 +85,10 @@ public class RightDrawerFragment extends Fragment{
         toolbox.addView(buttonFactory.produceButton(ButtonType.Sharpen));
         toolbox.addView(buttonFactory.produceButton(ButtonType.Smooth));
         toolbox.addView(buttonFactory.produceButton(ButtonType.HistogramExt));
-        toolbox.addView(buttonFactory.produceButton(ButtonType.HistogramAlign));
+        if(SettingsActivity.currentMode.equals(context.getResources().getString(R.string.mode_pro))){
+            toolbox.addView(buttonFactory.produceButton(ButtonType.HistogramAlign));
+        }
+
     }
 
 

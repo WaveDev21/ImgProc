@@ -78,7 +78,7 @@ public class SaturationButton extends OperationButton implements CompoundButton.
 
     @Override
     public void onClick(View v) {
-        if(SettingsActivity.currentMode.equals("AUTO")){
+        if(SettingsActivity.currentMode.equals(this.autoModeString)){
 //            processor.startProcessing();
             controlSet.openContainer();
         }
