@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.example.wave.androidimageprocessingjava.MenuFragment;
 import com.example.wave.androidimageprocessingjava.Processing.AccentColorProcessor;
 import com.example.wave.androidimageprocessingjava.Processing.SingleLutProcesor;
 import com.example.wave.androidimageprocessingjava.Processing.Filter3x3Processor;
@@ -56,11 +57,6 @@ public class ButtonFactory extends AbstractButtonFactory {
                 controls = new SaturationControlSet(context, processor, imageView, toolbox);
                 button = new SaturationButton(context, processor, controls);
                 break;
-            case AccentColor:
-                processor = new AccentColorProcessor(bitmap, context);
-                controls = new AccentColorControlSet(context, processor, imageView, toolbox);
-                button = new AccentColorButton(context, processor, controls);
-                break;
             case Sharpen:
                 processor = new Filter3x3Processor(bitmap, context);
                 controls = new SharpenControlSet(context, processor, imageView, toolbox);
@@ -95,6 +91,11 @@ public class ButtonFactory extends AbstractButtonFactory {
                 processor = new SingleLutProcesor(bitmap, context);
                 controls = new GammaControlSet(context, processor, imageView, toolbox);
                 button = new GammaButton(context, processor, controls);
+                break;
+            case AccentColor:
+                processor = new AccentColorProcessor(bitmap, context);
+                controls = new AccentColorControlSet(context, processor, imageView, toolbox);
+                button = new AccentColorButton(context, processor, controls);
                 break;
         }
 

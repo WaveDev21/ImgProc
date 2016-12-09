@@ -68,11 +68,6 @@ public class EditActivity extends AppCompatActivity {
         assert imageView != null;
         imageView.setImageURI(MainActivity.editedImageUri);
 
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        this.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-
-        int heightForSliders = displaymetrics.heightPixels - 40;
-
         // Konfiguracja prawego slidera
         SlidingLayer rightSlidingLayer = (SlidingLayer) findViewById(R.id.rightSlidingLayer);
         assert rightSlidingLayer != null;
@@ -84,7 +79,6 @@ public class EditActivity extends AppCompatActivity {
 //        int previewOffset = getResources().getDimensionPixelOffset(R.dimen.preview_offset_distance);
 //        rightSlidingLayer.setPreviewOffsetDistance(previewOffset);
         ViewGroup.LayoutParams params = rightSlidingLayer.getLayoutParams();
-        params.height = heightForSliders ;
         rightSlidingLayer.setLayoutParams(params);
 
 
@@ -93,18 +87,29 @@ public class EditActivity extends AppCompatActivity {
         assert leftSlidingLayer != null;
         leftSlidingLayer.setStickTo(SlidingLayer.STICK_TO_LEFT);
         params = leftSlidingLayer.getLayoutParams();
-        params.height = heightForSliders ;
+
         leftSlidingLayer.setLayoutParams(params);
 //        leftSlidingLayer.setLayerTransformer(transformer);
 
         // Konfiguracja gurnego slidera
-        SlidingLayer topSlidingLayer = (SlidingLayer) findViewById(R.id.topSlidingLayer);
+        final SlidingLayer topSlidingLayer = (SlidingLayer) findViewById(R.id.topSlidingLayer);
         assert topSlidingLayer != null;
         topSlidingLayer.setStickTo(SlidingLayer.STICK_TO_TOP);
         transformer = new SlideJoyTransformer();
         topSlidingLayer.setLayerTransformer(transformer);
         offsetDistance = getResources().getDimensionPixelOffset(R.dimen.top_offset_distance);
         topSlidingLayer.setOffsetDistance(offsetDistance);
+
+        RelativeLayout showTopSlider = (RelativeLayout) findViewById(R.id.showTopBarButton);
+        showTopSlider.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                topSlidingLayer.openLayer(true);
+            }
+        });
+
+        TextView currentMode = (TextView) findViewById(R.id.currentMode);
+        currentMode.setText(MenuFragment.currentMode + " Mode");
 
         RelativeLayout leftToolbox = (RelativeLayout) findViewById(R.id.leftToolBox);
         assert leftToolbox != null;

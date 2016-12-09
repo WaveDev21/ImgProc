@@ -76,9 +76,6 @@ public class CustomToolboxFragment extends Fragment{
 
         view = inflater.inflate(R.layout.fragment_custom_toolbox, container, false);
 
-        TextView currentMode = (TextView) view.findViewById(R.id.currentMode);
-        currentMode.setText(MenuFragment.currentMode + " Mode");
-
         ImageButton saveButton = (ImageButton) view.findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,7 +108,6 @@ public class CustomToolboxFragment extends Fragment{
 
             }
         });
-
 
 
 

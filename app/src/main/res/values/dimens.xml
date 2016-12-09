@@ -5,9 +5,9 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="shadow_size">8dp</dimen>
-    <dimen name="top_layer_size">90dp</dimen>
-    <dimen name="top_offset_distance">40dp</dimen>
-    <dimen name="offset_distance">50dp</dimen>
+    <dimen name="top_layer_size">60dp</dimen>
+    <dimen name="top_offset_distance">0dp</dimen>
+    <dimen name="offset_distance">60dp</dimen>
 
     <dimen name="layer_size">100dp</dimen>
 </resources>

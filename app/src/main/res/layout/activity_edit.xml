@@ -5,7 +5,6 @@
     andro:layout_height="match_parent"
     andro:id="@+id/editMainRelativeLayout">
 
-
     <RelativeLayout
         andro:layout_width="match_parent"
         andro:layout_height="match_parent"
@@ -16,6 +15,31 @@
             andro:layout_height="match_parent"
             andro:src="@android:drawable/ic_media_play"
             andro:id="@+id/originalImageView"/>
+
+        <RelativeLayout
+            andro:layout_width="150dp"
+            andro:layout_height="40dp"
+            andro:layout_centerHorizontal="true"
+            andro:background="@drawable/zakladka_menu4"
+            andro:id="@+id/showTopBarButton">
+            <TextView
+                andro:layout_width="wrap_content"
+                andro:layout_height="30dp"
+                andro:layout_centerHorizontal="true"
+                andro:layout_alignParentTop="true"
+                andro:background="@android:color/transparent"
+                andro:id="@+id/currentMode"
+                andro:text="AUTO Mode"
+                andro:textColor="#212121"
+                andro:textSize="20sp"/>
+            <ImageButton
+                andro:layout_width="wrap_content"
+                andro:layout_height="10dp"
+                andro:src="@drawable/show_menu"
+                andro:background="@android:color/transparent"
+                andro:layout_below="@+id/currentMode"
+                andro:layout_centerHorizontal="true"/>
+        </RelativeLayout>
 
     </RelativeLayout>
 

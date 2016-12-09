@@ -108,8 +108,6 @@ public class AccentColorControlSet extends DrawerControls implements SeekBar.OnS
             popupWindow.setContentView(popupWindowView);
 
             setContainerStates("");
-        }else{
-            setOkExitListeners();
         }
 
         imageView.setImageBitmap(processor.getmBitmapIn());
