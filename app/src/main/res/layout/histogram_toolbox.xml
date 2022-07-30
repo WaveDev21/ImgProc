@@ -1,0 +1,103 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/histogramToolbox">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ok_circle"
+            android:background="@android:color/transparent"
+            android:id="@+id/okButton"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/exit_circle"
+            android:background="@android:color/transparent"
+            android:id="@+id/exitButton"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
+        android:gravity="center"
+        android:id="@+id/leftSideNumberPicker" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="514dp"
+            android:layout_height="300dp"
+            android:gravity="center"
+            android:id="@+id/histogramGraph" />
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+
+            android:gravity="center"
+            android:layout_marginRight="25dp"
+            android:layout_marginEnd="25dp"
+            android:orientation="horizontal"
+            android:id="@+id/histogramSwitchContainer">
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                app:theme="@style/RedSwitchStyle"
+                android:id="@+id/redColorOn"
+                android:checked="true" />
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                app:theme="@style/GreenSwitchStyle"
+                android:id="@+id/greenColorOn"
+                android:checked="true" />
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                app:theme="@style/BlueSwitchStyle"
+                android:id="@+id/blueColorOn"
+                android:checked="true" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:layout_marginRight="25dp"
+        android:layout_marginEnd="25dp"
+        android:id="@+id/rightSideNumberPicker" />
+
+
+</RelativeLayout>

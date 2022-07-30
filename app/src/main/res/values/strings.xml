@@ -5,4 +5,30 @@
     <string name="closeDrawer">Drawer Close</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="shared_img">Shared images</string>
+    <string name="app_img">App images</string>
+    <string name="mode_auto">AUTO</string>
+    <string name="mode_pro">PRO</string>
+
+
+    <string name="ok">OK</string>
+    <string name="cancel">Anuluj</string>
+
+    <string name="facebook_app_id">1497691070259214</string>
+    <string name="facebook_dev_hash_key">MFtDVETfuBi8k9F4MrELmxP33vU=</string>
+    <string name="share">Share</string>
+    <string name="select_app">Select app</string>
+    <string name="choose_color">Choose color</string>
+    <string name="pref_title_mode">Current mode</string>
+    <string name="about">About</string>
+
+    <string-array name="pref_mode_titles">
+        <item>@string/mode_pro</item>
+        <item>@string/mode_auto</item>
+    </string-array>
+    <string-array name="pref_mode_values">
+        <item>PRO</item>
+        <item>AUTO</item>
+    </string-array>
+
 </resources>

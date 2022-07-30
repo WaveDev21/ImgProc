@@ -12,53 +12,67 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
+import com.example.wave.androidimageprocessingjava.Edit.EditActivity;
+import com.example.wave.androidimageprocessingjava.MenuFragment;
 import com.example.wave.androidimageprocessingjava.Processing.Processor;
 import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.SharpenVariables;
 import com.example.wave.androidimageprocessingjava.R;
+import com.example.wave.androidimageprocessingjava.SettingsActivity;
+import com.wunderlist.slidinglayer.SlidingLayer;
 
 /**
  * Created by Wave on 26.04.2016.
  */
-public class SharpenControlSet implements IDrawerControls{
+public class SharpenControlSet extends DrawerControls{
 
-    public final float[] FH1 = {0f, -1f, 0f, -1f , 5f, -1f, 0f, -1f, 0f};
-    public final float[] FH2 = {1f, -2f, 1f, -2f , 5f, -2f, 1f, -2f, 1f};
-    public final float[] FH3 = {-1f, -1f, -1f, -1f , 9f, -1f, -1f, -1f, -1f};
 
-    private Context context;
-    private Processor processor;
-    private ImageView imageView;
-    private RelativeLayout leftDrawer;
+    public final float[] HP0 = {-1f, -1f, -1f, -1f , 9f, -1f, -1f, -1f, -1f};
+    public final float[] HP1 = {0f, -1f, 0f, -1f , 5f, -1f, 0f, -1f, 0f};
+    public final float[] HP2 = {1f, -2f, 1f, -2f , 5f, -2f, 1f, -2f, 1f};
+    public final float[] HP3 = {0f, -1f, 0f, -1f , 20f, -1f, 0f, -1f, 0f};
 
-    public SharpenControlSet(Context context, Processor processor, ImageView imageView, RelativeLayout leftDrawer) {
-        this.context = context;
-        this.processor = processor;
-        this.imageView = imageView;
-        this.leftDrawer = leftDrawer;
+    public SharpenControlSet(Context context, Processor processor, ImageView imageView, RelativeLayout leftToolbox) {
+        super(context, processor, imageView, leftToolbox);
     }
 
     @Override
     public void setControlSet(){
-        RadioGroup group = new RadioGroup(this.context);
-        setRadioGroupLayout(group);
 
-        RadioButton buttonFH1 = new RadioButton(this.context);
-        setButton(buttonFH1, "FH1");
-        setListener(buttonFH1, FH1);
+        if(SettingsActivity.currentMode.equals(this.proModeString)){
 
-        RadioButton buttonFH2 = new RadioButton(this.context);
-        setButton(buttonFH2, buttonFH1, "FH2");
-        setListener(buttonFH2, FH2);
+            RadioGroup group = new RadioGroup(this.context);
+            setRadioGroupLayout(group);
 
-        RadioButton buttonFH3 = new RadioButton(this.context);
-        setButton(buttonFH3, buttonFH2, "FH3");
-        setListener(buttonFH3, FH3);
+            RadioButton buttonHP0 = new RadioButton(this.context);
+            setButton(buttonHP0, "HP0");
+            setListener(buttonHP0, HP0);
 
-        group.addView(buttonFH1);
-        group.addView(buttonFH2);
-        group.addView(buttonFH3);
+            RadioButton buttonHP1 = new RadioButton(this.context);
+            setButton(buttonHP1, buttonHP0, "HP1");
+            setListener(buttonHP1, HP1);
 
-        leftDrawer.addView(group);
+            RadioButton buttonHP2 = new RadioButton(this.context);
+            setButton(buttonHP2, buttonHP1, "HP2");
+            setListener(buttonHP2, HP2);
+
+            RadioButton buttonHP3 = new RadioButton(this.context);
+            setButton(buttonHP3, buttonHP2, "HP3");
+            setListener(buttonHP3, HP3);
+
+            group.addView(buttonHP0);
+            group.addView(buttonHP1);
+            group.addView(buttonHP2);
+            group.addView(buttonHP3);
+
+            ((RelativeLayout)toolbox).addView(group);
+
+            DrawerControls.setContainerStates("sharpen");
+        }
+
+        setOkExitListeners();
+
+        imageView.setImageBitmap(processor.getmBitmapIn());
+        imageView.invalidate();
     }
 
     private void setListener(RadioButton button, final float[] fh) {
@@ -99,7 +113,7 @@ public class SharpenControlSet implements IDrawerControls{
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void setButtonApperiance(RadioButton button){
-        button.setId(button.generateViewId());
+        button.setId(RadioButton.generateViewId());
         button.setTextSize(20);
         button.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         button.setPadding( 0, 20, 0, 20 );
@@ -118,8 +132,31 @@ public class SharpenControlSet implements IDrawerControls{
     }
 
     @Override
-    public void clearLeftDrawer() {
-        leftDrawer.removeAllViews();
+    public void clearToolbox() {
+        ((RelativeLayout)toolbox).removeAllViews();
+    }
+
+    @Override
+    public void hideContainer() {
+        SlidingLayer slider = (SlidingLayer) ((EditActivity)context).findViewById(R.id.leftSlidingLayer);
+
+        if(slider.isOpened() && DrawerControls.containerState.equals("") && !SettingsActivity.currentMode.equals(this.autoModeString)){
+            slider.closeLayer(true);
+            ((RelativeLayout)toolbox).removeAllViews();
+        }
+    }
+
+    @Override
+    public void openContainer() {
+        SlidingLayer slider = (SlidingLayer) ((EditActivity)context).findViewById(R.id.leftSlidingLayer);
+
+        if(SettingsActivity.currentMode.equals(this.autoModeString)){
+            processor.processScript(new SharpenVariables(HP0));
+            imageView.setImageBitmap(processor.getmBitmapOut());
+            imageView.invalidate();
+        } else if (slider.isClosed() && DrawerControls.containerState.equals("sharpen")){
+            slider.openLayer(true);
+        }
     }
 
 }

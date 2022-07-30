@@ -1,135 +1,186 @@
 package com.example.wave.androidimageprocessingjava.Edit;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.example.wave.androidimageprocessingjava.MainActivity;
+import com.example.wave.androidimageprocessingjava.MenuFragment;
 import com.example.wave.androidimageprocessingjava.R;
+import com.example.wave.androidimageprocessingjava.SettingsActivity;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.share.Sharer;
+import com.facebook.share.widget.ShareDialog;
+import com.wunderlist.slidinglayer.LayerTransformer;
+import com.wunderlist.slidinglayer.SlidingLayer;
+import com.wunderlist.slidinglayer.transformer.AlphaTransformer;
+import com.wunderlist.slidinglayer.transformer.SlideJoyTransformer;
+
+import java.io.File;
 
 public class EditActivity extends AppCompatActivity {
 
-    //private Toolbar mToolbar;
-    private ActionBarDrawerToggle mDrawerListener;
-    private DrawerLayout mDrawerLayout;
-    private RelativeLayout mLeftDrawer;
-    private FrameLayout mRightDrawer;
-    private ArrayAdapter mLeftAdapter;
-    private ArrayAdapter mRightAdapter;
-    private String[] mLeftDataSet;
-    private String[] mRightDataSet;
-    private RelativeLayout CorrentImageLayout;
-
-    private ImageView imageView;
-
-    private SeekBar seekBar;
+    private CallbackManager callback;
+    static boolean stateChange = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        if(savedInstanceState != null){
+            setupState(savedInstanceState);
+            stateChange = true;
+        }
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
+
+        callback = CallbackManager.Factory.create();
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_edit);
 
-        imageView = (ImageView) findViewById(R.id.originalImageView);
+        ImageView imageView = (ImageView) findViewById(R.id.originalImageView);
 
+        assert imageView != null;
         imageView.setImageURI(MainActivity.editedImageUri);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        mLeftDrawer = (RelativeLayout) findViewById(R.id.leftDrawer);
-        mRightDrawer = (FrameLayout) findViewById(R.id.rightDrawer);
+        // Konfiguracja prawego slidera
+        SlidingLayer rightSlidingLayer = (SlidingLayer) findViewById(R.id.rightSlidingLayer);
+        assert rightSlidingLayer != null;
+        rightSlidingLayer.setStickTo(SlidingLayer.STICK_TO_RIGHT);
+        LayerTransformer transformer = new AlphaTransformer();
+        rightSlidingLayer.setLayerTransformer(transformer);
+        int offsetDistance = getResources().getDimensionPixelOffset(R.dimen.offset_distance);
+        rightSlidingLayer.setOffsetDistance(offsetDistance);
+//        int previewOffset = getResources().getDimensionPixelOffset(R.dimen.preview_offset_distance);
+//        rightSlidingLayer.setPreviewOffsetDistance(previewOffset);
+        ViewGroup.LayoutParams params = rightSlidingLayer.getLayoutParams();
+        rightSlidingLayer.setLayoutParams(params);
 
-        mLeftDrawer.setTag(0);
-        mRightDrawer.setTag(1);
 
-        mDrawerLayout.setScrimColor(Color.TRANSPARENT);
-        //mLeftDrawer.setBackgroundColor(Color.TRANSPARENT);
-        //mRightDrawer.setBackgroundColor(Color.TRANSPARENT);
+        // Konfiguracja lefego slidera
+        SlidingLayer leftSlidingLayer = (SlidingLayer) findViewById(R.id.leftSlidingLayer);
+        assert leftSlidingLayer != null;
+        leftSlidingLayer.setStickTo(SlidingLayer.STICK_TO_LEFT);
+        params = leftSlidingLayer.getLayoutParams();
 
-        RightDrawerFragment rightDrawer = RightDrawerFragment.newInstance(this, imageView, mLeftDrawer);
+        leftSlidingLayer.setLayoutParams(params);
+//        leftSlidingLayer.setLayerTransformer(transformer);
+
+        // Konfiguracja gurnego slidera
+        final SlidingLayer topSlidingLayer = (SlidingLayer) findViewById(R.id.topSlidingLayer);
+        assert topSlidingLayer != null;
+        topSlidingLayer.setStickTo(SlidingLayer.STICK_TO_TOP);
+        transformer = new SlideJoyTransformer();
+        topSlidingLayer.setLayerTransformer(transformer);
+        offsetDistance = getResources().getDimensionPixelOffset(R.dimen.top_offset_distance);
+        topSlidingLayer.setOffsetDistance(offsetDistance);
+
+        RelativeLayout showTopSlider = (RelativeLayout) findViewById(R.id.showTopBarButton);
+        showTopSlider.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                topSlidingLayer.openLayer(true);
+            }
+        });
+
+        TextView currentMode = (TextView) findViewById(R.id.currentMode);
+        currentMode.setText(SettingsActivity.currentMode + " Mode");
+
+        RelativeLayout leftToolbox = (RelativeLayout) findViewById(R.id.leftToolBox);
+        assert leftToolbox != null;
+
+        RightDrawerFragment rightDrawer = RightDrawerFragment.newInstance(this, imageView, leftSlidingLayer, leftToolbox);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.rightDrawer, rightDrawer);
         fragmentTransaction.commit();
 
-        mDrawerListener = new ActionBarDrawerToggle(
-                this,
-                mDrawerLayout,
-                R.string.openDrawer,
-                R.string.closeDrawer
-        ){
-            @Override
-            public boolean onOptionsItemSelected(MenuItem item) {
 
-                if (mDrawerLayout.isDrawerOpen(mLeftDrawer)){
-                    mDrawerLayout.closeDrawer(mLeftDrawer);
-                    mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        CustomToolboxFragment customToolbox = CustomToolboxFragment.newInstance(this, callback);
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.topSlidingLayer, customToolbox);
+        fragmentTransaction.commit();
 
-                }else{
-                    mDrawerLayout.openDrawer(mLeftDrawer);
+    }
 
-                }
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-                return super.onOptionsItemSelected(item);
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNDEFINED);
-                super.onDrawerClosed(drawerView);
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
-                super.onDrawerOpened(drawerView);
-            }
-        };
-
-        mDrawerLayout.addDrawerListener(mDrawerListener);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        callback.onActivityResult(requestCode, resultCode, data);
 
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mDrawerListener.syncState();
+//        mDrawerListener.syncState();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-       if (mDrawerListener.onOptionsItemSelected(item))
-           return true;
+//       if(mDrawerListener.onOptionsItemSelected(item))
+//           return true;
 
        return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState){
-        if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
-            outState.putString("DrawerState", "Opened");
+
+        if(SaveImageDialogFragment.savedImageUri != null){
+            outState.putString("IMAGE_URI", SaveImageDialogFragment.savedImageUri.getPath());
         }else{
-            outState.putString("DrawerState", "Closed");
+            outState.putString("IMAGE_URI", MainActivity.editedImageUri.getPath());
         }
+
+        outState.putString("CURRENT_MODE", SettingsActivity.currentMode);
+
         super.onSaveInstanceState(outState);
+    }
+
+    private void setupState(Bundle savedInstanceState) {
+
+        MainActivity.editedImageUri = Uri.fromFile(new File(savedInstanceState.getString("IMAGE_URI")));
+        SettingsActivity.currentMode = savedInstanceState.getString("CURRENT_MODE");
+
     }
 
     @Override
@@ -141,6 +192,17 @@ public class EditActivity extends AppCompatActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig){
         super.onConfigurationChanged(newConfig);
-        mDrawerListener.onConfigurationChanged(newConfig);
+//        mDrawerListener.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        ProgressDialog dataLoadProgress = new ProgressDialog(this);
+        dataLoadProgress.setMessage("Loading...");
+        dataLoadProgress.setIndeterminate(true);
+        dataLoadProgress.setCancelable(false);
+        dataLoadProgress.setProgressStyle(android.R.attr.progressBarStyleLarge);
+        return dataLoadProgress;
+
     }
 }

@@ -2,36 +2,44 @@
 <RelativeLayout xmlns:andro="http://schemas.android.com/apk/res/android"
     andro:layout_width="match_parent"
     andro:layout_height="match_parent"
-    andro:id="@+id/mainRelativeLayout">
+    andro:id="@+id/mainRelativeLayout"
+    andro:background="@drawable/window_rain">
     <FrameLayout
-        andro:layout_width="345dp"
-        andro:layout_height="match_parent"
+        andro:layout_width="260dp"
+        andro:layout_height="520dp"
         andro:id="@+id/menuContainer"
         andro:layout_marginTop="5dp"
         andro:layout_marginLeft="5dp"
         andro:layout_marginBottom="5dp"/>
-    <FrameLayout
-        andro:layout_width="683.5dp"
-        andro:layout_height="125dp"
-        andro:layout_toRightOf="@+id/menuContainer"
-        andro:id="@+id/lastEditedImagesContainer"
+    <HorizontalScrollView
+        andro:layout_width="match_parent"
+        andro:layout_height="wrap_content"
+        andro:layout_below="@+id/menuContainer"
+        andro:id="@+id/bottomScrollView"
         andro:layout_alignParentBottom="true"
         andro:layout_marginRight="5dp"
-        andro:layout_marginBottom="5dp">
-        <Gallery
-            andro:layout_width="match_parent"
-            andro:layout_height="match_parent"
-            andro:id="@+id/lastEditedImages"/>
-    </FrameLayout>
+        andro:layout_marginLeft="5dp"
+        andro:layout_marginBottom="5dp"
+        andro:layout_marginTop="5dp"
+        andro:measureAllChildren="false"
+        andro:scrollbars="none"
+        andro:fillViewport="true">
+        <LinearLayout
+            andro:layout_width="wrap_content"
+            andro:layout_height="wrap_content"
+            andro:orientation="horizontal"
+            andro:id="@+id/lastEditedImages">
+
+        </LinearLayout>
+    </HorizontalScrollView>
     <ImageView
-        andro:src="@android:drawable/ic_menu_gallery"
+        andro:src="@drawable/ic_add_a_photo_black_24dp"
         andro:layout_width="match_parent"
         andro:layout_height="match_parent"
         andro:layout_toRightOf="@id/menuContainer"
-        andro:layout_above="@id/lastEditedImagesContainer"
+        andro:layout_above="@id/bottomScrollView"
         andro:id="@+id/editedImageView"
         andro:layout_marginTop="5dp"
         andro:layout_marginRight="5dp"
-        andro:clickable="true"
-        />
+        andro:clickable="true" />
 </RelativeLayout>

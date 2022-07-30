@@ -10,15 +10,17 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 
+import com.example.wave.androidimageprocessingjava.MenuFragment;
 import com.example.wave.androidimageprocessingjava.Processing.Processor;
 import com.example.wave.androidimageprocessingjava.R;
+import com.example.wave.androidimageprocessingjava.SettingsActivity;
 
 /**
  * Created by Wave on 21.04.2016.
  */
-public class SaturationButton extends OperationButton implements CompoundButton.OnCheckedChangeListener {
+public class SaturationButton extends OperationButton implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
-    public SaturationButton(final Context context, Processor processor, IDrawerControls controlSet) {
+    public SaturationButton(final Context context, Processor processor, DrawerControls controlSet) {
         super(context, processor, controlSet);
     }
 
@@ -30,7 +32,7 @@ public class SaturationButton extends OperationButton implements CompoundButton.
             @Override
             public void draw(Canvas canvas) {
 
-                Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.birghtnes);
+                Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.saturation);
                 canvas.drawBitmap(
                         Bitmap.createScaledBitmap(bmp , 100, (int) (100 * bmp.getHeight()) / bmp.getWidth(), false),
                         -50, 0,
@@ -57,17 +59,28 @@ public class SaturationButton extends OperationButton implements CompoundButton.
     @Override
     protected void setListener() {
         this.setOnCheckedChangeListener(this);
+        this.setOnClickListener(this);
     }
 
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked){
-            controlSet.clearLeftDrawer();
-            controlSet.setControlSet();
             processor.startProcessing();
+            controlSet.hideContainer();
+            controlSet.setControlSet();
+            controlSet.openContainer();
         }else{
             processor.destroyScript();
+            controlSet.hideContainer();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(SettingsActivity.currentMode.equals(this.autoModeString)){
+//            processor.startProcessing();
+            controlSet.openContainer();
         }
     }
 }

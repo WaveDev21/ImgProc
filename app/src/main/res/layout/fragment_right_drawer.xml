@@ -1,23 +1,15 @@
-<RadioGroup xmlns:andro="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:andro="http://schemas.android.com/apk/res/android"
     andro:layout_height="match_parent"
     andro:layout_width="100dp"
-    andro:id="@+id/toolbox"
-    andro:transitionGroup="false">
-    <RadioButton
-        andro:layout_width="100dip"
-        andro:layout_height="100dip"
-        andro:id="@+id/highLight"
-        andro:textAlignment="center"
-        andro:text="asdqwdq"
-        andro:background="@drawable/radaiobuttonbackground"
-        andro:button="@android:color/transparent"
-        andro:drawableTop="@android:drawable/ic_menu_gallery"/>
-    <RadioButton
-        andro:layout_width="match_parent"
+    andro:measureAllChildren="false"
+    andro:scrollbars="none"
+    andro:fillViewport="true">
+    <RadioGroup
         andro:layout_height="wrap_content"
-        andro:id="@+id/polopppo"
-        andro:gravity="center"
-        andro:background="@drawable/radaiobuttonbackground"
-        andro:button="@android:color/transparent"
-        andro:drawableTop="@android:drawable/ic_menu_gallery"/>
-</RadioGroup>
+        andro:layout_width="match_parent"
+        andro:background="#9E9E9E"
+        andro:id="@+id/toolbox"
+        andro:paddingTop="5dp"
+        andro:paddingBottom="5dp">
+    </RadioGroup>
+</ScrollView>

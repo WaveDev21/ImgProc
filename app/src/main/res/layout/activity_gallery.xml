@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:andro="http://schemas.android.com/apk/res/android"
+andro:layout_width="match_parent"
+andro:layout_height="match_parent"
+andro:background="@drawable/window_rain">
+    <ScrollView
+        andro:layout_width="match_parent"
+        andro:layout_height="match_parent"
+        andro:layout_marginRight="5dp"
+        andro:layout_marginLeft="5dp"
+        andro:layout_marginBottom="5dp"
+        andro:layout_marginTop="10dp"
+        andro:measureAllChildren="false"
+        andro:scrollbars="none"
+        andro:fillViewport="true">
+        <LinearLayout
+            andro:layout_width="match_parent"
+            andro:layout_height="wrap_content"
+            andro:orientation="vertical"
+            andro:id="@+id/galleryContainer">
+        </LinearLayout>
+
+    </ScrollView>
+</RelativeLayout>

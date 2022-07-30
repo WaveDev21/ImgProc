@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +14,12 @@ import com.example.wave.androidimageprocessingjava.Factories.AbstractButtonFacto
 import com.example.wave.androidimageprocessingjava.Factories.ButtonFactory;
 import com.example.wave.androidimageprocessingjava.Factories.ButtonType;
 import com.example.wave.androidimageprocessingjava.MainActivity;
+import com.example.wave.androidimageprocessingjava.MenuFragment;
 import com.example.wave.androidimageprocessingjava.R;
+import com.example.wave.androidimageprocessingjava.SettingsActivity;
+import com.wunderlist.slidinglayer.SlidingLayer;
 
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
@@ -30,22 +35,21 @@ import java.io.IOException;
  */
 public class RightDrawerFragment extends Fragment{
 
-    private Context context;
+    public static Context context;
     private ImageView imageView;
-    private RelativeLayout leftDrawer;
+    private SlidingLayer leftSlider;
+    private RelativeLayout leftToolbox;
 
 
     // TODO: Rename and change types and number of parameters
-    public static RightDrawerFragment newInstance(Context context, ImageView imageView, RelativeLayout leftDrawer) {
+    public static RightDrawerFragment newInstance(Context context, ImageView imageView, SlidingLayer leftDrawer, RelativeLayout leftToolbox) {
         RightDrawerFragment fragment = new RightDrawerFragment();
 
-        Bundle args = new Bundle();
-
         fragment.imageView = imageView;
-        fragment.context = context;
-        fragment.leftDrawer = leftDrawer;
+        RightDrawerFragment.context = context;
+        fragment.leftSlider = leftDrawer;
+        fragment.leftToolbox = leftToolbox;
 
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -67,22 +71,31 @@ public class RightDrawerFragment extends Fragment{
 
     private void addButtons(RadioGroup toolbox) {
 
-        AbstractButtonFactory buttonFactory = new ButtonFactory(context, getBitmap(), this.imageView, this.leftDrawer);
+        toolbox.removeAllViews();
+        // Inicjalizacja fabryki
+        AbstractButtonFactory buttonFactory = new ButtonFactory(context, getBitmap(), this.imageView, this.leftToolbox);
 
         toolbox.addView(buttonFactory.produceButton(ButtonType.Saturation));
+        toolbox.addView(buttonFactory.produceButton(ButtonType.Contrast));
+        if(SettingsActivity.currentMode.equals(context.getResources().getString(R.string.mode_pro))){
+            toolbox.addView(buttonFactory.produceButton(ButtonType.AccentColor));
+        }
+        toolbox.addView(buttonFactory.produceButton(ButtonType.Exposure));
+        toolbox.addView(buttonFactory.produceButton(ButtonType.Gamma));
         toolbox.addView(buttonFactory.produceButton(ButtonType.Sharpen));
         toolbox.addView(buttonFactory.produceButton(ButtonType.Smooth));
+        toolbox.addView(buttonFactory.produceButton(ButtonType.HistogramExt));
+        if(SettingsActivity.currentMode.equals(context.getResources().getString(R.string.mode_pro))){
+            toolbox.addView(buttonFactory.produceButton(ButtonType.HistogramAlign));
+        }
 
-
-     //   toolbox.addView(new OperationButton(context, "Ripple", new RippleProcessor(getBitmap(), this.context), this.imageView, this.leftDrawer));
-        //toolbox.addView(new OperationButton(context, "Sharpen", new Filter3x3Processor(getBitmap(), this.context), this.imageView, this.leftDrawer));
     }
 
 
     private Bitmap getBitmap() {
         Bitmap btm = null;
         try {
-            btm = android.provider.MediaStore.Images.Media.getBitmap(context.getContentResolver(), MainActivity.editedImageUri);
+            btm = android.provider.MediaStore.Images.Media.getBitmap(context.getApplicationContext().getContentResolver(), MainActivity.editedImageUri);
         } catch (IOException e) {
             e.printStackTrace();
         }

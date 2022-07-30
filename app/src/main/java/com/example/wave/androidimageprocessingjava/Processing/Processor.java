@@ -4,11 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.RenderScript;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
-import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.SaturationVariables;
 import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.ScriptVariables;
 
 /**
@@ -16,8 +12,8 @@ import com.example.wave.androidimageprocessingjava.Processing.VariablesPackage.S
  */
 public abstract class Processor {
 
-    protected Bitmap mBitmapIn = null;
-    protected Bitmap mBitmapOut = null;
+    public static Bitmap mBitmapIn = null;
+    static Bitmap mBitmapOut = null;
 
     protected RenderScript mRS;
     protected Allocation mInAllocation;
@@ -25,11 +21,15 @@ public abstract class Processor {
 
     protected Context context;
 
+    protected boolean ready = false;
+
     protected Processor(Bitmap bitmap, Context context){
-        this.mBitmapIn = bitmap;
+        mBitmapIn = bitmap;
         this.context = context;
 
-
+        if(mBitmapOut != null){
+            mBitmapOut.recycle();
+        }
         mBitmapOut = Bitmap.createBitmap(mBitmapIn.getWidth(),
                 mBitmapIn.getHeight(), mBitmapIn.getConfig());
 
@@ -38,14 +38,18 @@ public abstract class Processor {
     public abstract void startProcessing();
     public abstract void processScript(ScriptVariables variables);
     public abstract void destroyScript();
+    public abstract boolean isScriptReady();
 
     public Bitmap getmBitmapOut(){
         return mBitmapOut;
     }
 
+    public Bitmap getmBitmapIn(){
+        return mBitmapIn;
+    }
 
-
-
-
-
+    public void overwriteBitmapIn(){
+        mBitmapIn.recycle();
+        mBitmapIn = Bitmap.createBitmap(mBitmapOut);
+    }
 }

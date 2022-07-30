@@ -15,7 +15,7 @@ import com.example.wave.androidimageprocessingjava.R;
  * Created by Wave on 26.04.2016.
  */
 public class SharpenButton extends OperationButton implements CompoundButton.OnCheckedChangeListener{
-    public SharpenButton(final Context context, Processor processor, IDrawerControls controlSet) {
+    public SharpenButton(final Context context, Processor processor, DrawerControls controlSet) {
         super(context, processor, controlSet);
     }
 
@@ -27,7 +27,7 @@ public class SharpenButton extends OperationButton implements CompoundButton.OnC
             @Override
             public void draw(Canvas canvas) {
 
-                Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.birghtnes);
+                Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.sharpener);
                 canvas.drawBitmap(
                         Bitmap.createScaledBitmap(bmp , 100, (int) (100 * bmp.getHeight()) / bmp.getWidth(), false),
                         -50, 0,
@@ -56,15 +56,16 @@ public class SharpenButton extends OperationButton implements CompoundButton.OnC
         this.setOnCheckedChangeListener(this);
     }
 
-
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked){
-            controlSet.clearLeftDrawer();
-            controlSet.setControlSet();
             processor.startProcessing();
+            controlSet.clearToolbox();
+            controlSet.setControlSet();
+            controlSet.openContainer();
         }else{
             processor.destroyScript();
+            controlSet.hideContainer();
 
         }
     }
